@@ -5,7 +5,6 @@ package client;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Map;
@@ -33,9 +32,9 @@ public class MysqlClient {
     private MysqlClient() {
         _host = "localhost";
         _port = 3306;
-        _dbname = "book_shop";
+        _dbname = "electronic_project";
         _user = "root";
-        _password = "123456";
+        _password = "";
         _poolsize = 10;
         this.init();
     }

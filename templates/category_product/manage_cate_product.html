@@ -27,12 +27,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
-                </li>
+
             </ul>
         </nav>
         <!-- /.navbar -->
@@ -60,7 +55,109 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <!-- Main content -->
             <div class="content">
-                content here
+                <div class="container-fluid">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <input type="text" name="search" class="form-control" placeholder="Search">
+
+                                        <div class="input-group-append">
+                                            <button type="submit" name="submit" class="btn btn-primary"><i class="fas fa-search"> Search</i>
+                                              </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 text-right">
+                                    <a class="btn btn-primary" href="/admin/cate_product/add">
+                                        <i class="fas fa-plus"></i> Add Category
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">List Categories</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-striped projects">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 1%">
+                                            Id
+                                        </th>
+                                        <th style="width: 20%">
+                                            Name
+                                        </th>
+                                        <th style="width: 10%">
+                                            Parent ID
+                                        </th>
+                                        <th style="width: 10%">
+                                            Orders
+                                        </th>
+                                        <th style="width: 10%">
+                                            Status
+                                        </th>
+                                        <th style="width: 15%">
+                                            Created Date
+                                        </th>
+                                        <th style="width: 15%">
+                                            Updated Date
+                                        </th>
+                                        <th>
+
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody dir-paginate="item in listCategory | itemsPerPage: 10" total-items="totalCategory" pagination-id="category_product">
+                                    <tr>
+                                        <td>{{item.id}}</td>
+                                        <td>{{item.name}}</td>
+                                        <td>{{item.cate_parent}}</td>
+                                        <td>{{item.orders}}</td>
+                                        <td>
+                                            <span ng-if="item.status==1" class="badge badge-info">Show</span>
+                                            <span ng-if="item.status==2" class="badge badge-danger">Hide</span>
+                                        </td>
+                                        <td>{{item.created_date}}</td>
+                                        <td>{{item.updated_date}}</td>
+                                        <td class="project-actions text-right">
+                                            <a class="btn btn-info btn-sm" href="/admin/cate_product/edit?id={{item.id}}" style="margin: 5px 5px">
+                                                <i class="fas fa-pencil-alt">
+                                                </i> Edit
+                                            </a>
+                                            <a ng-click="delete(item.id, item.name)" class="btn btn-danger btn-sm" href="#" style="margin: 5px 5px">
+                                                <i class="fas fa-trash">
+                                                </i> Delete
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="clearfix mt-3" style="margin-left: auto; padding-right: 20px;">
+                                <dir-pagination-controls pagination-id="category_product" on-page-change="pageChanged(newPageNumber)" boundary-links="true" style="font-size: 13px"></dir-pagination-controls>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+                <!-- /.content -->
             </div>
             <!-- /.content -->
         </div>
@@ -77,11 +174,60 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="${static_domain}/dist/js/notification.js"></script>
     <script src="${static_domain}/dist/js/toastr.min.js"></script>
     <script src="${static_domain}/dist/js/adminlte.min.js"></script>
+    <script src="${static_domain}/js/common.js"></script>
 
     <script>
-        var app = angular.module('myApp', []); //ngPagination
-        app.controller('mainCtrl', function($scope, $rootScope) {
+        var app = angular.module('myApp', ['ngPagination']); //ngPagination
+        app.controller('mainCtrl', function($scope, $http, $rootScope) {
+            $scope.APP_DOMAIN = "http://localhost:8080/";
+            $scope.selectedPageIndex = 1;
+            $scope.getListCategory = function() {
+                $http({
+                    method: "GET",
+                    url: $scope.APP_DOMAIN + "admin/api/cate_product",
+                    params: {
+                        action: 'getcate',
+                        page_index: $scope.selectedPageIndex,
+                        limit: 10
+                    },
+                }).then(function(response) {
+                    console.log(response);
+                    $scope.listCategory = response.data.data.listCategory;
+                    $scope.totalCategory = response.data.data.total;
+                })
+            }
+            $scope.pageChanged = function(pageIndex) {
+                $scope.selectedPageIndex = pageIndex;
+                $scope.getListCategory();
+            };
 
+            $scope.getListCategory();
+
+
+            $scope.delete = function(idDel, nameDel) {
+                var r = confirm("Bạn chắc chắn muốn xóa " + nameDel + " ?");
+                if (r == true) {
+                    var data = $.param({
+                        id: idDel
+                    });
+                    var config = {
+                        headers: {
+                            'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                        }
+                    }
+                    $http.post('http://localhost:8080/admin/api/cate_product?action=delete', data, config)
+                        .then(function(response) {
+                            console.log(response);
+                            showNotification("success", response.data.message);
+                            $scope.getListCategory();
+                        }, function(error) {
+                            console.log(error.data.message);
+                            showNotification("error", error.data.message);
+                        })
+
+                }
+
+            }
         })
     </script>
 </body>
