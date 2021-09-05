@@ -1,4 +1,4 @@
-package servlets.cate_product;
+package servlets;
 
 import common.Config;
 import templater.PageGenerator;

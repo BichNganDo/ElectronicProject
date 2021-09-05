@@ -8,7 +8,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Category Product</title>
+    <title>Supplier</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="${static_domain}/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="${static_domain}/dist/css/adminlte.min.css">
@@ -41,12 +41,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Manage Category</h1>
+                            <h1 class="m-0">Manage Supplier</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Dashbroad</a></li>
-                                <li class="breadcrumb-item active">Manage Category </li>
+                                <li class="breadcrumb-item active">Manage Supplier </li>
                             </ol>
                         </div>
                     </div>
@@ -59,30 +59,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-sm-5">
+                                <div class="col-sm-6">
                                     <div class="input-group">
-                                        <input ng-model="search_query" type="text" name="search" class="form-control" placeholder="Search">
+                                        <input type="text" name="search" class="form-control" placeholder="Search">
+
                                         <div class="input-group-append">
-                                            <button ng-click="getListCategory()" type="button" class="btn btn-primary"><i class="fas fa-search"> Search</i>
+                                            <button type="submit" name="submit" class="btn btn-primary"><i class="fas fa-search"> Search</i>
                                               </button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
-                                    <div class="input-group">
-                                        <select ng-model="search_status" ng-change="getListCategory()" class="form-control">
-                                            <option value="0">Choose the status</option>
-                                            <option value="1">Show</option>
-                                            <option value="2">Hide</option>
-                                            
-                                          </select>
 
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-3 text-right">
-                                    <a class="btn btn-primary" href="/admin/cate_product/add">
-                                        <i class="fas fa-plus"></i> Add Category
+                                <div class="col-sm-6 text-right">
+                                    <a class="btn btn-primary" href="/admin/supplier/add">
+                                        <i class="fas fa-plus"></i> Add Supplier
                                     </a>
                                 </div>
                             </div>
@@ -91,7 +81,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">List Categories</h3>
+                            <h3 class="card-title">List Suppliers</h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                         <i class="fas fa-minus"></i>
@@ -108,22 +98,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <th style="width: 1%">
                                             Id
                                         </th>
-                                        <th style="width: 20%">
+                                        <th style="width: 17%">
                                             Name
                                         </th>
-                                        <th style="width: 10%">
-                                            Parent ID
+                                        <th style="width: 13%">
+                                            Address
+                                        </th>
+                                        <th style="width: 7%">
+                                            Phone
                                         </th>
                                         <th style="width: 10%">
-                                            Orders
+                                            Email
                                         </th>
-                                        <th style="width: 10%">
-                                            Status
+                                        <th style="width: 7%">
+                                            Fax
                                         </th>
-                                        <th style="width: 15%">
+                                        <th style="width: 13%">
                                             Created Date
                                         </th>
-                                        <th style="width: 15%">
+                                        <th style="width: 13%">
                                             Updated Date
                                         </th>
                                         <th>
@@ -131,18 +124,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody dir-paginate="item in listCategory | itemsPerPage: 10" total-items="totalCategory" pagination-id="category_product">
+                                <tbody>
                                     <tr>
-                                        <td>{{item.id}}</td>
-                                        <td>{{item.name}}</td>
-                                        <td>{{item.cate_parent}}</td>
-                                        <td>{{item.orders}}</td>
-                                        <td>
-                                            <span ng-if="item.status==1" class="badge badge-info">Show</span>
-                                            <span ng-if="item.status==2" class="badge badge-danger">Hide</span>
-                                        </td>
-                                        <td>{{item.created_date}}</td>
-                                        <td>{{item.updated_date}}</td>
+                                        <td>1</td>
+                                        <td>Công ty TNHH Ngân Lực</td>
+                                        <td>78 Khánh Hội, P4, Q4</td>
+                                        <td>028.2345678</td>
+                                        <td>nganluc@gmail.com</td>
+                                        <td></td>
+                                        <td>05/09/2021 10:16</td>
+                                        <td>05/09/2021 10:16</td>
                                         <td class="project-actions text-right">
                                             <a class="btn btn-info btn-sm" href="/admin/cate_product/edit?id={{item.id}}" style="margin: 5px 5px">
                                                 <i class="fas fa-pencil-alt">
@@ -155,10 +146,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         </td>
                                     </tr>
                                 </tbody>
+
                             </table>
-                            <div class="clearfix mt-3" style="margin-left: auto; padding-right: 20px;">
+                            <!-- <div class="clearfix mt-3" style="margin-left: auto; padding-right: 20px;">
                                 <dir-pagination-controls pagination-id="category_product" on-page-change="pageChanged(newPageNumber)" boundary-links="true" style="font-size: 13px"></dir-pagination-controls>
-                            </div>
+                            </div> -->
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -189,59 +181,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
         var app = angular.module('myApp', ['ngPagination']); //ngPagination
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
             $scope.APP_DOMAIN = "http://localhost:8080/";
-            $scope.selectedPageIndex = 1;
-            $scope.search_status = '0';
-            $scope.getListCategory = function() {
-                $http({
-                    method: "GET",
-                    url: $scope.APP_DOMAIN + "admin/api/cate_product",
-                    params: {
-                        action: 'getcate',
-                        page_index: $scope.selectedPageIndex,
-                        limit: 10,
-                        search_query: $scope.search_query,
-                        search_status: $scope.search_status
-                    },
-                }).then(function(response) {
-                    console.log(response);
-                    $scope.listCategory = response.data.data.listCategory;
-                    $scope.totalCategory = response.data.data.total;
-                })
-            }
-            $scope.pageChanged = function(pageIndex) {
-                $scope.selectedPageIndex = pageIndex;
-                $scope.getListCategory();
-            };
-
-            $scope.getListCategory();
-
-
-            $scope.delete = function(idDel, nameDel) {
-                var r = confirm("Bạn chắc chắn muốn xóa " + nameDel + " ?");
-                if (r == true) {
-                    var data = $.param({
-                        id: idDel
-                    });
-                    var config = {
-                        headers: {
-                            'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                        }
-                    }
-                    $http.post('http://localhost:8080/admin/api/cate_product?action=delete', data, config)
-                        .then(function(response) {
-                            console.log(response);
-                            showNotification("success", response.data.message);
-                            $scope.getListCategory();
-                        }, function(error) {
-                            console.log(error.data.message);
-                            showNotification("error", error.data.message);
-                        })
-
-                }
-
-            }
-
-
         })
     </script>
 </body>

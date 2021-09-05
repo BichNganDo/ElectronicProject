@@ -1,5 +1,6 @@
-package entity;
+package entity.category_product;
 
+import entity.category_product.CategoryProduct;
 import java.util.List;
 
 public class ListCategoryProduct {

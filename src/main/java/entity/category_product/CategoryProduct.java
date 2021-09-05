@@ -1,4 +1,4 @@
-package entity;
+package entity.category_product;
 
 public class CategoryProduct {
 

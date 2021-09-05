@@ -2,8 +2,8 @@ package servlets.API;
 
 import com.google.gson.Gson;
 import common.APIResult;
-import entity.CategoryProduct;
-import entity.ListCategoryProduct;
+import entity.category_product.CategoryProduct;
+import entity.category_product.ListCategoryProduct;
 import helper.HttpHelper;
 import helper.ServletUtil;
 import java.io.IOException;
@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.CategoryProductModel;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 public class APICategoryServlet extends HttpServlet {
 
@@ -23,11 +25,13 @@ public class APICategoryServlet extends HttpServlet {
         String action = request.getParameter("action");
         switch (action) {
             case "getcate": {
-                int pageIndex = Integer.parseInt(request.getParameter("page_index"));
-                int limit = Integer.parseInt(request.getParameter("limit"));
+                int pageIndex = NumberUtils.toInt(request.getParameter("page_index"));
+                int limit = NumberUtils.toInt(request.getParameter("limit"), 10);
+                String searchQuery = request.getParameter("search_query");
+                int searchStatus = NumberUtils.toInt(request.getParameter("search_status"));
 
                 int offset = (pageIndex - 1) * limit;
-                List<CategoryProduct> listCategory = CategoryProductModel.INSTANCE.getSliceCategory(offset, limit);
+                List<CategoryProduct> listCategory = CategoryProductModel.INSTANCE.getSliceCategory(offset, limit, searchQuery, searchStatus);
                 int totalCategory = CategoryProductModel.INSTANCE.getTotalCategory();
 
                 ListCategoryProduct listCategoryProduct = new ListCategoryProduct();
@@ -35,7 +39,7 @@ public class APICategoryServlet extends HttpServlet {
                 listCategoryProduct.setListCategory(listCategory);
                 listCategoryProduct.setItemPerPage(10);
 
-                if (listCategory.size() > 0) {
+                if (listCategory.size() >= 0) {
                     result.setErrorCode(0);
                     result.setMessage("Success");
                     result.setData(listCategoryProduct);
@@ -46,7 +50,7 @@ public class APICategoryServlet extends HttpServlet {
                 break;
             }
             case "getCateById": {
-                int idCate = Integer.parseInt(request.getParameter("id_cate"));
+                int idCate = NumberUtils.toInt(request.getParameter("id_cate"));
 
                 CategoryProduct cateById = CategoryProductModel.INSTANCE.getCategoryByID(idCate);
 
@@ -77,9 +81,9 @@ public class APICategoryServlet extends HttpServlet {
         switch (action) {
             case "add": {
                 String name = request.getParameter("name");
-                int id_parent = Integer.parseInt(request.getParameter("id_parent"));
-                int orders = Integer.parseInt(request.getParameter("orders"));
-                int status = Integer.parseInt(request.getParameter("status"));
+                int id_parent = NumberUtils.toInt(request.getParameter("id_parent"));
+                int orders = NumberUtils.toInt(request.getParameter("orders"));
+                int status = NumberUtils.toInt(request.getParameter("status"));
 
                 int addCategory = CategoryProductModel.INSTANCE.addCategory(name, id_parent, orders, status);
 
@@ -93,11 +97,11 @@ public class APICategoryServlet extends HttpServlet {
                 break;
             }
             case "edit": {
-                int id = Integer.parseInt(request.getParameter("id"));
+                int id = NumberUtils.toInt(request.getParameter("id"));
                 String name = request.getParameter("name");
-                int id_parent = Integer.parseInt(request.getParameter("id_parent"));
-                int orders = Integer.parseInt(request.getParameter("orders"));
-                int status = Integer.parseInt(request.getParameter("status"));
+                int id_parent = NumberUtils.toInt(request.getParameter("id_parent"));
+                int orders = NumberUtils.toInt(request.getParameter("orders"));
+                int status = NumberUtils.toInt(request.getParameter("status"));
 
                 CategoryProduct categoryByID = CategoryProductModel.INSTANCE.getCategoryByID(id);
                 if (categoryByID.getId() == 0) {
@@ -119,7 +123,7 @@ public class APICategoryServlet extends HttpServlet {
             }
 
             case "delete": {
-                int id = Integer.parseInt(request.getParameter("id"));
+                int id = NumberUtils.toInt(request.getParameter("id"));
                 int deleteCategory = CategoryProductModel.INSTANCE.deleteCategory(id);
                 if (deleteCategory >= 0) {
                     result.setErrorCode(0);
@@ -137,4 +141,5 @@ public class APICategoryServlet extends HttpServlet {
         ServletUtil.printJson(request, response, gson.toJson(result));
 
     }
+
 }

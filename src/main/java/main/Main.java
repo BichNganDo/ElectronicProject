@@ -11,7 +11,9 @@ import servlets.API.APICategoryServlet;
 import servlets.cate_product.AddCategoryServlet;
 import servlets.cate_product.EditCategoryServlet;
 import servlets.cate_product.ManageCategoryProductServlet;
-import servlets.cate_product.PartialServlet;
+import servlets.PartialServlet;
+import servlets.supplier.AddSupplierServlet;
+import servlets.supplier.ManageSupplierServlet;
 
 public class Main {
 
@@ -19,9 +21,15 @@ public class Main {
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(new ManageCategoryProductServlet()), "/admin/cate_product");
+        context.addServlet(new ServletHolder(new ManageSupplierServlet()), "/admin/supplier");
+
         context.addServlet(new ServletHolder(new AddCategoryServlet()), "/admin/cate_product/add");
+        context.addServlet(new ServletHolder(new AddSupplierServlet()), "/admin/supplier/add");
+
         context.addServlet(new ServletHolder(new EditCategoryServlet()), "/admin/cate_product/edit");
+
         context.addServlet(new ServletHolder(new APICategoryServlet()), "/admin/api/cate_product");
+
         context.addServlet(new ServletHolder(new PartialServlet()), "/admin/partital/*");
 
         ContextHandler resourceHandler = new ContextHandler("/static");
