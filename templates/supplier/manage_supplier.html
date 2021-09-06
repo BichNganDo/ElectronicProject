@@ -61,10 +61,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="input-group">
-                                        <input type="text" name="search" class="form-control" placeholder="Search">
+                                        <input ng-model="search_query" type="text" name="search" class="form-control" placeholder="Search">
 
                                         <div class="input-group-append">
-                                            <button type="submit" name="submit" class="btn btn-primary"><i class="fas fa-search"> Search</i>
+                                            <button ng-click="getListSupplier()" type="submit" name="submit" class="btn btn-primary"><i class="fas fa-search"> Search</i>
                                               </button>
                                         </div>
                                     </div>
@@ -104,7 +104,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <th style="width: 13%">
                                             Address
                                         </th>
-                                        <th style="width: 7%">
+                                        <th style="width: 6%">
                                             Phone
                                         </th>
                                         <th style="width: 10%">
@@ -113,10 +113,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <th style="width: 7%">
                                             Fax
                                         </th>
-                                        <th style="width: 13%">
+                                        <th style="width: 12%">
                                             Created Date
                                         </th>
-                                        <th style="width: 13%">
+                                        <th style="width: 12%">
                                             Updated Date
                                         </th>
                                         <th>
@@ -124,18 +124,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody dir-paginate="item in listSupplier | itemsPerPage: 10" total-items="totalSupplier" pagination-id="supplier">
                                     <tr>
-                                        <td>1</td>
-                                        <td>Công ty TNHH Ngân Lực</td>
-                                        <td>78 Khánh Hội, P4, Q4</td>
-                                        <td>028.2345678</td>
-                                        <td>nganluc@gmail.com</td>
-                                        <td></td>
-                                        <td>05/09/2021 10:16</td>
-                                        <td>05/09/2021 10:16</td>
+                                        <td>{{item.id}}</td>
+                                        <td>{{item.name}}</td>
+                                        <td>{{item.address}}</td>
+                                        <td>{{item.phone}}</td>
+                                        <td>{{item.email}}</td>
+                                        <td>{{item.fax}}</td>
+                                        <td>{{item.created_date}}</td>
+                                        <td>{{item.updated_date}}</td>
                                         <td class="project-actions text-right">
-                                            <a class="btn btn-info btn-sm" href="/admin/cate_product/edit?id={{item.id}}" style="margin: 5px 5px">
+                                            <a class="btn btn-info btn-sm" href="/admin/supplier/edit?id={{item.id}}" style="margin: 5px 5px">
                                                 <i class="fas fa-pencil-alt">
                                                 </i> Edit
                                             </a>
@@ -148,9 +148,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </tbody>
 
                             </table>
-                            <!-- <div class="clearfix mt-3" style="margin-left: auto; padding-right: 20px;">
-                                <dir-pagination-controls pagination-id="category_product" on-page-change="pageChanged(newPageNumber)" boundary-links="true" style="font-size: 13px"></dir-pagination-controls>
-                            </div> -->
+                            <div class="clearfix mt-3" style="margin-left: auto; padding-right: 20px;">
+                                <dir-pagination-controls pagination-id="supplier" on-page-change="pageChanged(newPageNumber)" boundary-links="true" style="font-size: 13px"></dir-pagination-controls>
+                            </div>
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -181,6 +181,56 @@ scratch. This page gets rid of all links and provides the needed markup only.
         var app = angular.module('myApp', ['ngPagination']); //ngPagination
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
             $scope.APP_DOMAIN = "http://localhost:8080/";
+            $scope.selectedPageIndex = 1;
+            $scope.getListSupplier = function() {
+                $http({
+                    method: "GET",
+                    url: $scope.APP_DOMAIN + "admin/api/supplier",
+                    params: {
+                        action: 'getsupplier',
+                        page_index: $scope.selectedPageIndex,
+                        limit: 10,
+                        search_query: $scope.search_query
+                    },
+                }).then(function(response) {
+                    console.log(response);
+                    $scope.listSupplier = response.data.data.listSupplier;
+                    $scope.totalSupplier = response.data.data.total;
+                })
+            }
+            $scope.pageChanged = function(pageIndex) {
+                $scope.selectedPageIndex = pageIndex;
+                $scope.getListSupplier();
+            };
+
+            $scope.getListSupplier();
+
+
+            //DELETE
+            $scope.delete = function(idDel, nameDel) {
+                var r = confirm("Bạn chắc chắn muốn xóa " + nameDel + " ?");
+                if (r == true) {
+                    var data = $.param({
+                        id: idDel
+                    });
+                    var config = {
+                        headers: {
+                            'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                        }
+                    }
+                    $http.post('http://localhost:8080/admin/api/supplier?action=delete', data, config)
+                        .then(function(response) {
+                            console.log(response);
+                            showNotification("success", response.data.message);
+                            $scope.getListSupplier();
+                        }, function(error) {
+                            console.log(error.data.message);
+                            showNotification("error", error.data.message);
+                        })
+
+                }
+
+            }
         })
     </script>
 </body>

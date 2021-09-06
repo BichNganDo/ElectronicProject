@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 public class SupplierModel {
 
@@ -19,7 +20,7 @@ public class SupplierModel {
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     public static SupplierModel INSTANCE = new SupplierModel();
 
-    public List<Supplier> getSliceSupplier(int offset, int limit) {
+    public List<Supplier> getSliceSupplier(int offset, int limit, String searchQuery) {
         List<Supplier> resultListSupplier = new ArrayList<>();
         Connection conn = null;
         try {
@@ -28,7 +29,15 @@ public class SupplierModel {
                 return resultListSupplier;
 
             }
-            String sql = "SELECT * FROM `" + NAMETABLE + "` LIMIT " + limit + " OFFSET " + offset;
+            String sql = "SELECT * FROM `" + NAMETABLE
+                    + "` WHERE 1 = 1";
+
+            if (StringUtils.isNotEmpty(searchQuery)) {
+                sql = sql + " AND name LIKE '%" + searchQuery + "%' ";
+                sql = sql + " OR phone LIKE '%" + searchQuery + "%' ";
+                sql = sql + " OR email LIKE '%" + searchQuery + "%' ";
+            }
+            sql = sql + " LIMIT " + limit + " OFFSET " + offset;
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
@@ -65,7 +74,7 @@ public class SupplierModel {
         return resultListSupplier;
     }
 
-    public int getTotalSupplier() {
+    public int getTotalSupplier(String searchQuery) {
         int total = 0;
         Connection conn = null;
         try {
@@ -73,8 +82,12 @@ public class SupplierModel {
             if (null == conn) {
                 return total;
             }
-            String sql = "SELECT COUNT(id) AS total FROM `" + NAMETABLE;
-
+            String sql = "SELECT COUNT(id) AS total FROM `" + NAMETABLE + "` WHERE 1 = 1";
+            if (StringUtils.isNotEmpty(searchQuery)) {
+                sql = sql + " AND name LIKE '%" + searchQuery + "%' ";
+                sql = sql + " OR phone LIKE '%" + searchQuery + "%' ";
+                sql = sql + " OR email LIKE '%" + searchQuery + "%' ";
+            }
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
 
@@ -139,9 +152,9 @@ public class SupplierModel {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
             String sql = "INSERT INTO `" + NAMETABLE + "`"
-                    + "(`name`, `address`, `phone`, `email`, `created_date`, `updated_date`) "
+                    + "(`name`, `address`, `phone`, `email`, `fax`, `created_date`, `updated_date`) "
                     + "VALUES "
-                    + "('" + name + "', '" + address + "','" + phone + "', '" + email + "','" + System.currentTimeMillis() + "', '" + System.currentTimeMillis() + "')";
+                    + "('" + name + "', '" + address + "','" + phone + "', '" + email + "', '" + fax + "', '" + System.currentTimeMillis() + "', '" + System.currentTimeMillis() + "')";
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             int rs = preparedStatement.executeUpdate();
@@ -156,57 +169,58 @@ public class SupplierModel {
         return ErrorCode.FAIL.getValue();
     }
 
-//    public int editCategory(int id, String name, int id_parent, int orders, int status) {
-//        Connection conn = null;
-//        try {
-//            conn = dbClient.getDbConnection();
-//            if (null == conn) {
-//                return ErrorCode.CONNECTION_FAIL.getValue();
-//            }
-//
-//            String sql = "UPDATE `" + NAMETABLE + "` "
-//                    + "SET `name`='" + name + "' , "
-//                    + "`id_parent`='" + id_parent + "', "
-//                    + "`orders`='" + orders + "', "
-//                    + "`status`='" + status + "', "
-//                    + "`updated_date`='" + System.currentTimeMillis() + "'"
-//                    + "WHERE `id`='" + id + "'";
-//
-//            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-//            int rs = preparedStatement.executeUpdate();
-//
-//            return rs;
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        } finally {
-//            dbClient.releaseDbConnection(conn);
-//        }
-//        return ErrorCode.FAIL.getValue();
-//    }
-//
-//    public int deleteCategory(int id) {
-//        Connection conn = null;
-//        try {
-//            conn = dbClient.getDbConnection();
-//            if (null == conn) {
-//                return ErrorCode.CONNECTION_FAIL.getValue();
-//            }
-//
-//            CategoryProduct categoryByID = getCategoryByID(id);
-//            if (categoryByID.getId() == 0) {
-//                return ErrorCode.NOT_EXIST.getValue();
-//            }
-//            String sql = "DELETE FROM `" + NAMETABLE + "` WHERE `id`='" + id + "'";
-//
-//            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-//            int rs = preparedStatement.executeUpdate();
-//
-//            return rs;
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        } finally {
-//            dbClient.releaseDbConnection(conn);
-//        }
-//        return ErrorCode.FAIL.getValue();
-//    }
+    public int editSupplier(int id, String name, String address, String phone, String email, String fax) {
+        Connection conn = null;
+        try {
+            conn = dbClient.getDbConnection();
+            if (null == conn) {
+                return ErrorCode.CONNECTION_FAIL.getValue();
+            }
+
+            String sql = "UPDATE `" + NAMETABLE + "` "
+                    + "SET `name`='" + name + "' , "
+                    + "`address`='" + address + "', "
+                    + "`phone`='" + phone + "', "
+                    + "`email`='" + email + "', "
+                    + "`fax`='" + fax + "', "
+                    + "`updated_date`='" + System.currentTimeMillis() + "'"
+                    + "WHERE `id`='" + id + "'";
+
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            int rs = preparedStatement.executeUpdate();
+
+            return rs;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dbClient.releaseDbConnection(conn);
+        }
+        return ErrorCode.FAIL.getValue();
+    }
+
+    public int deleteSUpplier(int id) {
+        Connection conn = null;
+        try {
+            conn = dbClient.getDbConnection();
+            if (null == conn) {
+                return ErrorCode.CONNECTION_FAIL.getValue();
+            }
+
+            Supplier supplierByID = getSupplierByID(id);
+            if (supplierByID.getId() == 0) {
+                return ErrorCode.NOT_EXIST.getValue();
+            }
+            String sql = "DELETE FROM `" + NAMETABLE + "` WHERE `id`='" + id + "'";
+
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            int rs = preparedStatement.executeUpdate();
+
+            return rs;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dbClient.releaseDbConnection(conn);
+        }
+        return ErrorCode.FAIL.getValue();
+    }
 }

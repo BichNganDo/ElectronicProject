@@ -82,7 +82,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <input ng-model="fax" type="text" class="form-control" placeholder="Fax">
                                 </div>
                                 <div>
-                                    <button type="submit" ng-click="testthongbao()" class="btn btn-primary">Submit</button>
+                                    <button type="button" ng-click="saveDataEdit()" class="btn btn-primary">Save</button>
                                 </div>
                             </div>
                         </form>
@@ -112,6 +112,55 @@ scratch. This page gets rid of all links and provides the needed markup only.
         var app = angular.module('myApp', []); //ngPagination
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
             $scope.APP_DOMAIN = "http://localhost:8080/";
+            // get idSupplier
+            var id_supplier = getUrlParameter('id');
+            console.log(id_supplier);
+            $http({
+                method: "GET",
+                url: $scope.APP_DOMAIN + "admin/api/supplier",
+                params: {
+                    action: 'getSupplierById',
+                    id_supplier: id_supplier
+                },
+            }).then(function(response) {
+                console.log(response);
+                $scope.editSupplier = response.data.data
+                console.log($scope.editSupplier);
+
+                $scope.id = $scope.editSupplier.id;
+                $scope.name = $scope.editSupplier.name;
+                $scope.address = $scope.editSupplier.address;
+                $scope.phone = $scope.editSupplier.phone;
+                $scope.email = $scope.editSupplier.email;
+                $scope.fax = $scope.editSupplier.fax;
+            })
+
+            //Save Data da sua
+            $scope.saveDataEdit = function() {
+                var data = $.param({
+                    id: $scope.id,
+                    name: $scope.name,
+                    address: $scope.address,
+                    phone: $scope.phone,
+                    email: $scope.email,
+                    fax: $scope.fax
+                })
+                console.log(data);
+                var config = {
+                    headers: {
+                        'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                    }
+                }
+                $http.post($scope.APP_DOMAIN + 'admin/api/supplier?action=edit', data, config)
+                    .then(function(response) {
+                        console.log(response);
+                        showNotification("success", response.data.message);
+                        window.location.replace($scope.APP_DOMAIN + "admin/supplier");
+                    }, function(error) {
+                        console.log(error.data.message);
+                        showNotification("error", error.data.message);
+                    })
+            }
 
         })
     </script>

@@ -8,11 +8,13 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import servlets.API.APICategoryServlet;
+import servlets.API.APISupplierServlet;
 import servlets.cate_product.AddCategoryServlet;
 import servlets.cate_product.EditCategoryServlet;
 import servlets.cate_product.ManageCategoryProductServlet;
 import servlets.PartialServlet;
 import servlets.supplier.AddSupplierServlet;
+import servlets.supplier.EditSupplierServlet;
 import servlets.supplier.ManageSupplierServlet;
 
 public class Main {
@@ -27,8 +29,10 @@ public class Main {
         context.addServlet(new ServletHolder(new AddSupplierServlet()), "/admin/supplier/add");
 
         context.addServlet(new ServletHolder(new EditCategoryServlet()), "/admin/cate_product/edit");
+        context.addServlet(new ServletHolder(new EditSupplierServlet()), "/admin/supplier/edit");
 
         context.addServlet(new ServletHolder(new APICategoryServlet()), "/admin/api/cate_product");
+        context.addServlet(new ServletHolder(new APISupplierServlet()), "/admin/api/supplier");
 
         context.addServlet(new ServletHolder(new PartialServlet()), "/admin/partital/*");
 
