@@ -8,11 +8,15 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import servlets.API.APICategoryServlet;
+import servlets.API.APIProductServlet;
 import servlets.API.APISupplierServlet;
 import servlets.cate_product.AddCategoryServlet;
 import servlets.cate_product.EditCategoryServlet;
 import servlets.cate_product.ManageCategoryProductServlet;
 import servlets.PartialServlet;
+import servlets.product.AddProductServlet;
+import servlets.product.EditProductServlet;
+import servlets.product.ManageProductServlet;
 import servlets.supplier.AddSupplierServlet;
 import servlets.supplier.EditSupplierServlet;
 import servlets.supplier.ManageSupplierServlet;
@@ -24,15 +28,19 @@ public class Main {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(new ManageCategoryProductServlet()), "/admin/cate_product");
         context.addServlet(new ServletHolder(new ManageSupplierServlet()), "/admin/supplier");
+        context.addServlet(new ServletHolder(new ManageProductServlet()), "/admin/product");
 
         context.addServlet(new ServletHolder(new AddCategoryServlet()), "/admin/cate_product/add");
         context.addServlet(new ServletHolder(new AddSupplierServlet()), "/admin/supplier/add");
+        context.addServlet(new ServletHolder(new AddProductServlet()), "/admin/product/add");
 
         context.addServlet(new ServletHolder(new EditCategoryServlet()), "/admin/cate_product/edit");
         context.addServlet(new ServletHolder(new EditSupplierServlet()), "/admin/supplier/edit");
+        context.addServlet(new ServletHolder(new EditProductServlet()), "/admin/product/edit");
 
         context.addServlet(new ServletHolder(new APICategoryServlet()), "/admin/api/cate_product");
         context.addServlet(new ServletHolder(new APISupplierServlet()), "/admin/api/supplier");
+        context.addServlet(new ServletHolder(new APIProductServlet()), "/admin/api/product");
 
         context.addServlet(new ServletHolder(new PartialServlet()), "/admin/partital/*");
 
