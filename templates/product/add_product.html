@@ -164,11 +164,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         var app = angular.module('myApp', []); //ngPagination
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
             $scope.APP_DOMAIN = "http://localhost:8080/";
-<<<<<<< HEAD
-=======
+
             // console.log($scope.content);
             // console.log($scope.warranty);
->>>>>>> master
             $scope.testthongbao = function() {
                 var data = $.param({
                     category: $scope.category,
@@ -232,11 +230,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     limit: 100
                 },
             }).then(function(response) {
-<<<<<<< HEAD
-                // console.log(response);
-=======
                 console.log(response);
->>>>>>> master
                 $scope.listCategory = response.data.data.listCategory;
             })
         })

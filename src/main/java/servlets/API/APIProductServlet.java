@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.ProductModel;
-import model.SupplierModel;
 import org.apache.commons.lang3.math.NumberUtils;
 
 public class APIProductServlet extends HttpServlet {
@@ -101,7 +100,7 @@ public class APIProductServlet extends HttpServlet {
                 }
                 break;
             }
-<<<<<<< HEAD
+
             case "edit": {
                 int id = NumberUtils.toInt(request.getParameter("id"));
                 int id_cate = NumberUtils.toInt(request.getParameter("category"));
@@ -145,46 +144,7 @@ public class APIProductServlet extends HttpServlet {
                 }
                 break;
             }
-=======
-//            case "edit": {
-//                int id = NumberUtils.toInt(request.getParameter("id"));
-//                String name = request.getParameter("name");
-//                String address = request.getParameter("address");
-//                String phone = request.getParameter("phone");
-//                String email = request.getParameter("email");
-//                String fax = request.getParameter("fax");
-//
-//                Supplier supplierByID = SupplierModel.INSTANCE.getSupplierByID(id);
-//                if (supplierByID.getId() == 0) {
-//                    result.setErrorCode(-1);
-//                    result.setMessage("Thất bại!");
-//                    return;
-//                }
-//
-//                int editSupplier = SupplierModel.INSTANCE.editSupplier(id, name, address, phone, email, fax);
-//                if (editSupplier >= 0) {
-//                    result.setErrorCode(0);
-//                    result.setMessage("Sửa supplier thành công!");
-//                } else {
-//                    result.setErrorCode(-1);
-//                    result.setMessage("Sửa supplier thất bại!");
-//                }
-//                break;
-//            }
 
-//            case "delete": {
-//                int id = NumberUtils.toInt(request.getParameter("id"));
-//                int deleteSUpplier = SupplierModel.INSTANCE.deleteSUpplier(id);
-//                if (deleteSUpplier >= 0) {
-//                    result.setErrorCode(0);
-//                    result.setMessage("Xóa supplier thành công!");
-//                } else {
-//                    result.setErrorCode(-2);
-//                    result.setMessage("Xóa supplier thất bại!");
-//                }
-//                break;
-//            }
->>>>>>> master
             default:
                 throw new AssertionError();
         }

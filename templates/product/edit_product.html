@@ -68,14 +68,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <<<<<<< HEAD
                                                 <option value="0">Choose the Category</option>
                                                 <option ng-repeat="item in listCategory" value="{{item.id}}">{{item.name}}</option>
-                                            </select>
-=======
+                                            </select> =======
                                             <option value="0">Choose the Category</option>
                                             <option value="1">Phụ kiện</option>
                                             <option value="2">PC</option>
                                             <!-- <option ng-repeat="item in listIdParent " value="{{item.id}}">{{item.name}}</option> -->
-                                        </select>
->>>>>>> master
+                                            </select>
+                                            >>>>>>> master
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -124,19 +123,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </div>
                                 <div class="form-group">
                                     <label>Content</label>
-<<<<<<< HEAD
-                                    <textarea ng-model="content" type="text" class="form-control" rows="10" placeholder="Content"></textarea>
+                                    <<<<<<< HEAD <textarea ng-model="content" type="text" class="form-control" rows="10" placeholder="Content">
+                                        </textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Warranty</label>
-                                    <textarea ng-model="warranty" type="text" class="form-control" rows="5" placeholder="Warranty"></textarea>
-=======
+                                    <textarea ng-model="warranty" type="text" class="form-control" rows="5" placeholder="Warranty"></textarea> =======
                                     <textarea type="text" class="form-control" rows="10" placeholder="Content"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Warranty</label>
-                                    <textarea type="text" class="form-control" rows="5" placeholder="Warranty"></textarea>
->>>>>>> master
+                                    <textarea type="text" class="form-control" rows="5" placeholder="Warranty"></textarea> >>>>>>> master
                                 </div>
 
                                 <div class="form-group">
@@ -146,11 +143,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </div>
                                 </div>
                                 <div>
-<<<<<<< HEAD
-                                    <button type="button" ng-click="saveDataEdit()" class="btn btn-primary">Save</button>
-=======
-                                    <button type="button" ng-click="testthongbao()" class="btn btn-primary">Save</button>
->>>>>>> master
+                                    <<<<<<< HEAD <button type="button" ng-click="saveDataEdit()" class="btn btn-primary">Save</button>
+                                        =======
+                                        <button type="button" ng-click="testthongbao()" class="btn btn-primary">Save</button> >>>>>>> master
                                 </div>
                             </div>
                         </form>
@@ -180,7 +175,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
         var app = angular.module('myApp', []); //ngPagination
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
             $scope.APP_DOMAIN = "http://localhost:8080/";
-<<<<<<< HEAD
             //load Supplier
             $http({
                 method: "GET",
@@ -268,9 +262,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         showNotification("error", error.data.message);
                     })
             }
-=======
-            // get idSupplier
->>>>>>> master
+
 
 
         })
