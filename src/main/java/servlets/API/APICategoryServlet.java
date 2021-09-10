@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import common.APIResult;
 import entity.category_product.CategoryProduct;
 import entity.category_product.ListCategoryProduct;
-import helper.HttpHelper;
 import helper.ServletUtil;
 import java.io.IOException;
 import java.util.List;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.CategoryProductModel;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 public class APICategoryServlet extends HttpServlet {

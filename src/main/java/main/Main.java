@@ -7,6 +7,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import servlets.API.APICategoryNews;
 import servlets.API.APICategoryServlet;
 import servlets.API.APIProductServlet;
 import servlets.API.APISupplierServlet;
@@ -14,6 +15,8 @@ import servlets.cate_product.AddCategoryServlet;
 import servlets.cate_product.EditCategoryServlet;
 import servlets.cate_product.ManageCategoryProductServlet;
 import servlets.PartialServlet;
+import servlets.cate_news.AddCategoryNewsServlet;
+import servlets.cate_news.EditCategoryNewsServlet;
 import servlets.cate_news.ManageCategoryNewsServlet;
 import servlets.product.AddProductServlet;
 import servlets.product.EditProductServlet;
@@ -35,14 +38,17 @@ public class Main {
         context.addServlet(new ServletHolder(new AddCategoryServlet()), "/admin/cate_product/add");
         context.addServlet(new ServletHolder(new AddSupplierServlet()), "/admin/supplier/add");
         context.addServlet(new ServletHolder(new AddProductServlet()), "/admin/product/add");
+        context.addServlet(new ServletHolder(new AddCategoryNewsServlet()), "/admin/cate_news/add");
 
         context.addServlet(new ServletHolder(new EditCategoryServlet()), "/admin/cate_product/edit");
         context.addServlet(new ServletHolder(new EditSupplierServlet()), "/admin/supplier/edit");
         context.addServlet(new ServletHolder(new EditProductServlet()), "/admin/product/edit");
+        context.addServlet(new ServletHolder(new EditCategoryNewsServlet()), "/admin/cate_news/edit");
 
         context.addServlet(new ServletHolder(new APICategoryServlet()), "/admin/api/cate_product");
         context.addServlet(new ServletHolder(new APISupplierServlet()), "/admin/api/supplier");
         context.addServlet(new ServletHolder(new APIProductServlet()), "/admin/api/product");
+        context.addServlet(new ServletHolder(new APICategoryNews()), "/admin/api/cate_news");
 
         context.addServlet(new ServletHolder(new PartialServlet()), "/admin/partital/*");
 
