@@ -101,44 +101,49 @@ public class APIProductServlet extends HttpServlet {
                 }
                 break;
             }
-//            case "edit": {
-//                int id = NumberUtils.toInt(request.getParameter("id"));
-//                String name = request.getParameter("name");
-//                String address = request.getParameter("address");
-//                String phone = request.getParameter("phone");
-//                String email = request.getParameter("email");
-//                String fax = request.getParameter("fax");
-//
-//                Supplier supplierByID = SupplierModel.INSTANCE.getSupplierByID(id);
-//                if (supplierByID.getId() == 0) {
-//                    result.setErrorCode(-1);
-//                    result.setMessage("Thất bại!");
-//                    return;
-//                }
-//
-//                int editSupplier = SupplierModel.INSTANCE.editSupplier(id, name, address, phone, email, fax);
-//                if (editSupplier >= 0) {
-//                    result.setErrorCode(0);
-//                    result.setMessage("Sửa supplier thành công!");
-//                } else {
-//                    result.setErrorCode(-1);
-//                    result.setMessage("Sửa supplier thất bại!");
-//                }
-//                break;
-//            }
+            case "edit": {
+                int id = NumberUtils.toInt(request.getParameter("id"));
+                int id_cate = NumberUtils.toInt(request.getParameter("category"));
+                int id_supplier = NumberUtils.toInt(request.getParameter("supplier"));
+                String name = request.getParameter("name");
+                int price = NumberUtils.toInt(request.getParameter("price"));
+                int price_sale = NumberUtils.toInt(request.getParameter("price_sale"));
+                int quantity = NumberUtils.toInt(request.getParameter("quantity"));
+                String image_url = request.getParameter("image_url");
+                String content = request.getParameter("content");
+                String warranty = request.getParameter("warranty");
+                String hot = request.getParameter("hot");
 
-//            case "delete": {
-//                int id = NumberUtils.toInt(request.getParameter("id"));
-//                int deleteSUpplier = SupplierModel.INSTANCE.deleteSUpplier(id);
-//                if (deleteSUpplier >= 0) {
-//                    result.setErrorCode(0);
-//                    result.setMessage("Xóa supplier thành công!");
-//                } else {
-//                    result.setErrorCode(-2);
-//                    result.setMessage("Xóa supplier thất bại!");
-//                }
-//                break;
-//            }
+                Product productByID = ProductModel.INSTANCE.getProductByID(id);
+                if (productByID.getId() == 0) {
+                    result.setErrorCode(-1);
+                    result.setMessage("Thất bại!");
+                    return;
+                }
+
+                int editProduct = ProductModel.INSTANCE.editProduct(id, id_cate, id_supplier, name, price, price_sale, quantity, image_url, content, warranty, hot);
+                if (editProduct >= 0) {
+                    result.setErrorCode(0);
+                    result.setMessage("Sửa product thành công!");
+                } else {
+                    result.setErrorCode(-1);
+                    result.setMessage("Sửa product thất bại!");
+                }
+                break;
+            }
+
+            case "delete": {
+                int id = NumberUtils.toInt(request.getParameter("id"));
+                int deleteProduct = ProductModel.INSTANCE.deleteProduct(id);
+                if (deleteProduct >= 0) {
+                    result.setErrorCode(0);
+                    result.setMessage("Xóa product thành công!");
+                } else {
+                    result.setErrorCode(-2);
+                    result.setMessage("Xóa product thất bại!");
+                }
+                break;
+            }
             default:
                 throw new AssertionError();
         }
