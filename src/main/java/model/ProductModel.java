@@ -133,7 +133,10 @@ public class ProductModel {
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
+<<<<<<< HEAD
                 result.setId(rs.getInt("id"));
+=======
+>>>>>>> master
                 result.setId_cate(rs.getInt("id_cate"));
                 result.setId_supplier(rs.getInt("id_supplier"));
                 result.setName(rs.getString("name"));
@@ -187,6 +190,7 @@ public class ProductModel {
 
         return ErrorCode.FAIL.getValue();
     }
+<<<<<<< HEAD
 
     public int editProduct(int id, int id_cate, int id_supplier, String name, int price,
             int price_sale, int quantity, String image_url, String content, String warranty, String hot) {
@@ -247,4 +251,6 @@ public class ProductModel {
         }
         return ErrorCode.FAIL.getValue();
     }
+=======
+>>>>>>> master
 }

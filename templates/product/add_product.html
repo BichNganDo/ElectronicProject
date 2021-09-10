@@ -67,6 +67,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <select ng-model="category" ng-init="category='0'" class="form-control">
                                             <option value="0">Choose the Category</option>
                                             <option ng-repeat="item in listCategory" value="{{item.id}}">{{item.name}}</option>
+<<<<<<< HEAD
+=======
+                                            <!-- <option value="2">PC</option> -->
+                                            <!-- <option ng-repeat="item in listIdParent " value="{{item.id}}">{{item.name}}</option> -->
+>>>>>>> master
                                         </select>
                                         </div>
                                     </div>
@@ -76,6 +81,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <select ng-model="supplier" ng-init="supplier='0'" class="form-control">
                                                 <option value="0">Choose the Supplier</option>
                                                 <option ng-repeat="item in listSupplier" value="{{item.id}}">{{item.name}}</option>
+<<<<<<< HEAD
+=======
+                                                <!-- <option value="2">Công ty TNHH Ngân</option> -->
+                                                <!-- <option ng-repeat="item in listIdParent " value="{{item.id}}">{{item.name}}</option> -->
+>>>>>>> master
                                             </select>
                                         </div>
                                     </div>
@@ -154,6 +164,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
         var app = angular.module('myApp', []); //ngPagination
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
             $scope.APP_DOMAIN = "http://localhost:8080/";
+<<<<<<< HEAD
+=======
+            // console.log($scope.content);
+            // console.log($scope.warranty);
+>>>>>>> master
             $scope.testthongbao = function() {
                 var data = $.param({
                     category: $scope.category,
@@ -217,7 +232,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     limit: 100
                 },
             }).then(function(response) {
+<<<<<<< HEAD
                 // console.log(response);
+=======
+                console.log(response);
+>>>>>>> master
                 $scope.listCategory = response.data.data.listCategory;
             })
         })

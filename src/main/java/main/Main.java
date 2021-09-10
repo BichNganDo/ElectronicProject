@@ -14,7 +14,10 @@ import servlets.cate_product.AddCategoryServlet;
 import servlets.cate_product.EditCategoryServlet;
 import servlets.cate_product.ManageCategoryProductServlet;
 import servlets.PartialServlet;
+<<<<<<< HEAD
 import servlets.cate_news.ManageCategoryNewsServlet;
+=======
+>>>>>>> master
 import servlets.product.AddProductServlet;
 import servlets.product.EditProductServlet;
 import servlets.product.ManageProductServlet;
@@ -30,7 +33,10 @@ public class Main {
         context.addServlet(new ServletHolder(new ManageCategoryProductServlet()), "/admin/cate_product");
         context.addServlet(new ServletHolder(new ManageSupplierServlet()), "/admin/supplier");
         context.addServlet(new ServletHolder(new ManageProductServlet()), "/admin/product");
+<<<<<<< HEAD
         context.addServlet(new ServletHolder(new ManageCategoryNewsServlet()), "/admin/cate_news");
+=======
+>>>>>>> master
 
         context.addServlet(new ServletHolder(new AddCategoryServlet()), "/admin/cate_product/add");
         context.addServlet(new ServletHolder(new AddSupplierServlet()), "/admin/supplier/add");
