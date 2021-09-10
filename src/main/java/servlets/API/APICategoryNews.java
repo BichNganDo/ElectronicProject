@@ -33,7 +33,7 @@ public class APICategoryNews extends HttpServlet {
 
                 int offset = (pageIndex - 1) * limit;
                 List<CategoryNews> listCateNews = CategoryNewsModel.INSTANCE.getSliceNews(offset, limit, searchQuery, searchStatus);
-                int totalNews = CategoryNewsModel.INSTANCE.getTotalNews();
+                int totalNews = CategoryNewsModel.INSTANCE.getTotalNews(searchQuery, searchStatus);
 
                 ListCategoryNews listCategoryNews = new ListCategoryNews();
                 listCategoryNews.setTotal(totalNews);
@@ -84,7 +84,7 @@ public class APICategoryNews extends HttpServlet {
                 int orders = NumberUtils.toInt(request.getParameter("orders"));
                 int status = NumberUtils.toInt(request.getParameter("status"));
 
-                int addNews = CategoryNewsModel.INSTANCE.addNews(name, orders, status);
+                int addNews = CategoryNewsModel.INSTANCE.addCategoryNews(name, orders, status);
 
                 if (addNews >= 0) {
                     result.setErrorCode(0);
@@ -95,32 +95,31 @@ public class APICategoryNews extends HttpServlet {
                 }
                 break;
             }
-//            case "edit": {
-//                int id = NumberUtils.toInt(request.getParameter("id"));
-//                String name = request.getParameter("name");
-//                int id_parent = NumberUtils.toInt(request.getParameter("id_parent"));
-//                int orders = NumberUtils.toInt(request.getParameter("orders"));
-//                int status = NumberUtils.toInt(request.getParameter("status"));
-//
-//                CategoryProduct categoryByID = CategoryProductModel.INSTANCE.getCategoryByID(id);
-//                if (categoryByID.getId() == 0) {
-//                    result.setErrorCode(-1);
-//                    result.setMessage("Thất bại!");
-//                    return;
-//                }
-//
-//                int editCategory = CategoryProductModel.INSTANCE.editCategory(id, name, id_parent, orders, status);
-//
-//                if (editCategory >= 0) {
-//                    result.setErrorCode(0);
-//                    result.setMessage("Sửa Category thành công!");
-//                } else {
-//                    result.setErrorCode(-1);
-//                    result.setMessage("Sửa Category thất bại!");
-//                }
-//                break;
-//            }
-//
+            case "edit": {
+                int id = NumberUtils.toInt(request.getParameter("id"));
+                String name = request.getParameter("name");
+                int orders = NumberUtils.toInt(request.getParameter("orders"));
+                int status = NumberUtils.toInt(request.getParameter("status"));
+
+                CategoryNews newsByID = CategoryNewsModel.INSTANCE.getNewsByID(id);
+                if (newsByID.getId() == 0) {
+                    result.setErrorCode(-1);
+                    result.setMessage("Thất bại!");
+                    return;
+                }
+
+                int editCategoryNews = CategoryNewsModel.INSTANCE.editCategoryNews(id, name, orders, status);
+
+                if (editCategoryNews >= 0) {
+                    result.setErrorCode(0);
+                    result.setMessage("Sửa category news thành công!");
+                } else {
+                    result.setErrorCode(-1);
+                    result.setMessage("Sửa category news thất bại!");
+                }
+                break;
+            }
+
 //            case "delete": {
 //                int id = NumberUtils.toInt(request.getParameter("id"));
 //                int deleteCategory = CategoryProductModel.INSTANCE.deleteCategory(id);

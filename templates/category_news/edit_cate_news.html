@@ -107,7 +107,50 @@ scratch. This page gets rid of all links and provides the needed markup only.
         var app = angular.module('myApp', ['ngPagination']); //ngPagination
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
             $scope.APP_DOMAIN = "http://localhost:8080/";
+            //getIdNews
+            var id_news = getUrlParameter('id');
+            $http({
+                method: "GET",
+                url: $scope.APP_DOMAIN + "admin/api/cate_news",
+                params: {
+                    action: 'getNewsById',
+                    id_news: id_news
 
+                },
+            }).then(function(response) {
+                $scope.editNews = response.data.data;
+                console.log($scope.editNews);
+                $scope.id = $scope.editNews.id;
+                $scope.name = $scope.editNews.name;
+                $scope.orders = $scope.editNews.orders;
+                $scope.status = $scope.editNews.status + "";
+            })
+
+            $scope.saveDataEdit = function() { //item hay biến khác cũng được, không cần phải trùng tên với bên user
+                //lấy dữ liệu về
+                var data = $.param({
+                    id: $scope.id,
+                    name: $scope.name,
+                    orders: $scope.orders,
+                    status: $scope.status
+                });
+
+                console.log(data);
+                var config = {
+                    headers: {
+                        'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                    }
+                }
+                $http.post($scope.APP_DOMAIN + 'admin/api/cate_news?action=edit', data, config)
+                    .then(function(response) {
+                        console.log(response);
+                        showNotification("success", response.data.message);
+                        window.location.replace($scope.APP_DOMAIN + "admin/cate_news");
+                    }, function(error) {
+                        console.log(error.data.message);
+                        showNotification("error", error.data.message);
+                    })
+            }
 
 
         })

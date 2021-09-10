@@ -198,8 +198,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     },
                 }).then(function(response) {
                     // console.log(response);
-                    $scope.listCategoryNews = response.data.data.listCategoryNews;
-                    $scope.totalNews = response.data.data.total;
+                    if (response.data.errorCode >= 0 && response.data.data) {
+                        $scope.listCategoryNews = response.data.data.listCategoryNews;
+                        $scope.totalNews = response.data.data.total;
+                    } else {
+                        $scope.listCategoryNews = [];
+                        $scope.totalNews = 0;
+                    }
                 })
             }
             $scope.pageChanged = function(pageIndex) {

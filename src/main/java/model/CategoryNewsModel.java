@@ -75,7 +75,7 @@ public class CategoryNewsModel {
         return resultListNews;
     }
 
-    public int getTotalNews() {
+    public int getTotalNews(String searchQuery, int searchStatus) {
         int total = 0;
         Connection conn = null;
         try {
@@ -83,7 +83,14 @@ public class CategoryNewsModel {
             if (null == conn) {
                 return total;
             }
-            String sql = "SELECT COUNT(id) AS total FROM category_news";
+            String sql = "SELECT COUNT(id) AS total FROM category_news WHERE 1=1";
+            if (StringUtils.isNotEmpty(searchQuery)) {
+                sql = sql + " AND name LIKE '%" + searchQuery + "%' ";
+            }
+
+            if (searchStatus > 0) {
+                sql = sql + " AND status = " + searchStatus;
+            }
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
@@ -139,7 +146,7 @@ public class CategoryNewsModel {
         return result;
     }
 
-    public int addNews(String name, int orders, int status) {
+    public int addCategoryNews(String name, int orders, int status) {
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
@@ -164,34 +171,33 @@ public class CategoryNewsModel {
         return ErrorCode.FAIL.getValue();
     }
 
-//    public int editCategory(int id, String name, int id_parent, int orders, int status) {
-//        Connection conn = null;
-//        try {
-//            conn = dbClient.getDbConnection();
-//            if (null == conn) {
-//                return ErrorCode.CONNECTION_FAIL.getValue();
-//            }
-//            
-//            String sql = "UPDATE `" + NAMETABLE + "` "
-//                    + "SET `name`='" + name + "' , "
-//                    + "`id_parent`='" + id_parent + "', "
-//                    + "`orders`='" + orders + "', "
-//                    + "`status`='" + status + "', "
-//                    + "`updated_date`='" + System.currentTimeMillis() + "'"
-//                    + "WHERE `id`='" + id + "'";
-//            
-//            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-//            int rs = preparedStatement.executeUpdate();
-//            
-//            return rs;
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        } finally {
-//            dbClient.releaseDbConnection(conn);
-//        }
-//        return ErrorCode.FAIL.getValue();
-//    }
-//    
+    public int editCategoryNews(int id, String name, int orders, int status) {
+        Connection conn = null;
+        try {
+            conn = dbClient.getDbConnection();
+            if (null == conn) {
+                return ErrorCode.CONNECTION_FAIL.getValue();
+            }
+
+            String sql = "UPDATE `" + NAMETABLE + "` "
+                    + "SET `name`='" + name + "' , "
+                    + "`orders`='" + orders + "', "
+                    + "`status`='" + status + "', "
+                    + "`updated_date`='" + System.currentTimeMillis() + "'"
+                    + "WHERE `id`='" + id + "'";
+
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            int rs = preparedStatement.executeUpdate();
+
+            return rs;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dbClient.releaseDbConnection(conn);
+        }
+        return ErrorCode.FAIL.getValue();
+    }
+
 //    public int deleteCategory(int id) {
 //        Connection conn = null;
 //        try {
