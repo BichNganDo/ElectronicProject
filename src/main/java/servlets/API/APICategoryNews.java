@@ -120,18 +120,18 @@ public class APICategoryNews extends HttpServlet {
                 break;
             }
 
-//            case "delete": {
-//                int id = NumberUtils.toInt(request.getParameter("id"));
-//                int deleteCategory = CategoryProductModel.INSTANCE.deleteCategory(id);
-//                if (deleteCategory >= 0) {
-//                    result.setErrorCode(0);
-//                    result.setMessage("Xóa Category thành công!");
-//                } else {
-//                    result.setErrorCode(-2);
-//                    result.setMessage("Xóa Category thất bại!");
-//                }
-//                break;
-//            }
+            case "delete": {
+                int id = NumberUtils.toInt(request.getParameter("id"));
+                int deleteCategoryNews = CategoryNewsModel.INSTANCE.deleteCategoryNews(id);
+                if (deleteCategoryNews >= 0) {
+                    result.setErrorCode(0);
+                    result.setMessage("Xóa category news thành công!");
+                } else {
+                    result.setErrorCode(-2);
+                    result.setMessage("Xóa category news thất bại!");
+                }
+                break;
+            }
             default:
                 throw new AssertionError();
         }

@@ -198,29 +198,29 @@ public class CategoryNewsModel {
         return ErrorCode.FAIL.getValue();
     }
 
-//    public int deleteCategory(int id) {
-//        Connection conn = null;
-//        try {
-//            conn = dbClient.getDbConnection();
-//            if (null == conn) {
-//                return ErrorCode.CONNECTION_FAIL.getValue();
-//            }
-//            
-//            CategoryProduct categoryByID = getCategoryByID(id);
-//            if (categoryByID.getId() == 0) {
-//                return ErrorCode.NOT_EXIST.getValue();
-//            }
-//            String sql = "DELETE FROM `" + NAMETABLE + "` WHERE `id`='" + id + "'";
-//            
-//            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-//            int rs = preparedStatement.executeUpdate();
-//            
-//            return rs;
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        } finally {
-//            dbClient.releaseDbConnection(conn);
-//        }
-//        return ErrorCode.FAIL.getValue();
-//    }
+    public int deleteCategoryNews(int id) {
+        Connection conn = null;
+        try {
+            conn = dbClient.getDbConnection();
+            if (null == conn) {
+                return ErrorCode.CONNECTION_FAIL.getValue();
+            }
+
+            CategoryNews newsByID = getNewsByID(id);
+            if (newsByID.getId() == 0) {
+                return ErrorCode.NOT_EXIST.getValue();
+            }
+            String sql = "DELETE FROM `" + NAMETABLE + "` WHERE `id`='" + id + "'";
+
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            int rs = preparedStatement.executeUpdate();
+
+            return rs;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dbClient.releaseDbConnection(conn);
+        }
+        return ErrorCode.FAIL.getValue();
+    }
 }
