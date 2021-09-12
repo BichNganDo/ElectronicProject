@@ -8,7 +8,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>News</title>
+    <title>Slides</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="${static_domain}/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="${static_domain}/dist/css/adminlte.min.css">
@@ -41,12 +41,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Manage News</h1>
+                            <h1 class="m-0">Manage Slides</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Dashbroad</a></li>
-                                <li class="breadcrumb-item active">Manage News </li>
+                                <li class="breadcrumb-item active">Manage Slides </li>
                             </ol>
                         </div>
                     </div>
@@ -70,8 +70,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="input-group">
-                                        <select ng-model="search_categoryNews" ng-change="getListNews()" ng-init="search_categoryNews='0'" class="form-control">
-                                        <option value="0">Filter Category News</option>
+                                        <select ng-model="search_status" ng-change="getListNews()" ng-init="search_status='0'" class="form-control">
+                                        <option value="0">Filter Status</option>
                                         <option ng-repeat="item in listCategoryNews" value="{{item.id}}">{{item.name}}</option>
                                     </select>
                                     </div>
@@ -79,8 +79,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
                                 <div class="col-sm-3 text-right">
-                                    <a class="btn btn-primary" href="/admin/news/add">
-                                        <i class="fas fa-plus"></i> Add News
+                                    <a class="btn btn-primary" href="/admin/slides/add">
+                                        <i class="fas fa-plus"></i> Add Slides
                                     </a>
                                 </div>
                             </div>

@@ -127,7 +127,6 @@ public class NewsModel {
             if (rs.next()) {
                 result.setId(rs.getInt("id"));
                 result.setIdCategoryNews(rs.getInt("id_cate_news"));
-                result.setCategoryNews(rs.getString("categoryNews"));
                 result.setTitle(rs.getString("title"));
                 result.setInfo(rs.getString("info"));
                 result.setContent(rs.getString("content"));
@@ -180,63 +179,58 @@ public class NewsModel {
         return ErrorCode.FAIL.getValue();
     }
 
-//    public int editProduct(int id, int id_cate, int id_supplier, String name, int price,
-//            int price_sale, int quantity, String image_url, String content, String warranty, String hot) {
-//        Connection conn = null;
-//        try {
-//            conn = dbClient.getDbConnection();
-//            if (null == conn) {
-//                return ErrorCode.CONNECTION_FAIL.getValue();
-//            }
-//
-//            String sql = "UPDATE `" + NAMETABLE + "` "
-//                    + "SET `id_cate`='" + id_cate + "' , "
-//                    + "`id_supplier`='" + id_supplier + "', "
-//                    + "`name`='" + name + "', "
-//                    + "`price`='" + price + "', "
-//                    + "`price_sale`='" + price_sale + "', "
-//                    + "`quantity`='" + quantity + "', "
-//                    + "`image_url`='" + image_url + "', "
-//                    + "`warranty`='" + warranty + "', "
-//                    + "`hot`='" + hot + "', "
-//                    + "`content`='" + content + "'"
-//                    + "WHERE `id`='" + id + "'";
-//
-//            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-//            int rs = preparedStatement.executeUpdate();
-//
-//            return rs;
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        } finally {
-//            dbClient.releaseDbConnection(conn);
-//        }
-//        return ErrorCode.FAIL.getValue();
-//    }
-//
-//    public int deleteProduct(int id) {
-//        Connection conn = null;
-//        try {
-//            conn = dbClient.getDbConnection();
-//            if (null == conn) {
-//                return ErrorCode.CONNECTION_FAIL.getValue();
-//            }
-//
-//            Product productByID = getProductByID(id);
-//            if (productByID.getId() == 0) {
-//                return ErrorCode.NOT_EXIST.getValue();
-//            }
-//            String sql = "DELETE FROM `" + NAMETABLE + "` WHERE `id`='" + id + "'";
-//
-//            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-//            int rs = preparedStatement.executeUpdate();
-//
-//            return rs;
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        } finally {
-//            dbClient.releaseDbConnection(conn);
-//        }
-//        return ErrorCode.FAIL.getValue();
-//    }
+    public int editNews(int id, int id_cate_news, String title, String info, String content, String image) {
+        Connection conn = null;
+        try {
+            conn = dbClient.getDbConnection();
+            if (null == conn) {
+                return ErrorCode.CONNECTION_FAIL.getValue();
+            }
+
+            String sql = "UPDATE `" + NAMETABLE + "` "
+                    + " SET `id_cate_news`='" + id_cate_news + "', "
+                    + "`title`='" + title + "', "
+                    + "`info`='" + info + "', "
+                    + "`content`='" + content + "', "
+                    + "`image`='" + image + "', "
+                    + "`updated_date`='" + System.currentTimeMillis() + "' "
+                    + "WHERE `id`='" + id + "'";
+
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            int rs = preparedStatement.executeUpdate();
+
+            return rs;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dbClient.releaseDbConnection(conn);
+        }
+        return ErrorCode.FAIL.getValue();
+    }
+
+    public int deleteNews(int id) {
+        Connection conn = null;
+        try {
+            conn = dbClient.getDbConnection();
+            if (null == conn) {
+                return ErrorCode.CONNECTION_FAIL.getValue();
+            }
+
+            News newsByID = getNewsByID(id);
+            if (newsByID.getId() == 0) {
+                return ErrorCode.NOT_EXIST.getValue();
+            }
+            String sql = "DELETE FROM `" + NAMETABLE + "` WHERE `id`='" + id + "'";
+
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            int rs = preparedStatement.executeUpdate();
+
+            return rs;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dbClient.releaseDbConnection(conn);
+        }
+        return ErrorCode.FAIL.getValue();
+    }
 }
