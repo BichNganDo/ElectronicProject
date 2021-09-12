@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import common.APIResult;
 import entity.product.ListProduct;
 import entity.product.Product;
-import entity.supplier.ListSupplier;
-import entity.supplier.Supplier;
 import helper.ServletUtil;
 import java.io.IOException;
 import java.util.List;

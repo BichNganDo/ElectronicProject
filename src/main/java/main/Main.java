@@ -9,6 +9,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import servlets.API.APICategoryNews;
 import servlets.API.APICategoryServlet;
+import servlets.API.APINewsServlet;
 import servlets.API.APIProductServlet;
 import servlets.API.APISupplierServlet;
 import servlets.cate_product.AddCategoryServlet;
@@ -18,6 +19,9 @@ import servlets.PartialServlet;
 import servlets.cate_news.AddCategoryNewsServlet;
 import servlets.cate_news.EditCategoryNewsServlet;
 import servlets.cate_news.ManageCategoryNewsServlet;
+import servlets.news.AddNewsServlet;
+import servlets.news.EditNewsServlet;
+import servlets.news.ManageNewsServlet;
 import servlets.product.AddProductServlet;
 import servlets.product.EditProductServlet;
 import servlets.product.ManageProductServlet;
@@ -34,21 +38,25 @@ public class Main {
         context.addServlet(new ServletHolder(new ManageSupplierServlet()), "/admin/supplier");
         context.addServlet(new ServletHolder(new ManageProductServlet()), "/admin/product");
         context.addServlet(new ServletHolder(new ManageCategoryNewsServlet()), "/admin/cate_news");
+        context.addServlet(new ServletHolder(new ManageNewsServlet()), "/admin/news");
 
         context.addServlet(new ServletHolder(new AddCategoryServlet()), "/admin/cate_product/add");
         context.addServlet(new ServletHolder(new AddSupplierServlet()), "/admin/supplier/add");
         context.addServlet(new ServletHolder(new AddProductServlet()), "/admin/product/add");
         context.addServlet(new ServletHolder(new AddCategoryNewsServlet()), "/admin/cate_news/add");
+        context.addServlet(new ServletHolder(new AddNewsServlet()), "/admin/news/add");
 
         context.addServlet(new ServletHolder(new EditCategoryServlet()), "/admin/cate_product/edit");
         context.addServlet(new ServletHolder(new EditSupplierServlet()), "/admin/supplier/edit");
         context.addServlet(new ServletHolder(new EditProductServlet()), "/admin/product/edit");
         context.addServlet(new ServletHolder(new EditCategoryNewsServlet()), "/admin/cate_news/edit");
+        context.addServlet(new ServletHolder(new EditNewsServlet()), "/admin/news/edit");
 
         context.addServlet(new ServletHolder(new APICategoryServlet()), "/admin/api/cate_product");
         context.addServlet(new ServletHolder(new APISupplierServlet()), "/admin/api/supplier");
         context.addServlet(new ServletHolder(new APIProductServlet()), "/admin/api/product");
         context.addServlet(new ServletHolder(new APICategoryNews()), "/admin/api/cate_news");
+        context.addServlet(new ServletHolder(new APINewsServlet()), "/admin/api/news");
 
         context.addServlet(new ServletHolder(new PartialServlet()), "/admin/partital/*");
 
