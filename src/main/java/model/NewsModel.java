@@ -29,16 +29,16 @@ public class NewsModel {
                 return resultListNews;
 
             }
-            String sql = "SELECT news.*, category_news.name AS `categoryNews`, "
+            String sql = "SELECT news.*, category_news.name AS `categoryNews` "
                     + "FROM news "
                     + "INNER JOIN category_news ON news.id_cate_news= category_news.id  WHERE 1=1";
 
             if (StringUtils.isNotEmpty(searchQuery)) {
-                sql = sql + " AND product.name LIKE '%" + searchQuery + "%' ";
+                sql = sql + " AND news.title LIKE '%" + searchQuery + "%' ";
             }
 
             if (searchCategoryNews > 0) {
-                sql = sql + " AND product.id_cate = " + searchCategoryNews;
+                sql = sql + " AND news.id_cate_news = " + searchCategoryNews;
             }
 
             sql = sql + " LIMIT " + limit + " OFFSET " + offset;
@@ -89,10 +89,11 @@ public class NewsModel {
             }
             String sql = "SELECT COUNT(id) AS total FROM `" + NAMETABLE + "` WHERE 1 = 1";
             if (StringUtils.isNotEmpty(searchQuery)) {
-                sql = sql + " AND name LIKE '%" + searchQuery + "%' ";
+                sql = sql + " AND news.title LIKE '%" + searchQuery + "%' ";
             }
+
             if (searchCategoryNews > 0) {
-                sql = sql + " AND product.id_cate = " + searchCategoryNews;
+                sql = sql + " AND news.id_cate_news = " + searchCategoryNews;
             }
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
