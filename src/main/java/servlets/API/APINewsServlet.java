@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import common.APIResult;
 import entity.news.ListNews;
 import entity.news.News;
-import entity.product.ListProduct;
-import entity.product.Product;
 import helper.ServletUtil;
 import java.io.IOException;
 import java.util.List;
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.NewsModel;
-import model.ProductModel;
 import org.apache.commons.lang3.math.NumberUtils;
 
 public class APINewsServlet extends HttpServlet {
@@ -85,7 +82,7 @@ public class APINewsServlet extends HttpServlet {
                 String content = request.getParameter("content");
                 String image = request.getParameter("image");
 
-                int addNews = NewsModel.INSTANCE.addNews(id_categoryNews, title, info, content, image, content, content);
+                int addNews = NewsModel.INSTANCE.addNews(id_categoryNews, title, info, content, image);
                 if (addNews >= 0) {
                     result.setErrorCode(0);
                     result.setMessage("Thêm news thành công!");

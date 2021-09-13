@@ -2,7 +2,6 @@ package model;
 
 import client.MysqlClient;
 import common.ErrorCode;
-import entity.category_product.CategoryProduct;
 import entity.supplier.Supplier;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,18 +28,28 @@ public class SupplierModel {
                 return resultListSupplier;
 
             }
+
             String sql = "SELECT * FROM `" + NAMETABLE
                     + "` WHERE 1 = 1";
 
             if (StringUtils.isNotEmpty(searchQuery)) {
-                sql = sql + " AND name LIKE '%" + searchQuery + "%' ";
-                sql = sql + " OR phone LIKE '%" + searchQuery + "%' ";
-                sql = sql + " OR email LIKE '%" + searchQuery + "%' ";
-            }
-            sql = sql + " LIMIT " + limit + " OFFSET " + offset;
+                sql = sql + " AND name LIKE ? ";
+                sql = sql + " OR phone LIKE ? ";
+                sql = sql + " OR email LIKE ? ";
 
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            ResultSet rs = preparedStatement.executeQuery();
+            }
+            sql = sql + " LIMIT ? OFFSET ? ";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            int param = 1;
+
+            if (StringUtils.isNotEmpty(searchQuery)) {
+                ps.setString(param++, "%" + searchQuery + "%");
+                ps.setString(param++, "%" + searchQuery + "%");
+                ps.setString(param++, "%" + searchQuery + "%");
+            }
+            ps.setInt(param++, limit);
+            ps.setInt(param++, offset);
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 Supplier supplier = new Supplier();
@@ -82,14 +91,23 @@ public class SupplierModel {
             if (null == conn) {
                 return total;
             }
+
             String sql = "SELECT COUNT(id) AS total FROM `" + NAMETABLE + "` WHERE 1 = 1";
             if (StringUtils.isNotEmpty(searchQuery)) {
-                sql = sql + " AND name LIKE '%" + searchQuery + "%' ";
-                sql = sql + " OR phone LIKE '%" + searchQuery + "%' ";
-                sql = sql + " OR email LIKE '%" + searchQuery + "%' ";
+                sql = sql + " AND name LIKE ? ";
+                sql = sql + " OR phone LIKE ? ";
+                sql = sql + " OR email LIKE ? ";
             }
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            ResultSet rs = preparedStatement.executeQuery();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            int param = 1;
+
+            if (StringUtils.isNotEmpty(searchQuery)) {
+                ps.setString(param++, "%" + searchQuery + "%");
+                ps.setString(param++, "%" + searchQuery + "%");
+                ps.setString(param++, "%" + searchQuery + "%");
+            }
+
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 total = rs.getInt("total");
@@ -111,10 +129,10 @@ public class SupplierModel {
             if (null == conn) {
                 return result;
             }
-            String sql = "SELECT * FROM `" + NAMETABLE + "` WHERE `id`='" + id + "'";
+            PreparedStatement getSupplierByIdStmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` WHERE id = ? ");
+            getSupplierByIdStmt.setInt(1, id);
 
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            ResultSet rs = preparedStatement.executeQuery();
+            ResultSet rs = getSupplierByIdStmt.executeQuery();
 
             if (rs.next()) {
                 result.setId(rs.getInt("id"));
@@ -151,13 +169,18 @@ public class SupplierModel {
             if (null == conn) {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
-            String sql = "INSERT INTO `" + NAMETABLE + "`"
-                    + "(`name`, `address`, `phone`, `email`, `fax`, `created_date`, `updated_date`) "
-                    + "VALUES "
-                    + "('" + name + "', '" + address + "','" + phone + "', '" + email + "', '" + fax + "', '" + System.currentTimeMillis() + "', '" + System.currentTimeMillis() + "')";
 
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            int rs = preparedStatement.executeUpdate();
+            PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (name, address, phone, email, fax, created_date, updated_date) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+            addStmt.setString(1, name);
+            addStmt.setString(2, address);
+            addStmt.setString(3, phone);
+            addStmt.setString(4, email);
+            addStmt.setString(5, fax);
+            addStmt.setString(6, System.currentTimeMillis() + "");
+            addStmt.setString(7, System.currentTimeMillis() + "");
+
+            int rs = addStmt.executeUpdate();
 
             return rs;
         } catch (Exception e) {
@@ -177,17 +200,16 @@ public class SupplierModel {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
 
-            String sql = "UPDATE `" + NAMETABLE + "` "
-                    + "SET `name`='" + name + "' , "
-                    + "`address`='" + address + "', "
-                    + "`phone`='" + phone + "', "
-                    + "`email`='" + email + "', "
-                    + "`fax`='" + fax + "', "
-                    + "`updated_date`='" + System.currentTimeMillis() + "'"
-                    + "WHERE `id`='" + id + "'";
-
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            int rs = preparedStatement.executeUpdate();
+            PreparedStatement editStmt = conn.prepareStatement("UPDATE `" + NAMETABLE + "` SET name = ?, address = ?, phone = ?, "
+                    + "email = ?, fax = ?, updated_date = ? WHERE id = ? ");
+            editStmt.setString(1, name);
+            editStmt.setString(2, address);
+            editStmt.setString(3, phone);
+            editStmt.setString(4, email);
+            editStmt.setString(5, fax);
+            editStmt.setString(6, System.currentTimeMillis() + "");
+            editStmt.setInt(7, id);
+            int rs = editStmt.executeUpdate();
 
             return rs;
         } catch (Exception e) {
@@ -210,10 +232,9 @@ public class SupplierModel {
             if (supplierByID.getId() == 0) {
                 return ErrorCode.NOT_EXIST.getValue();
             }
-            String sql = "DELETE FROM `" + NAMETABLE + "` WHERE `id`='" + id + "'";
-
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            int rs = preparedStatement.executeUpdate();
+            PreparedStatement deleteStmt = conn.prepareStatement("DELETE FROM `" + NAMETABLE + "` WHERE id = ?");
+            deleteStmt.setInt(1, id);
+            int rs = deleteStmt.executeUpdate();
 
             return rs;
         } catch (Exception e) {

@@ -30,7 +30,7 @@ public class APICategoryServlet extends HttpServlet {
 
                 int offset = (pageIndex - 1) * limit;
                 List<CategoryProduct> listCategory = CategoryProductModel.INSTANCE.getSliceCategory(offset, limit, searchQuery, searchStatus);
-                int totalCategory = CategoryProductModel.INSTANCE.getTotalCategory();
+                int totalCategory = CategoryProductModel.INSTANCE.getTotalCategory(searchQuery, searchStatus);
 
                 ListCategoryProduct listCategoryProduct = new ListCategoryProduct();
                 listCategoryProduct.setTotal(totalCategory);

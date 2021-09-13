@@ -2,7 +2,8 @@ package model;
 
 import client.MysqlClient;
 import common.ErrorCode;
-import entity.category_product.CategoryProduct;
+import entity.news.News;
+import entity.slides.Slides;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,39 +13,36 @@ import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
-public class CategoryProductModel {
+public class SlidesModel {
 
     private static final MysqlClient dbClient = MysqlClient.getMysqlCli();
-    private final String NAMETABLE = "category_product";
+    private final String NAMETABLE = "slides";
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-    public static CategoryProductModel INSTANCE = new CategoryProductModel();
+    public static SlidesModel INSTANCE = new SlidesModel();
 
-    public List<CategoryProduct> getSliceCategory(int offset, int limit, String searchQuery, int searchStatus) {
-        List<CategoryProduct> resultListCategory = new ArrayList<>();
+    public List<Slides> getSliceSlides(int offset, int limit, String searchQuery, int searchStatus) {
+        List<Slides> resultListSlides = new ArrayList<>();
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
             if (null == conn) {
-                return resultListCategory;
+                return resultListSlides;
 
             }
-            String sql = "SELECT c.*, p.name cate_parent FROM `" + NAMETABLE + "` "
-                    + "c LEFT JOIN `" + NAMETABLE + "` p ON c.id_parent = p.id "
-                    + " WHERE 1=1";
+            String sql = "SELECT * FROM `" + NAMETABLE + "` WHERE 1=1";
 
             if (StringUtils.isNotEmpty(searchQuery)) {
-                sql = sql + " AND c.name LIKE ? ";
+                sql = sql + " AND slides.name LIKE ? ";
             }
 
             if (searchStatus > 0) {
-                sql = sql + " AND c.status = ? ";
+                sql = sql + " AND slides.status = ? ";
             }
 
-            sql = sql + " ORDER BY `orders` DESC LIMIT ? OFFSET ? ";
+            sql = sql + " LIMIT ? OFFSET ?";
 
             PreparedStatement ps = conn.prepareStatement(sql);
             int param = 1;
-
             if (StringUtils.isNotEmpty(searchQuery)) {
                 ps.setString(param++, "%" + searchQuery + "%");
             }
@@ -58,38 +56,84 @@ public class CategoryProductModel {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                CategoryProduct categoryProduct = new CategoryProduct();
-                categoryProduct.setId(rs.getInt("id"));
-                categoryProduct.setName(rs.getString("name"));
-                categoryProduct.setId_parent(rs.getInt("id_parent"));
-                categoryProduct.setOrders(rs.getInt("orders"));
-                categoryProduct.setStatus(rs.getInt("status"));
-                categoryProduct.setCate_parent(rs.getString("cate_parent"));
+                Slides slides = new Slides();
+                slides.setId(rs.getInt("id"));
+                slides.setName(rs.getString("name"));
+                slides.setImage(rs.getString("image"));
+                slides.setLink(rs.getString("link"));
+                slides.setOrders(rs.getInt("orders"));
+                slides.setStatus(rs.getInt("status"));
 
                 long currentTimeMillis = rs.getLong("created_date");
                 Date date = new Date(currentTimeMillis);
                 String dateString = sdf.format(date);
-                categoryProduct.setCreated_date(dateString);
+                slides.setCreated_date(dateString);
 
-                long currentTimeUpdated = rs.getLong("updated_date");
-                Date dateUpdated = new Date(currentTimeUpdated);
-                String dateStringUpdated = sdf.format(dateUpdated);
-                categoryProduct.setUpdated_date(dateStringUpdated);
-
-                resultListCategory.add(categoryProduct);
+                resultListSlides.add(slides);
             }
 
-            return resultListCategory;
+            return resultListSlides;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
             dbClient.releaseDbConnection(conn);
         }
 
-        return resultListCategory;
+        return resultListSlides;
     }
+//    public List<Slides> getSliceSlides(int offset, int limit, String searchQuery, int searchStatus) {
+//        List<Slides> resultListSlides = new ArrayList<>();
+//        Connection conn = null;
+//        try {
+//            conn = dbClient.getDbConnection();
+//            if (null == conn) {
+//                return resultListSlides;
+//
+//            }
+//
+//            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` WHERE "
+//                    + "(slides.name = ? or ? is null) "
+//                    + "and (slides.status = ? or ? is null) "
+//                    + "LIMIT ? OFFSET ?");
+//
+//            pstmt.setString(1, searchQuery);
+//            pstmt.setString(2, searchQuery);
+//            pstmt.setInt(3, searchStatus);
+//            pstmt.setInt(4, searchStatus);
+//            pstmt.setInt(5, limit);
+//
+//            pstmt.setInt(6, offset);
+//
+//            ResultSet rs = pstmt.executeQuery();
+//
+//            while (rs.next()) {
+//                Slides slides = new Slides();
+//                slides.setId(rs.getInt("id"));
+//                slides.setName(rs.getString("name"));
+//                slides.setImage(rs.getString("image"));
+//                slides.setLink(rs.getString("link"));
+//                slides.setOrders(rs.getInt("orders"));
+//                slides.setStatus(rs.getInt("status"));
+//
+//                long currentTimeMillis = rs.getLong("created_date");
+//                Date date = new Date(currentTimeMillis);
+//                String dateString = sdf.format(date);
+//                slides.setCreated_date(dateString);
+//
+//                resultListSlides.add(slides);
+//            }
+//
+//            return resultListSlides;
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        } finally {
+//            dbClient.releaseDbConnection(conn);
+//        }
+//
+//        return resultListSlides;
+//    }
 
-    public int getTotalCategory(String searchQuery, int searchStatus) {
+    public int getTotalSlides(String searchQuery, int searchStatus) {
         int total = 0;
         Connection conn = null;
         try {
@@ -97,19 +141,18 @@ public class CategoryProductModel {
             if (null == conn) {
                 return total;
             }
-            String sql = "SELECT COUNT(id) AS total FROM `" + NAMETABLE + "` WHERE 1 = 1";
+            String sql = "SELECT COUNT(id) AS total FROM `" + NAMETABLE + "`";
 
             if (StringUtils.isNotEmpty(searchQuery)) {
-                sql = sql + " AND name LIKE ? ";
+                sql = sql + " AND slides.name LIKE ? ";
             }
 
             if (searchStatus > 0) {
-                sql = sql + " AND status = ? ";
+                sql = sql + " AND slides.status = ? ";
             }
 
             PreparedStatement ps = conn.prepareStatement(sql);
             int param = 1;
-
             if (StringUtils.isNotEmpty(searchQuery)) {
                 ps.setString(param++, "%" + searchQuery + "%");
             }
@@ -132,23 +175,24 @@ public class CategoryProductModel {
         return total;
     }
 
-    public CategoryProduct getCategoryByID(int id) {
-        CategoryProduct result = new CategoryProduct();
+    public Slides getSlidesByID(int id) {
+        Slides result = new Slides();
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
             if (null == conn) {
                 return result;
             }
-            PreparedStatement getCategoryByIdStmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` WHERE id = ? ");
-            getCategoryByIdStmt.setInt(1, id);
+            PreparedStatement getSlideByIdStmt = conn.prepareStatement("SELECT * FROM slides WHERE id = ? ");
+            getSlideByIdStmt.setInt(1, id);
 
-            ResultSet rs = getCategoryByIdStmt.executeQuery();
+            ResultSet rs = getSlideByIdStmt.executeQuery();
 
             if (rs.next()) {
                 result.setId(rs.getInt("id"));
                 result.setName(rs.getString("name"));
-                result.setId_parent(rs.getInt("id_parent"));
+                result.setImage(rs.getString("image"));
+                result.setLink(rs.getString("link"));
                 result.setOrders(rs.getInt("orders"));
                 result.setStatus(rs.getInt("status"));
 
@@ -157,10 +201,6 @@ public class CategoryProductModel {
                 String dateString = sdf.format(date);
                 result.setCreated_date(dateString);
 
-                long currentTimeUpdated = rs.getLong("updated_date");
-                Date dateUpdated = new Date(currentTimeUpdated);
-                String dateStringUpdated = sdf.format(dateUpdated);
-                result.setUpdated_date(dateStringUpdated);
             }
 
             return result;
@@ -172,22 +212,19 @@ public class CategoryProductModel {
         return result;
     }
 
-    public int addCategory(String name, int id_parent, int orders, int status) {
+    public int addSlides(String name, String image, String link, int orders, int status) {
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
             if (null == conn) {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
-
-            PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (name, id_parent, orders, status,"
-                    + "created_date, updated_date) "
-                    + "VALUES (?, ?, ?, ?, ?, ?)");
+            PreparedStatement addStmt = conn.prepareStatement("INSERT INTO slides (name, image, link, orders, status, created_date) VALUES (?, ?, ?, ?, ?, ?)");
             addStmt.setString(1, name);
-            addStmt.setInt(2, id_parent);
-            addStmt.setInt(3, orders);
-            addStmt.setInt(4, status);
-            addStmt.setString(5, System.currentTimeMillis() + "");
+            addStmt.setString(2, image);
+            addStmt.setString(3, link);
+            addStmt.setInt(4, orders);
+            addStmt.setInt(5, status);
             addStmt.setString(6, System.currentTimeMillis() + "");
 
             int rs = addStmt.executeUpdate();
@@ -202,23 +239,20 @@ public class CategoryProductModel {
         return ErrorCode.FAIL.getValue();
     }
 
-    public int editCategory(int id, String name, int id_parent, int orders, int status) {
+    public int editSlides(int id, String name, String image, String link, int orders, int status) {
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
             if (null == conn) {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
-
-            PreparedStatement editStmt = conn.prepareStatement("UPDATE `" + NAMETABLE + "` SET name = ?, id_parent = ?, orders = ?, "
-                    + "status = ?, updated_date = ? WHERE id = ? ");
+            PreparedStatement editStmt = conn.prepareStatement("UPDATE slides SET name = ?, image = ?, link = ?, orders = ?, status = ? WHERE id = ? ");
             editStmt.setString(1, name);
-            editStmt.setInt(2, id_parent);
-            editStmt.setInt(3, orders);
-            editStmt.setInt(4, status);
-            editStmt.setString(5, System.currentTimeMillis() + "");
+            editStmt.setString(2, image);
+            editStmt.setString(3, link);
+            editStmt.setInt(4, orders);
+            editStmt.setInt(5, status);
             editStmt.setInt(6, id);
-
             int rs = editStmt.executeUpdate();
 
             return rs;
@@ -230,7 +264,7 @@ public class CategoryProductModel {
         return ErrorCode.FAIL.getValue();
     }
 
-    public int deleteCategory(int id) {
+    public int deleteSlides(int id) {
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
@@ -238,11 +272,11 @@ public class CategoryProductModel {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
 
-            CategoryProduct categoryByID = getCategoryByID(id);
-            if (categoryByID.getId() == 0) {
+            Slides slidesByID = getSlidesByID(id);
+            if (slidesByID.getId() == 0) {
                 return ErrorCode.NOT_EXIST.getValue();
             }
-            PreparedStatement deleteStmt = conn.prepareStatement("DELETE FROM `" + NAMETABLE + "` WHERE id = ?");
+            PreparedStatement deleteStmt = conn.prepareStatement("DELETE FROM slides WHERE id = ?");
             deleteStmt.setInt(1, id);
             int rs = deleteStmt.executeUpdate();
 

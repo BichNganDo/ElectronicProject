@@ -3,7 +3,6 @@ package model;
 import client.MysqlClient;
 import common.ErrorCode;
 import entity.news.News;
-import entity.product.Product;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,17 +33,29 @@ public class NewsModel {
                     + "INNER JOIN category_news ON news.id_cate_news= category_news.id  WHERE 1=1";
 
             if (StringUtils.isNotEmpty(searchQuery)) {
-                sql = sql + " AND news.title LIKE '%" + searchQuery + "%' ";
+                sql = sql + " AND news.title LIKE ? ";
             }
 
             if (searchCategoryNews > 0) {
-                sql = sql + " AND news.id_cate_news = " + searchCategoryNews;
+                sql = sql + " AND news.id_cate_news = ? ";
             }
 
-            sql = sql + " LIMIT " + limit + " OFFSET " + offset;
+            sql = sql + " LIMIT ? OFFSET ? ";
 
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            ResultSet rs = preparedStatement.executeQuery();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            int param = 1;
+
+            if (StringUtils.isNotEmpty(searchQuery)) {
+                ps.setString(param++, "%" + searchQuery + "%");
+            }
+
+            if (searchCategoryNews > 0) {
+                ps.setInt(param++, searchCategoryNews);
+            }
+
+            ps.setInt(param++, limit);
+            ps.setInt(param++, offset);
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 News news = new News();
@@ -89,16 +100,25 @@ public class NewsModel {
             }
             String sql = "SELECT COUNT(id) AS total FROM `" + NAMETABLE + "` WHERE 1 = 1";
             if (StringUtils.isNotEmpty(searchQuery)) {
-                sql = sql + " AND news.title LIKE '%" + searchQuery + "%' ";
+                sql = sql + " AND news.title LIKE ? ";
             }
 
             if (searchCategoryNews > 0) {
-                sql = sql + " AND news.id_cate_news = " + searchCategoryNews;
+                sql = sql + " AND news.id_cate_news = ? ";
             }
 
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            ResultSet rs = preparedStatement.executeQuery();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            int param = 1;
 
+            if (StringUtils.isNotEmpty(searchQuery)) {
+                ps.setString(param++, "%" + searchQuery + "%");
+            }
+
+            if (searchCategoryNews > 0) {
+                ps.setInt(param++, searchCategoryNews);
+            }
+
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 total = rs.getInt("total");
             }
@@ -119,10 +139,10 @@ public class NewsModel {
             if (null == conn) {
                 return result;
             }
-            String sql = "SELECT * FROM `" + NAMETABLE + "` WHERE `id`='" + id + "'";
+            PreparedStatement getNewsByIdStmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` WHERE id = ? ");
+            getNewsByIdStmt.setInt(1, id);
 
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            ResultSet rs = preparedStatement.executeQuery();
+            ResultSet rs = getNewsByIdStmt.executeQuery();
 
             if (rs.next()) {
                 result.setId(rs.getInt("id"));
@@ -153,21 +173,25 @@ public class NewsModel {
         return result;
     }
 
-    public int addNews(int idCategoryNews, String title, String info, String content, String image, String created_date, String updated_date) {
+    public int addNews(int idCategoryNews, String title, String info, String content, String image) {
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
             if (null == conn) {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
-            String sql = "INSERT INTO `" + NAMETABLE + "`"
-                    + "(`id_cate_news`, `title`, `info`, `content`, `image`, `created_date`, `updated_date`) "
-                    + "VALUES "
-                    + "('" + idCategoryNews + "', '" + title + "', '" + info + "', '" + content + "', '" + image + "',"
-                    + " '" + System.currentTimeMillis() + "', '" + System.currentTimeMillis() + "')";
+            PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (id_cate_news, title, info, content, image, "
+                    + "created_date, updated_date) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+            addStmt.setInt(1, idCategoryNews);
+            addStmt.setString(2, title);
+            addStmt.setString(3, info);
+            addStmt.setString(4, content);
+            addStmt.setString(5, image);
+            addStmt.setString(6, System.currentTimeMillis() + "");
+            addStmt.setString(7, System.currentTimeMillis() + "");
 
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            int rs = preparedStatement.executeUpdate();
+            int rs = addStmt.executeUpdate();
 
             return rs;
         } catch (Exception e) {
@@ -187,17 +211,17 @@ public class NewsModel {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
 
-            String sql = "UPDATE `" + NAMETABLE + "` "
-                    + " SET `id_cate_news`='" + id_cate_news + "', "
-                    + "`title`='" + title + "', "
-                    + "`info`='" + info + "', "
-                    + "`content`='" + content + "', "
-                    + "`image`='" + image + "', "
-                    + "`updated_date`='" + System.currentTimeMillis() + "' "
-                    + "WHERE `id`='" + id + "'";
+            PreparedStatement editStmt = conn.prepareStatement("UPDATE `" + NAMETABLE + "` SET id_cate_news = ?, title = ?, info = ?, "
+                    + "content = ?, image = ?, updated_date = ? WHERE id = ? ");
+            editStmt.setInt(1, id_cate_news);
+            editStmt.setString(2, title);
+            editStmt.setString(3, info);
+            editStmt.setString(4, content);
+            editStmt.setString(5, image);
+            editStmt.setString(6, System.currentTimeMillis() + "");
+            editStmt.setInt(7, id);
 
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            int rs = preparedStatement.executeUpdate();
+            int rs = editStmt.executeUpdate();
 
             return rs;
         } catch (Exception e) {
@@ -220,10 +244,9 @@ public class NewsModel {
             if (newsByID.getId() == 0) {
                 return ErrorCode.NOT_EXIST.getValue();
             }
-            String sql = "DELETE FROM `" + NAMETABLE + "` WHERE `id`='" + id + "'";
-
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            int rs = preparedStatement.executeUpdate();
+            PreparedStatement deleteStmt = conn.prepareStatement("DELETE FROM `" + NAMETABLE + "` WHERE id = ?");
+            deleteStmt.setInt(1, id);
+            int rs = deleteStmt.executeUpdate();
 
             return rs;
         } catch (Exception e) {

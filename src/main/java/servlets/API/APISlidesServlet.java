@@ -2,8 +2,10 @@ package servlets.API;
 
 import com.google.gson.Gson;
 import common.APIResult;
-import entity.supplier.ListSupplier;
-import entity.supplier.Supplier;
+import entity.news.ListNews;
+import entity.news.News;
+import entity.slides.ListSlides;
+import entity.slides.Slides;
 import helper.ServletUtil;
 import java.io.IOException;
 import java.util.List;
@@ -11,10 +13,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.SupplierModel;
+import model.NewsModel;
+import model.SlidesModel;
 import org.apache.commons.lang3.math.NumberUtils;
 
-public class APISupplierServlet extends HttpServlet {
+public class APISlidesServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Gson gson = new Gson();
@@ -22,38 +25,39 @@ public class APISupplierServlet extends HttpServlet {
 
         String action = request.getParameter("action");
         switch (action) {
-            case "getsupplier": {
+            case "getslides": {
                 int pageIndex = NumberUtils.toInt(request.getParameter("page_index"));
                 int limit = NumberUtils.toInt(request.getParameter("limit"), 10);
                 String searchQuery = request.getParameter("search_query");
+                int searchStatus = NumberUtils.toInt(request.getParameter("search_status"));
 
                 int offset = (pageIndex - 1) * limit;
-                List<Supplier> sliceSupplier = SupplierModel.INSTANCE.getSliceSupplier(offset, limit, searchQuery);
-                int totalSupplier = SupplierModel.INSTANCE.getTotalSupplier(searchQuery);
+                List<Slides> sliceSlides = SlidesModel.INSTANCE.getSliceSlides(offset, limit, searchQuery, searchStatus);
+                int totalSlides = SlidesModel.INSTANCE.getTotalSlides(searchQuery, searchStatus);
 
-                ListSupplier listSupplier = new ListSupplier();
-                listSupplier.setTotal(totalSupplier);
-                listSupplier.setListSupplier(sliceSupplier);
-                listSupplier.setItemPerPage(10);
+                ListSlides listSlides = new ListSlides();
+                listSlides.setTotal(totalSlides);
+                listSlides.setListSlides(sliceSlides);
+                listSlides.setItemPerPage(10);
 
-                if (sliceSupplier.size() > 0) {
+                if (sliceSlides.size() > 0) {
                     result.setErrorCode(0);
                     result.setMessage("Success");
-                    result.setData(listSupplier);
+                    result.setData(listSlides);
                 } else {
                     result.setErrorCode(-1);
                     result.setMessage("Fail");
                 }
                 break;
             }
-            case "getSupplierById": {
-                int idSupplier = Integer.parseInt(request.getParameter("id_supplier"));
-                Supplier supplierByID = SupplierModel.INSTANCE.getSupplierByID(idSupplier);
+            case "getSlidesById": {
+                int idSlides = Integer.parseInt(request.getParameter("id_slides"));
+                Slides slidesByID = SlidesModel.INSTANCE.getSlidesByID(idSlides);
 
-                if (supplierByID.getId() > 0) {
+                if (slidesByID.getId() > 0) {
                     result.setErrorCode(0);
                     result.setMessage("Success");
-                    result.setData(supplierByID);
+                    result.setData(slidesByID);
                 } else {
                     result.setErrorCode(-1);
                     result.setMessage("Error");
@@ -66,7 +70,6 @@ public class APISupplierServlet extends HttpServlet {
         }
 
         ServletUtil.printJson(request, response, gson.toJson(result));
-
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -77,65 +80,63 @@ public class APISupplierServlet extends HttpServlet {
         switch (action) {
             case "add": {
                 String name = request.getParameter("name");
-                String address = request.getParameter("address");
-                String phone = request.getParameter("phone");
-                String email = request.getParameter("email");
-                String fax = request.getParameter("fax");
+                String image = request.getParameter("image");
+                String link = request.getParameter("link");
+                int orders = NumberUtils.toInt(request.getParameter("orders"));
+                int status = NumberUtils.toInt(request.getParameter("status"));
 
-                int addSupplier = SupplierModel.INSTANCE.addSupplier(name, address, phone, email, fax);
-                if (addSupplier >= 0) {
+                int addSlides = SlidesModel.INSTANCE.addSlides(name, image, link, orders, status);
+                if (addSlides >= 0) {
                     result.setErrorCode(0);
-                    result.setMessage("Thêm supplier thành công!");
+                    result.setMessage("Thêm slides thành công!");
                 } else {
                     result.setErrorCode(-1);
-                    result.setMessage("Thêm supplier thất bại!");
+                    result.setMessage("Thêm slides thất bại!");
                 }
                 break;
             }
+
             case "edit": {
                 int id = NumberUtils.toInt(request.getParameter("id"));
                 String name = request.getParameter("name");
-                String address = request.getParameter("address");
-                String phone = request.getParameter("phone");
-                String email = request.getParameter("email");
-                String fax = request.getParameter("fax");
+                String image = request.getParameter("image");
+                String link = request.getParameter("link");
+                int orders = NumberUtils.toInt(request.getParameter("orders"));
+                int status = NumberUtils.toInt(request.getParameter("status"));
 
-                Supplier supplierByID = SupplierModel.INSTANCE.getSupplierByID(id);
-                if (supplierByID.getId() == 0) {
+                Slides slidesByID = SlidesModel.INSTANCE.getSlidesByID(id);
+                if (slidesByID.getId() == 0) {
                     result.setErrorCode(-1);
                     result.setMessage("Thất bại!");
                     return;
                 }
 
-                int editSupplier = SupplierModel.INSTANCE.editSupplier(id, name, address, phone, email, fax);
-                if (editSupplier >= 0) {
+                int editSlides = SlidesModel.INSTANCE.editSlides(id, name, image, link, orders, status);
+                if (editSlides >= 0) {
                     result.setErrorCode(0);
-                    result.setMessage("Sửa supplier thành công!");
+                    result.setMessage("Sửa slides thành công!");
                 } else {
                     result.setErrorCode(-1);
-                    result.setMessage("Sửa supplier thất bại!");
+                    result.setMessage("Sửa slides thất bại!");
                 }
                 break;
             }
 
             case "delete": {
                 int id = NumberUtils.toInt(request.getParameter("id"));
-                int deleteSUpplier = SupplierModel.INSTANCE.deleteSUpplier(id);
-                if (deleteSUpplier >= 0) {
+                int deleteSlides = SlidesModel.INSTANCE.deleteSlides(id);
+                if (deleteSlides >= 0) {
                     result.setErrorCode(0);
-                    result.setMessage("Xóa supplier thành công!");
+                    result.setMessage("Xóa slides thành công!");
                 } else {
                     result.setErrorCode(-2);
-                    result.setMessage("Xóa supplier thất bại!");
+                    result.setMessage("Xóa slides thất bại!");
                 }
                 break;
             }
             default:
                 throw new AssertionError();
         }
-
         ServletUtil.printJson(request, response, gson.toJson(result));
-
     }
-
 }

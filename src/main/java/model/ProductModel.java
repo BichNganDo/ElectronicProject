@@ -3,7 +3,6 @@ package model;
 import client.MysqlClient;
 import common.ErrorCode;
 import entity.product.Product;
-import entity.supplier.Supplier;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,20 +35,35 @@ public class ProductModel {
                     + "INNER JOIN supplier ON product.id_supplier = supplier.id WHERE 1=1";
 
             if (StringUtils.isNotEmpty(searchQuery)) {
-                sql = sql + " AND product.name LIKE '%" + searchQuery + "%' ";
+                sql = sql + " AND product.name LIKE ? ";
             }
 
             if (searchCate > 0) {
-                sql = sql + " AND product.id_cate = " + searchCate;
+                sql = sql + " AND product.id_cate = ? ";
             }
 
             if (searchSupplier > 0) {
-                sql = sql + " AND product.id_supplier = " + searchSupplier;
+                sql = sql + " AND product.id_supplier = ? ";
             }
-            sql = sql + " LIMIT " + limit + " OFFSET " + offset;
+            sql = sql + " LIMIT ? OFFSET ? ";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            int param = 1;
 
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            ResultSet rs = preparedStatement.executeQuery();
+            if (StringUtils.isNotEmpty(searchQuery)) {
+                ps.setString(param++, "%" + searchQuery + "%");
+            }
+
+            if (searchCate > 0) {
+                ps.setInt(param++, searchCate);
+            }
+
+            if (searchSupplier > 0) {
+                ps.setInt(param++, searchSupplier);
+            }
+
+            ps.setInt(param++, limit);
+            ps.setInt(param++, offset);
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 Product product = new Product();
@@ -93,19 +107,35 @@ public class ProductModel {
             if (null == conn) {
                 return total;
             }
+
             String sql = "SELECT COUNT(id) AS total FROM `" + NAMETABLE + "` WHERE 1 = 1";
             if (StringUtils.isNotEmpty(searchQuery)) {
-                sql = sql + " AND name LIKE '%" + searchQuery + "%' ";
+                sql = sql + " AND product.name LIKE ? ";
             }
+
             if (searchCate > 0) {
-                sql = sql + " AND product.id_cate = " + searchCate;
+                sql = sql + " AND product.id_cate = ? ";
             }
 
             if (searchSupplier > 0) {
-                sql = sql + " AND product.id_supplier = " + searchSupplier;
+                sql = sql + " AND product.id_supplier = ? ";
             }
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            ResultSet rs = preparedStatement.executeQuery();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            int param = 1;
+
+            if (StringUtils.isNotEmpty(searchQuery)) {
+                ps.setString(param++, "%" + searchQuery + "%");
+            }
+
+            if (searchCate > 0) {
+                ps.setInt(param++, searchCate);
+            }
+
+            if (searchSupplier > 0) {
+                ps.setInt(param++, searchSupplier);
+            }
+
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 total = rs.getInt("total");
@@ -127,10 +157,10 @@ public class ProductModel {
             if (null == conn) {
                 return result;
             }
-            String sql = "SELECT * FROM `" + NAMETABLE + "` WHERE `id`='" + id + "'";
+            PreparedStatement getProductByIdStmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` WHERE id = ? ");
+            getProductByIdStmt.setInt(1, id);
 
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            ResultSet rs = preparedStatement.executeQuery();
+            ResultSet rs = getProductByIdStmt.executeQuery();
 
             if (rs.next()) {
                 result.setId(rs.getInt("id"));
@@ -168,15 +198,22 @@ public class ProductModel {
             if (null == conn) {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
-            String sql = "INSERT INTO `" + NAMETABLE + "`"
-                    + "(`id_cate`, `id_supplier`, `name`, `price`, `price_sale`, "
-                    + "`quantity`, `image_url`, `content`, `warranty`, `hot`, `created_date`) "
-                    + "VALUES "
-                    + "('" + id_cate + "', '" + id_supplier + "','" + name + "', '" + price + "', '" + price_sale + "', '" + quantity + "',"
-                    + " '" + image_url + "', '" + content + "', '" + warranty + "', '" + hot + "', '" + System.currentTimeMillis() + "')";
+            PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (id_cate, id_supplier, name, price, price_sale, "
+                    + "quantity, image_url, content, warranty, hot, created_date ) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            addStmt.setInt(1, id_cate);
+            addStmt.setInt(2, id_supplier);
+            addStmt.setString(3, name);
+            addStmt.setInt(4, price);
+            addStmt.setInt(5, price_sale);
+            addStmt.setInt(6, quantity);
+            addStmt.setString(7, image_url);
+            addStmt.setString(8, content);
+            addStmt.setString(9, warranty);
+            addStmt.setString(10, hot);
+            addStmt.setString(11, System.currentTimeMillis() + "");
 
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            int rs = preparedStatement.executeUpdate();
+            int rs = addStmt.executeUpdate();
 
             return rs;
         } catch (Exception e) {
@@ -196,22 +233,20 @@ public class ProductModel {
             if (null == conn) {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
-
-            String sql = "UPDATE `" + NAMETABLE + "` "
-                    + "SET `id_cate`='" + id_cate + "' , "
-                    + "`id_supplier`='" + id_supplier + "', "
-                    + "`name`='" + name + "', "
-                    + "`price`='" + price + "', "
-                    + "`price_sale`='" + price_sale + "', "
-                    + "`quantity`='" + quantity + "', "
-                    + "`image_url`='" + image_url + "', "
-                    + "`warranty`='" + warranty + "', "
-                    + "`hot`='" + hot + "', "
-                    + "`content`='" + content + "'"
-                    + "WHERE `id`='" + id + "'";
-
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            int rs = preparedStatement.executeUpdate();
+            PreparedStatement editStmt = conn.prepareStatement("UPDATE `" + NAMETABLE + "` SET id_cate = ?, id_supplier = ?, name = ?, "
+                    + "price = ?, price_sale = ?, quantity = ?, image_url = ?, warranty = ?, hot = ?, content = ? WHERE id = ? ");
+            editStmt.setInt(1, id_cate);
+            editStmt.setInt(2, id_supplier);
+            editStmt.setString(3, name);
+            editStmt.setInt(4, price);
+            editStmt.setInt(5, price_sale);
+            editStmt.setInt(6, quantity);
+            editStmt.setString(7, image_url);
+            editStmt.setString(8, warranty);
+            editStmt.setString(9, hot);
+            editStmt.setString(10, content);
+            editStmt.setInt(11, id);
+            int rs = editStmt.executeUpdate();
 
             return rs;
         } catch (Exception e) {
@@ -234,10 +269,9 @@ public class ProductModel {
             if (productByID.getId() == 0) {
                 return ErrorCode.NOT_EXIST.getValue();
             }
-            String sql = "DELETE FROM `" + NAMETABLE + "` WHERE `id`='" + id + "'";
-
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            int rs = preparedStatement.executeUpdate();
+            PreparedStatement deleteStmt = conn.prepareStatement("DELETE FROM `" + NAMETABLE + "` WHERE id = ?");
+            deleteStmt.setInt(1, id);
+            int rs = deleteStmt.executeUpdate();
 
             return rs;
         } catch (Exception e) {
