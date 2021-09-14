@@ -20,6 +20,7 @@ import servlets.PartialServlet;
 import servlets.cate_news.AddCategoryNewsServlet;
 import servlets.cate_news.EditCategoryNewsServlet;
 import servlets.cate_news.ManageCategoryNewsServlet;
+import servlets.client.ManageIndexServlet;
 import servlets.news.AddNewsServlet;
 import servlets.news.EditNewsServlet;
 import servlets.news.ManageNewsServlet;
@@ -44,6 +45,8 @@ public class Main {
         context.addServlet(new ServletHolder(new ManageCategoryNewsServlet()), "/admin/cate_news");
         context.addServlet(new ServletHolder(new ManageNewsServlet()), "/admin/news");
         context.addServlet(new ServletHolder(new ManageSlidesServlet()), "/admin/slides");
+
+        context.addServlet(new ServletHolder(new ManageIndexServlet()), "/client/index");
 
         context.addServlet(new ServletHolder(new AddCategoryServlet()), "/admin/cate_product/add");
         context.addServlet(new ServletHolder(new AddSupplierServlet()), "/admin/supplier/add");

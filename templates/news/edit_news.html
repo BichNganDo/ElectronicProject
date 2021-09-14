@@ -114,6 +114,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         var app = angular.module('myApp', []); //ngPagination
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
             $scope.APP_DOMAIN = "http://localhost:8080/";
+            var url = document.URL.split('/');
+            var urltmp = url[4].split('?')[0];
+            $rootScope.lastUri = urltmp.split('#')[0];
+
             //getIdNews
             var id_news = getUrlParameter('id');
             $http({

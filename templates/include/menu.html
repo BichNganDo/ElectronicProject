@@ -2,8 +2,10 @@
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
         <img src="${static_domain}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">Electronic Project</span>
+        <span class="brand-text font-weight-light">Electronic Project </span>
     </a>
+
+
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -45,7 +47,7 @@
 
                 <!-- thêm class: menu-open -->
                 <li class="nav-item">
-                    <a href="/admin/cate_product" class="nav-link">
+                    <a href="/admin/cate_product" class="nav-link" ng-class="lastUri == 'cate_product' ? 'active' : ''">
                         <i class="nav-icon fas fa-list-alt"></i>
                         <p>
                             Manage Category
@@ -54,7 +56,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/supplier" class="nav-link">
+                    <a href="/admin/supplier" class="nav-link" ng-class="lastUri == 'supplier' ? 'active' : ''">
                         <i class="nav-icon fas fa-people-carry"></i>
                         <p>
                             Manage Supplier
@@ -63,7 +65,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/product" class="nav-link">
+                    <a href="/admin/product" class="nav-link" ng-class="lastUri == 'product' ? 'active' : ''">
                         <i class="nav-icon fas fa-box"></i>
                         <p>
                             Manage Product
@@ -72,7 +74,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/cate_news" class="nav-link">
+                    <a href="/admin/cate_news" class="nav-link" ng-class="lastUri == 'cate_news' ? 'active' : ''">
                         <i class="nav-icon fas fa-list"></i>
                         <p>
                             Manage Category News
@@ -81,7 +83,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/news" class="nav-link">
+                    <a href="/admin/news" class="nav-link" ng-class="lastUri == 'news' ? 'active' : ''">
                         <i class="nav-icon fas fa-newspaper"></i>
                         <p>
                             Manage News
@@ -90,7 +92,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/slides" class="nav-link">
+                    <a href="/admin/slides" class="nav-link" ng-class="lastUri == 'slides' ? 'active' : ''">
                         <i class="nav-icon fas fa-star-of-david"></i>
                         <p>
                             Manage Slides

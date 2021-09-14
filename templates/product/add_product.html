@@ -163,6 +163,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script>
         var app = angular.module('myApp', []); //ngPagination
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
+            var url = document.URL.split('/');
+            var urltmp = url[4].split('?')[0];
+            $rootScope.lastUri = urltmp.split('#')[0];
+
             $scope.APP_DOMAIN = "http://localhost:8080/";
 
             $scope.testthongbao = function() {
