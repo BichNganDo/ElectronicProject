@@ -14,13 +14,15 @@ public class Product {
     private String image_url;
     private String content;
     private String warranty;
-    private String hot;
+    private Property property;
     private String created_date;
 
     public Product() {
     }
 
-    public Product(int id, int id_cate, int id_supplier, String category, String supplier, String name, int price, int price_sale, int quantity, String image_url, String content, String warranty, String hot, String created_date) {
+    public Product(int id, int id_cate, int id_supplier, String category, String supplier,
+            String name, int price, int price_sale, int quantity, String image_url, String content,
+            String warranty, Property property, String created_date) {
         this.id = id;
         this.id_cate = id_cate;
         this.id_supplier = id_supplier;
@@ -33,7 +35,7 @@ public class Product {
         this.image_url = image_url;
         this.content = content;
         this.warranty = warranty;
-        this.hot = hot;
+        this.property = property;
         this.created_date = created_date;
     }
 
@@ -133,12 +135,16 @@ public class Product {
         this.warranty = warranty;
     }
 
-    public String getHot() {
-        return hot;
+    public Property getProperty() {
+        return property;
     }
 
-    public void setHot(String hot) {
-        this.hot = hot;
+    public void setProperty(Property property) {
+        this.property = property;
+    }
+
+    public void setProperty(int numberProperty) {
+        this.property = new Property(numberProperty);
     }
 
     public String getCreated_date() {
@@ -147,6 +153,61 @@ public class Product {
 
     public void setCreated_date(String created_date) {
         this.created_date = created_date;
+    }
+
+    private static class Property {
+
+        private boolean hot;
+        private boolean productNew;
+        private boolean promo;
+
+        public Property(int numberProperty) {
+            if ((numberProperty & 1) > 0) {
+                hot = true;
+            }
+            if ((numberProperty & 2) > 0) {
+                productNew = true;
+            }
+            if ((numberProperty & 4) > 0) {
+                promo = true;
+            }
+
+        }
+
+        public Property(boolean hot, boolean productNew, boolean promo) {
+            this.hot = hot;
+            this.productNew = productNew;
+            this.promo = promo;
+        }
+
+        public boolean isHot() {
+            return hot;
+        }
+
+        public void setHot(boolean hot) {
+            this.hot = hot;
+        }
+
+        public boolean isProductNew() {
+            return productNew;
+        }
+
+        public void setProductNew(boolean productNew) {
+            this.productNew = productNew;
+        }
+
+        public boolean isPromo() {
+            return promo;
+        }
+
+        public void setPromo(boolean promo) {
+            this.promo = promo;
+        }
+
+        public static void main(String[] args) {
+            System.out.println(2 & 1);
+        }
+
     }
 
 }

@@ -86,9 +86,9 @@ public class APIProductServlet extends HttpServlet {
                 String image_url = request.getParameter("image_url");
                 String content = request.getParameter("content");
                 String warranty = request.getParameter("warranty");
-                String hot = request.getParameter("hot");
+                int property = NumberUtils.toInt(request.getParameter("property"));
 
-                int addProduct = ProductModel.INSTANCE.addProduct(id_cate, id_supplier, name, price, price_sale, quantity, image_url, content, warranty, hot);
+                int addProduct = ProductModel.INSTANCE.addProduct(id_cate, id_supplier, name, price, price_sale, quantity, image_url, content, warranty, property);
                 if (addProduct >= 0) {
                     result.setErrorCode(0);
                     result.setMessage("Thêm product thành công!");
@@ -110,7 +110,7 @@ public class APIProductServlet extends HttpServlet {
                 String image_url = request.getParameter("image_url");
                 String content = request.getParameter("content");
                 String warranty = request.getParameter("warranty");
-                String hot = request.getParameter("hot");
+                int property = NumberUtils.toInt(request.getParameter("property"));
 
                 Product productByID = ProductModel.INSTANCE.getProductByID(id);
                 if (productByID.getId() == 0) {
@@ -119,7 +119,7 @@ public class APIProductServlet extends HttpServlet {
                     return;
                 }
 
-                int editProduct = ProductModel.INSTANCE.editProduct(id, id_cate, id_supplier, name, price, price_sale, quantity, image_url, content, warranty, hot);
+                int editProduct = ProductModel.INSTANCE.editProduct(id, id_cate, id_supplier, name, price, price_sale, quantity, image_url, content, warranty, property);
                 if (editProduct >= 0) {
                     result.setErrorCode(0);
                     result.setMessage("Sửa product thành công!");

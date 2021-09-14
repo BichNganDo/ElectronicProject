@@ -79,7 +79,7 @@ public class ProductModel {
                 product.setImage_url(rs.getString("image_url"));
                 product.setContent(rs.getString("content"));
                 product.setWarranty(rs.getString("warranty"));
-                product.setHot(rs.getString("hot"));
+                product.setProperty(rs.getInt("property"));
 
                 long currentTimeMillis = rs.getLong("created_date");
                 Date date = new Date(currentTimeMillis);
@@ -173,7 +173,7 @@ public class ProductModel {
                 result.setImage_url(rs.getString("image_url"));
                 result.setContent(rs.getString("content"));
                 result.setWarranty(rs.getString("warranty"));
-                result.setHot(rs.getString("hot"));
+                result.setProperty(rs.getInt("property"));
 
                 long currentTimeMillis = rs.getLong("created_date");
                 Date date = new Date(currentTimeMillis);
@@ -191,7 +191,8 @@ public class ProductModel {
         return result;
     }
 
-    public int addProduct(int id_cate, int id_supplier, String name, int price, int price_sale, int quantity, String image_url, String content, String warranty, String hot) {
+    public int addProduct(int id_cate, int id_supplier, String name, int price, int price_sale, int quantity,
+            String image_url, String content, String warranty, int property) {
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
@@ -199,7 +200,7 @@ public class ProductModel {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
             PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (id_cate, id_supplier, name, price, price_sale, "
-                    + "quantity, image_url, content, warranty, hot, created_date ) "
+                    + "quantity, image_url, content, warranty, property, created_date ) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             addStmt.setInt(1, id_cate);
             addStmt.setInt(2, id_supplier);
@@ -210,7 +211,7 @@ public class ProductModel {
             addStmt.setString(7, image_url);
             addStmt.setString(8, content);
             addStmt.setString(9, warranty);
-            addStmt.setString(10, hot);
+            addStmt.setInt(10, property);
             addStmt.setString(11, System.currentTimeMillis() + "");
 
             int rs = addStmt.executeUpdate();
@@ -226,7 +227,7 @@ public class ProductModel {
     }
 
     public int editProduct(int id, int id_cate, int id_supplier, String name, int price,
-            int price_sale, int quantity, String image_url, String content, String warranty, String hot) {
+            int price_sale, int quantity, String image_url, String content, String warranty, int property) {
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
@@ -234,7 +235,7 @@ public class ProductModel {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
             PreparedStatement editStmt = conn.prepareStatement("UPDATE `" + NAMETABLE + "` SET id_cate = ?, id_supplier = ?, name = ?, "
-                    + "price = ?, price_sale = ?, quantity = ?, image_url = ?, warranty = ?, hot = ?, content = ? WHERE id = ? ");
+                    + "price = ?, price_sale = ?, quantity = ?, image_url = ?, warranty = ?, property = ?, content = ? WHERE id = ? ");
             editStmt.setInt(1, id_cate);
             editStmt.setInt(2, id_supplier);
             editStmt.setString(3, name);
@@ -243,7 +244,7 @@ public class ProductModel {
             editStmt.setInt(6, quantity);
             editStmt.setString(7, image_url);
             editStmt.setString(8, warranty);
-            editStmt.setString(9, hot);
+            editStmt.setInt(9, property);
             editStmt.setString(10, content);
             editStmt.setInt(11, id);
             int rs = editStmt.executeUpdate();

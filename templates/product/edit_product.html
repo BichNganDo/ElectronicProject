@@ -118,8 +118,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </div>
                                 <div class="form-group">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
+                                        <input ng-model="hot" ng-init="hot=false" class="form-check-input" type="checkbox">
                                         <label class="form-check-label"><b>Hot</b></label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input ng-model="new" ng-init="new=false" class="form-check-input" type="checkbox">
+                                        <label class="form-check-label"><b>New</b></label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input ng-model="promo" ng-init="promo=false" class="form-check-input" type="checkbox">
+                                        <label class="form-check-label"><b>Promo</b></label>
                                     </div>
                                 </div>
                                 <div>
@@ -194,7 +202,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 },
             }).then(function(response) {
                 $scope.editProduct = response.data.data
-                console.log($scope.editProduct);
+                    // console.log($scope.editProduct);
 
                 $scope.id = $scope.editProduct.id;
                 $scope.category = $scope.editProduct.id_cate + "";
@@ -206,11 +214,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 $scope.quantity = $scope.editProduct.quantity;
                 $scope.content = $scope.editProduct.content;
                 $scope.warranty = $scope.editProduct.warranty;
-                $scope.hot = $scope.editProduct.hot;
+                let property = $scope.editProduct.property;
+                console.log(property);
+                $scope.hot = property.hot;
+                $scope.new = property.productNew;
+                $scope.promo = property.promo;
+
+
+
             })
 
             //Save Data da sua
             $scope.saveDataEdit = function() {
+                let property = 0;
+                if ($scope.hot) {
+                    property = property + 1;
+                }
+                if ($scope.new) {
+                    property = property + 2;
+                }
+                if ($scope.promo) {
+                    property = property + 4;
+                }
                 var data = $.param({
                     id: $scope.id,
                     category: $scope.category,
@@ -222,7 +247,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     quantity: $scope.quantity,
                     content: $scope.content,
                     warranty: $scope.warranty,
-                    hot: $scope.hot ? "hot" : ""
+                    property: property
+
                 })
                 console.log(data);
                 var config = {
