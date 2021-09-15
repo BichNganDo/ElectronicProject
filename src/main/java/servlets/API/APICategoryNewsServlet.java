@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import common.APIResult;
 import entity.category_news.CategoryNews;
 import entity.category_news.ListCategoryNews;
-import entity.category_product.CategoryProduct;
-import entity.category_product.ListCategoryProduct;
 import helper.ServletUtil;
 import java.io.IOException;
 import java.util.List;
@@ -14,10 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.CategoryNewsModel;
-import model.CategoryProductModel;
 import org.apache.commons.lang3.math.NumberUtils;
 
-public class APICategoryNews extends HttpServlet {
+public class APICategoryNewsServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Gson gson = new Gson();

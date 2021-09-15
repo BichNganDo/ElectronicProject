@@ -19,6 +19,7 @@ import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -282,6 +283,43 @@ public class HttpHelper {
 
         return ret;
 
+    }
+
+    public static void setCookie(HttpServletResponse resp, String key, String value, int expired) {
+        Cookie cookie = new Cookie(key, value);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(expired);
+        resp.addCookie(cookie);
+    }
+
+    public static void clearCookie(HttpServletResponse resp, String key) {
+        Cookie cookie = new Cookie(key, "");
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        resp.addCookie(cookie);
+    }
+
+    public static String getCookie(HttpServletRequest req, String name) {
+        String result = "";
+        if (req == null || name == null) {
+            return result;
+        }
+        String newName = req.getServerName() + "_" + name;
+        Cookie[] cookies = req.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                String cookieName = cookie.getName();
+                if (newName.equals(cookieName)) {
+                    result = cookie.getValue();
+                    break;
+                } else if (cookie.getName().equals(name)) {
+                    result = cookie.getValue();
+                }
+            }
+        }
+        return result;
     }
 
 }

@@ -155,7 +155,7 @@ public class Product {
         this.created_date = created_date;
     }
 
-    private static class Property {
+    public class Property {
 
         private boolean hot;
         private boolean productNew;
@@ -202,10 +202,6 @@ public class Product {
 
         public void setPromo(boolean promo) {
             this.promo = promo;
-        }
-
-        public static void main(String[] args) {
-            System.out.println(2 & 1);
         }
 
     }

@@ -7,7 +7,8 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import servlets.API.APICategoryNews;
+import servlets.API.APIAdminServlet;
+import servlets.API.APICategoryNewsServlet;
 import servlets.API.APICategoryServlet;
 import servlets.API.APINewsServlet;
 import servlets.API.APIProductServlet;
@@ -17,6 +18,10 @@ import servlets.cate_product.AddCategoryServlet;
 import servlets.cate_product.EditCategoryServlet;
 import servlets.cate_product.ManageCategoryProductServlet;
 import servlets.PartialServlet;
+import servlets.admin.AddAdminServlet;
+import servlets.admin.EditAdminServlet;
+import servlets.admin.LoginServlet;
+import servlets.admin.ManageAdminServlet;
 import servlets.cate_news.AddCategoryNewsServlet;
 import servlets.cate_news.EditCategoryNewsServlet;
 import servlets.cate_news.ManageCategoryNewsServlet;
@@ -45,6 +50,8 @@ public class Main {
         context.addServlet(new ServletHolder(new ManageCategoryNewsServlet()), "/admin/cate_news");
         context.addServlet(new ServletHolder(new ManageNewsServlet()), "/admin/news");
         context.addServlet(new ServletHolder(new ManageSlidesServlet()), "/admin/slides");
+        context.addServlet(new ServletHolder(new ManageAdminServlet()), "/admin/mnadmin");
+        context.addServlet(new ServletHolder(new LoginServlet()), "/admin/login");
 
         context.addServlet(new ServletHolder(new ManageIndexServlet()), "/client/index");
 
@@ -54,6 +61,7 @@ public class Main {
         context.addServlet(new ServletHolder(new AddCategoryNewsServlet()), "/admin/cate_news/add");
         context.addServlet(new ServletHolder(new AddNewsServlet()), "/admin/news/add");
         context.addServlet(new ServletHolder(new AddSlidesServlet()), "/admin/slides/add");
+        context.addServlet(new ServletHolder(new AddAdminServlet()), "/admin/mnadmin/add");
 
         context.addServlet(new ServletHolder(new EditCategoryServlet()), "/admin/cate_product/edit");
         context.addServlet(new ServletHolder(new EditSupplierServlet()), "/admin/supplier/edit");
@@ -61,13 +69,15 @@ public class Main {
         context.addServlet(new ServletHolder(new EditCategoryNewsServlet()), "/admin/cate_news/edit");
         context.addServlet(new ServletHolder(new EditNewsServlet()), "/admin/news/edit");
         context.addServlet(new ServletHolder(new EditSlidesServlet()), "/admin/slides/edit");
+        context.addServlet(new ServletHolder(new EditAdminServlet()), "/admin/mnadmin/edit");
 
         context.addServlet(new ServletHolder(new APICategoryServlet()), "/admin/api/cate_product");
         context.addServlet(new ServletHolder(new APISupplierServlet()), "/admin/api/supplier");
         context.addServlet(new ServletHolder(new APIProductServlet()), "/admin/api/product");
-        context.addServlet(new ServletHolder(new APICategoryNews()), "/admin/api/cate_news");
+        context.addServlet(new ServletHolder(new APICategoryNewsServlet()), "/admin/api/cate_news");
         context.addServlet(new ServletHolder(new APINewsServlet()), "/admin/api/news");
         context.addServlet(new ServletHolder(new APISlidesServlet()), "/admin/api/slides");
+        context.addServlet(new ServletHolder(new APIAdminServlet()), "/admin/api/mnadmin");
 
         context.addServlet(new ServletHolder(new PartialServlet()), "/admin/partital/*");
 
