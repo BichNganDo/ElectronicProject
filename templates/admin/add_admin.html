@@ -65,6 +65,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </select>
                                 </div>
                                 <div class="form-group">
+                                    <label>Username</label>
+                                    <input ng-model="username" type="text" class="form-control" placeholder="Username">
+                                </div>
+                                <div class="form-group">
                                     <label>Phone</label>
                                     <input ng-model="phone" type="text" class="form-control" placeholder="Phone">
                                 </div>
@@ -111,31 +115,42 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             $scope.APP_DOMAIN = "http://localhost:8080/";
             $scope.addData = function() {
-                var data = $.param({
-                    name: $scope.name,
-                    role: $scope.role,
-                    phone: $scope.phone,
-                    password: $scope.password,
-                    status: $scope.status
-                })
-                console.log(data);
-                var config = {
-                    headers: {
-                        'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                    }
-                }
-                $http.post($scope.APP_DOMAIN + 'admin/api/mnadmin?action=add', data, config)
-                    .then(function(response) {
-                        $scope.name = "";
-                        $scope.role = "0";
-                        $scope.phone = "";
-                        $scope.password = "";
-                        $scope.status = "0";
-                        showNotification("success", response.data.message);
-                    }, function(error) {
-                        showNotification("error", error.data.message);
+                if ($scope.name && $scope.role && $scope.username && $scope.phone && $scope.password && $scope.status) {
+                    var data = $.param({
+                        name: $scope.name,
+                        role: $scope.role,
+                        username: $scope.username,
+                        phone: $scope.phone,
+                        password: $scope.password,
+                        status: $scope.status
                     })
+                    console.log(data);
+                    var config = {
+                        headers: {
+                            'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                        }
+                    }
+                    $http.post($scope.APP_DOMAIN + 'admin/api/mnadmin?action=add', data, config)
+                        .then(function(response) {
+                            if (response.data.errorCode < 0) {
+                                showNotification("error", response.data.message);
+                            } else {
+                                console.log(response);
+                                $scope.name = "";
+                                $scope.role = "0";
+                                $scope.username = "";
+                                $scope.phone = "";
+                                $scope.password = "";
+                                $scope.status = "0";
+                                showNotification("success", response.data.message);
+                            }
+                        })
+
+                } else {
+                    showNotification("error", "Dữ liệu không hợp lệ!");
+                }
             }
+
 
         })
     </script>

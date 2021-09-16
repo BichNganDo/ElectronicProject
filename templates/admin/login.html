@@ -15,8 +15,8 @@
 </head>
 
 
-<body class="login-page" style="min-height: 512.8px;" ng-app="myApp" ng-controller="LoginController">
-    <div class="login-box">
+<body class="login-page" style="min-height: 512.8px;" ng-app="myApp" ng-cloak>
+    <div class="login-box" ng-controller="mainCtrl">
         <div class="login-logo">
             <a href="../../index2.html"><b>Electronic</b> Store</a>
         </div>
@@ -27,15 +27,15 @@
                 <div ng-form="formlogin">
                     <form action="../../index3.html" method="post">
                         <div class="input-group mb-3">
-                            <input ng-model="user.username" name="email" type="email" class="form-control" placeholder="Email" required>
+                            <input ng-model="admin.phone" type="text" class="form-control" placeholder="Phone" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">
-                                    <span class="fas fa-envelope"></span>
+                                    <span class="fas fa-phone"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="input-group mb-3">
-                            <input ng-model="user.password" name="password" type="password" class="form-control" placeholder="Password" required>
+                            <input ng-model="admin.password" name="password" type="password" class="form-control" placeholder="Password" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-lock"></span>
@@ -53,7 +53,7 @@
                             </div> -->
                             <!-- /.col -->
                             <div class="col-4">
-                                <button ng-click="login(user)" ng-disabled="!formlogin.$valid" type="button" class="btn btn-primary btn-block">Sign In</button>
+                                <button ng-click="login(admin)" ng-disabled="!formlogin.$valid" type="button" class="btn btn-primary btn-block">Sign In</button>
                             </div>
                             <!-- /.col -->
                         </div>
@@ -99,6 +99,33 @@
     <!-- AdminLTE App -->
     <script src="${static_domain}/dist/js/adminlte.min.js"></script>
     <script>
+        var app = angular.module('myApp', []);
+        app.controller('mainCtrl', function($scope, $http, $rootScope) {
+            $scope.APP_DOMAIN = "http://localhost:8080/";
+            $scope.login = function(admin) {
+                var data = $.param({
+                    phone: admin.phone,
+                    password: admin.password
+                });
+                console.log(data);
+                var config = {
+                    headers: {
+                        'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                    }
+                }
+                $http.post($scope.APP_DOMAIN + 'admin/api/login?action=login', data, config)
+                    .then(function(response) {
+                        if (response.data.errorCode >= 0) {
+                            showNotification("success", response.data.message);
+                            //chuyển hướng sang trang khác
+                            window.location.replace("http://localhost:8080/admin/mnadmin");
+                        } else {
+                            showNotification("error", response.data.message);
+                        }
+                    })
+
+            }
+        });
     </script>
 
 

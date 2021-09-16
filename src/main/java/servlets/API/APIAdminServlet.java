@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import common.APIResult;
 import entity.admin.Admin;
 import entity.admin.ListAdmin;
-import entity.category_news.CategoryNews;
-import entity.category_news.ListCategoryNews;
 import helper.ServletUtil;
 import java.io.IOException;
 import java.util.List;
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.AdminModel;
-import model.CategoryNewsModel;
 import org.apache.commons.lang3.math.NumberUtils;
 
 public class APIAdminServlet extends HttpServlet {
@@ -82,11 +79,12 @@ public class APIAdminServlet extends HttpServlet {
             case "add": {
                 String name = request.getParameter("name");
                 int role = NumberUtils.toInt(request.getParameter("role"));
+                String username = request.getParameter("username");
                 String phone = request.getParameter("phone");
                 String password = request.getParameter("password");
                 int status = NumberUtils.toInt(request.getParameter("status"));
 
-                int addAdmin = AdminModel.INSTANCE.addAdmin(name, role, phone, password, status);
+                int addAdmin = AdminModel.INSTANCE.addAdmin(name, role, username, phone, password, status);
 
                 if (addAdmin >= 0) {
                     result.setErrorCode(0);
@@ -101,6 +99,7 @@ public class APIAdminServlet extends HttpServlet {
                 int id = NumberUtils.toInt(request.getParameter("id"));
                 String name = request.getParameter("name");
                 int role = NumberUtils.toInt(request.getParameter("role"));
+                String username = request.getParameter("username");
                 String phone = request.getParameter("phone");
                 String password = request.getParameter("password");
                 int status = NumberUtils.toInt(request.getParameter("status"));
@@ -112,7 +111,7 @@ public class APIAdminServlet extends HttpServlet {
                     return;
                 }
 
-                int editAdmin = AdminModel.INSTANCE.editAdmin(id, name, role, phone, password, status);
+                int editAdmin = AdminModel.INSTANCE.editAdmin(id, name, role, username, phone, password, status);
 
                 if (editAdmin >= 0) {
                     result.setErrorCode(0);

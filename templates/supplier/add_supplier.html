@@ -81,7 +81,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <input ng-model="email" type="email" class="form-control" placeholder="Email">
                                 </div>
                                 <div>
-                                    <button type="submit" ng-click="testthongbao()" class="btn btn-primary">Submit</button>
+                                    <button type="submit" ng-click="addData()" class="btn btn-primary">Submit</button>
                                 </div>
                             </div>
                         </form>
@@ -111,31 +111,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
             $rootScope.lastUri = urltmp.split('#')[0];
 
             $scope.APP_DOMAIN = "http://localhost:8080/";
-            $scope.testthongbao = function() {
-                var data = $.param({
-                    name: $scope.name,
-                    address: $scope.address,
-                    phone: $scope.phone,
-                    email: $scope.email,
-                    fax: $scope.fax
-                })
-                console.log(data);
-                var config = {
-                    headers: {
-                        'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                    }
-                }
-                $http.post($scope.APP_DOMAIN + 'admin/api/supplier?action=add', data, config)
-                    .then(function(response) {
-                        $scope.name = "";
-                        $scope.address = "";
-                        $scope.phone = "";
-                        $scope.email = "";
-                        $scope.fax = "";
-                        showNotification("success", response.data.message);
-                    }, function(error) {
-                        showNotification("error", error.data.message);
+            $scope.addData = function() {
+                if ($scope.name && $scope.address && $scope.phone && $scope.email && $scope.fax) {
+                    var data = $.param({
+                        name: $scope.name,
+                        address: $scope.address,
+                        phone: $scope.phone,
+                        email: $scope.email,
+                        fax: $scope.fax
                     })
+                    console.log(data);
+                    var config = {
+                        headers: {
+                            'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                        }
+                    }
+                    $http.post($scope.APP_DOMAIN + 'admin/api/supplier?action=add', data, config)
+                        .then(function(response) {
+                            $scope.name = "";
+                            $scope.address = "";
+                            $scope.phone = "";
+                            $scope.email = "";
+                            $scope.fax = "";
+                            showNotification("success", response.data.message);
+                        }, function(error) {
+                            showNotification("error", error.data.message);
+                        })
+                } else {
+                    showNotification("error", "Dữ liệu không hợp lệ!");
+                }
+
             }
 
         })

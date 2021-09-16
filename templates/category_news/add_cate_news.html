@@ -69,7 +69,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </select>
                                 </div>
                                 <div>
-                                    <button type="submit" ng-click="testthongbao()" class="btn btn-primary">Submit</button>
+                                    <button type="submit" ng-click="addData()" class="btn btn-primary">Submit</button>
                                 </div>
                             </div>
                         </form>
@@ -98,27 +98,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
             $rootScope.lastUri = urltmp.split('#')[0];
 
             $scope.APP_DOMAIN = "http://localhost:8080/";
-            $scope.testthongbao = function() {
-                var data = $.param({
-                    name: $scope.name,
-                    orders: $scope.orders,
-                    status: $scope.status
-                })
-                console.log(data);
-                var config = {
-                    headers: {
-                        'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                    }
-                }
-                $http.post($scope.APP_DOMAIN + 'admin/api/cate_news?action=add', data, config)
-                    .then(function(response) {
-                        $scope.name = "";
-                        $scope.orders = "";
-                        $scope.status = "0";
-                        showNotification("success", response.data.message);
-                    }, function(error) {
-                        showNotification("error", error.data.message);
+            $scope.addData = function() {
+                if ($scope.name && $scope.orders && $scope.status) {
+                    var data = $.param({
+                        name: $scope.name,
+                        orders: $scope.orders,
+                        status: $scope.status
                     })
+                    console.log(data);
+                    var config = {
+                        headers: {
+                            'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                        }
+                    }
+                    $http.post($scope.APP_DOMAIN + 'admin/api/cate_news?action=add', data, config)
+                        .then(function(response) {
+                            $scope.name = "";
+                            $scope.orders = "";
+                            $scope.status = "0";
+                            showNotification("success", response.data.message);
+                        }, function(error) {
+                            showNotification("error", error.data.message);
+                        })
+                } else {
+                    showNotification("error", "Dữ liệu không hợp lệ!");
+                }
+
             }
 
         })

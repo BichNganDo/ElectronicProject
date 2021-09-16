@@ -126,7 +126,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </div>
                                 </div>
                                 <div>
-                                    <button type="button" ng-click="testthongbao()" class="btn btn-primary">Save</button>
+                                    <button type="button" ng-click="addData()" class="btn btn-primary">Save</button>
                                 </div>
                             </div>
                         </form>
@@ -157,58 +157,61 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             $scope.APP_DOMAIN = "http://localhost:8080/";
 
-            $scope.testthongbao = function() {
-                console.log($scope.hot);
-                console.log($scope.new);
-                console.log($scope.promo);
-                let property = 0;
-                if ($scope.hot) {
-                    property = property + 1;
-                }
-                if ($scope.new) {
-                    property = property + 2;
-                }
-                if ($scope.promo) {
-                    property = property + 4;
-                }
-                console.log(property);
-                var data = $.param({
-                    category: $scope.category,
-                    supplier: $scope.supplier,
-                    name: $scope.name,
-                    price: $scope.price,
-                    price_sale: $scope.price_sale,
-                    quantity: $scope.quantity,
-                    image_url: $scope.image_url,
-                    content: $scope.content,
-                    warranty: $scope.warranty,
-                    property: property
-
-                })
-                console.log(data);
-                var config = {
-                    headers: {
-                        'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+            $scope.addData = function() {
+                if ($scope.category && $scope.supplier && $scope.name && $scope.price && $scope.price_sale &&
+                    $scope.quantity && $scope.image_url && $scope.content && $scope.warranty && property) {
+                    let property = 0;
+                    if ($scope.hot) {
+                        property = property + 1;
                     }
-                }
-                $http.post($scope.APP_DOMAIN + 'admin/api/product?action=add', data, config)
-                    .then(function(response) {
-                        console.log(response);
-                        $scope.category = "0";
-                        $scope.supplier = "0";
-                        $scope.name = "";
-                        $scope.price = "";
-                        $scope.price_sale = "";
-                        $scope.quantity = "";
-                        $scope.image_url = "";
-                        $scope.content = "";
-                        $scope.warranty = "";
-                        $scope.hot = ""
-                        showNotification("success", response.data.message);
-                    }, function(error) {
-                        showNotification("error", error.data.message);
+                    if ($scope.new) {
+                        property = property + 2;
+                    }
+                    if ($scope.promo) {
+                        property = property + 4;
+                    }
+                    console.log(property);
+                    var data = $.param({
+                        category: $scope.category,
+                        supplier: $scope.supplier,
+                        name: $scope.name,
+                        price: $scope.price,
+                        price_sale: $scope.price_sale,
+                        quantity: $scope.quantity,
+                        image_url: $scope.image_url,
+                        content: $scope.content,
+                        warranty: $scope.warranty,
+                        property: property
 
                     })
+                    console.log(data);
+                    var config = {
+                        headers: {
+                            'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                        }
+                    }
+                    $http.post($scope.APP_DOMAIN + 'admin/api/product?action=add', data, config)
+                        .then(function(response) {
+                            console.log(response);
+                            $scope.category = "0";
+                            $scope.supplier = "0";
+                            $scope.name = "";
+                            $scope.price = "";
+                            $scope.price_sale = "";
+                            $scope.quantity = "";
+                            $scope.image_url = "";
+                            $scope.content = "";
+                            $scope.warranty = "";
+                            $scope.hot = ""
+                            showNotification("success", response.data.message);
+                        }, function(error) {
+                            showNotification("error", error.data.message);
+
+                        })
+                } else {
+                    showNotification("error", "Dữ liệu không hợp lệ!");
+                }
+
             }
 
             //load Supplier

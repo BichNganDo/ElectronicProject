@@ -10,6 +10,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import servlets.API.APIAdminServlet;
 import servlets.API.APICategoryNewsServlet;
 import servlets.API.APICategoryServlet;
+import servlets.API.APILoginServlet;
 import servlets.API.APINewsServlet;
 import servlets.API.APIProductServlet;
 import servlets.API.APISlidesServlet;
@@ -78,6 +79,7 @@ public class Main {
         context.addServlet(new ServletHolder(new APINewsServlet()), "/admin/api/news");
         context.addServlet(new ServletHolder(new APISlidesServlet()), "/admin/api/slides");
         context.addServlet(new ServletHolder(new APIAdminServlet()), "/admin/api/mnadmin");
+        context.addServlet(new ServletHolder(new APILoginServlet()), "/admin/api/login");
 
         context.addServlet(new ServletHolder(new PartialServlet()), "/admin/partital/*");
 

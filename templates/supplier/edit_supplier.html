@@ -136,29 +136,34 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             //Save Data da sua
             $scope.saveDataEdit = function() {
-                var data = $.param({
-                    id: $scope.id,
-                    name: $scope.name,
-                    address: $scope.address,
-                    phone: $scope.phone,
-                    email: $scope.email,
-                    fax: $scope.fax
-                })
-                console.log(data);
-                var config = {
-                    headers: {
-                        'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                    }
-                }
-                $http.post($scope.APP_DOMAIN + 'admin/api/supplier?action=edit', data, config)
-                    .then(function(response) {
-                        console.log(response);
-                        showNotification("success", response.data.message);
-                        window.location.replace($scope.APP_DOMAIN + "admin/supplier");
-                    }, function(error) {
-                        console.log(error.data.message);
-                        showNotification("error", error.data.message);
+                if ($scope.name && $scope.address && $scope.phone && $scope.email && $scope.fax) {
+                    var data = $.param({
+                        id: $scope.id,
+                        name: $scope.name,
+                        address: $scope.address,
+                        phone: $scope.phone,
+                        email: $scope.email,
+                        fax: $scope.fax
                     })
+                    console.log(data);
+                    var config = {
+                        headers: {
+                            'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                        }
+                    }
+                    $http.post($scope.APP_DOMAIN + 'admin/api/supplier?action=edit', data, config)
+                        .then(function(response) {
+                            console.log(response);
+                            showNotification("success", response.data.message);
+                            window.location.replace($scope.APP_DOMAIN + "admin/supplier");
+                        }, function(error) {
+                            console.log(error.data.message);
+                            showNotification("error", error.data.message);
+                        })
+                } else {
+                    showNotification("error", "Dữ liệu không hợp lệ!");
+                }
+
             }
 
         })

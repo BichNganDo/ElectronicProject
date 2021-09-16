@@ -142,30 +142,35 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             $scope.saveDataEdit = function() { //item hay biến khác cũng được, không cần phải trùng tên với bên user
                 //lấy dữ liệu về
-                var data = $.param({
-                    id: $scope.id,
-                    categoryNews: $scope.categoryNews,
-                    title: $scope.title,
-                    info: $scope.info,
-                    content: $scope.content,
-                    image: $scope.image
-                });
+                if ($scope.categoryNews && $scope.title && $scope.info && $scope.content && $scope.image) {
+                    var data = $.param({
+                        id: $scope.id,
+                        categoryNews: $scope.categoryNews,
+                        title: $scope.title,
+                        info: $scope.info,
+                        content: $scope.content,
+                        image: $scope.image
+                    });
 
-                console.log(data);
-                var config = {
-                    headers: {
-                        'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                    console.log(data);
+                    var config = {
+                        headers: {
+                            'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                        }
                     }
+                    $http.post($scope.APP_DOMAIN + 'admin/api/news?action=edit', data, config)
+                        .then(function(response) {
+                            // console.log(response);
+                            showNotification("success", response.data.message);
+                            window.location.replace($scope.APP_DOMAIN + "admin/news");
+                        }, function(error) {
+                            // console.log(error.data.message);
+                            showNotification("error", error.data.message);
+                        })
+                } else {
+                    showNotification("error", "Dữ liệu không hợp lệ!");
                 }
-                $http.post($scope.APP_DOMAIN + 'admin/api/news?action=edit', data, config)
-                    .then(function(response) {
-                        // console.log(response);
-                        showNotification("success", response.data.message);
-                        window.location.replace($scope.APP_DOMAIN + "admin/news");
-                    }, function(error) {
-                        // console.log(error.data.message);
-                        showNotification("error", error.data.message);
-                    })
+
             }
 
         })

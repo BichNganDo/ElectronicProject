@@ -104,11 +104,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <th style="width: 9%">
                                             Role
                                         </th>
+                                        <th style="width: 15%">
+                                            Username
+                                        </th>
                                         <th style="width: 9%">
                                             Phone
-                                        </th>
-                                        <th style="width: 15%">
-                                            Password
                                         </th>
                                         <th style="width: 6%">
                                             Status
@@ -132,8 +132,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <span ng-if="item.role==1">Quản lý</span>
                                             <span ng-if="item.role==2">Nhân viên</span>
                                         </td>
+                                        <td>{{item.username}}</td>
                                         <td>{{item.phone}}</td>
-                                        <td>{{item.password}}</td>
                                         <td>
                                             <span ng-if="item.status==1" class="badge badge-info">Show</span>
                                             <span ng-if="item.status==2" class="badge badge-danger">Hide</span>

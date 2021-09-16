@@ -3,7 +3,6 @@ package model;
 import client.MysqlClient;
 import common.ErrorCode;
 import entity.admin.Admin;
-import entity.category_news.CategoryNews;
 import helper.SecurityHelper;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -64,6 +63,7 @@ public class AdminModel {
                 admin.setId(rs.getInt("id"));
                 admin.setName(rs.getString("name"));
                 admin.setRole(rs.getInt("role"));
+                admin.setUsername(rs.getString("username"));
                 admin.setPhone(rs.getString("phone"));
                 admin.setPassword(rs.getString("password"));
                 admin.setStatus(rs.getInt("status"));
@@ -151,6 +151,7 @@ public class AdminModel {
                 result.setId(rs.getInt("id"));
                 result.setName(rs.getString("name"));
                 result.setRole(rs.getInt("role"));
+                result.setUsername(rs.getString("username"));
                 result.setPhone(rs.getString("phone"));
                 result.setPassword(rs.getString("password"));
                 result.setStatus(rs.getInt("status"));
@@ -175,24 +176,50 @@ public class AdminModel {
         return result;
     }
 
-    public int addAdmin(String name, int role, String phone, String password, int status) {
+    public boolean checkExistAccount(String phone) {
+        Connection conn = null;
+        try {
+            conn = dbClient.getDbConnection();
+            if (null == conn) {
+                return false;
+            }
+            PreparedStatement checkPhoneStmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` WHERE  phone = ?");
+            checkPhoneStmt.setString(1, phone);
+            ResultSet rs = checkPhoneStmt.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dbClient.releaseDbConnection(conn);
+        }
+
+        return false;
+    }
+
+    public int addAdmin(String name, int role, String username, String phone, String password, int status) {
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
             if (null == conn) {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
+            if (checkExistAccount(phone)) {
+                return ErrorCode.EXIST_ACCOUNT.getValue();
+            }
             password = SecurityHelper.getMD5Hash(password);
-            PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (name, role, phone, password, status,"
+            PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (name, role, username, phone, password, status,"
                     + "created_date, updated_date) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             addStmt.setString(1, name);
             addStmt.setInt(2, role);
-            addStmt.setString(3, phone);
-            addStmt.setString(4, password);
-            addStmt.setInt(5, status);
-            addStmt.setString(6, System.currentTimeMillis() + "");
+            addStmt.setString(3, username);
+            addStmt.setString(4, phone);
+            addStmt.setString(5, password);
+            addStmt.setInt(6, status);
             addStmt.setString(7, System.currentTimeMillis() + "");
+            addStmt.setString(8, System.currentTimeMillis() + "");
 
             int rs = addStmt.executeUpdate();
 
@@ -206,7 +233,7 @@ public class AdminModel {
         return ErrorCode.FAIL.getValue();
     }
 
-    public int editAdmin(int id, String name, int role, String phone, String password, int status) {
+    public int editAdmin(int id, String name, int role, String username, String phone, String password, int status) {
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
@@ -214,15 +241,16 @@ public class AdminModel {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
             password = SecurityHelper.getMD5Hash(password);
-            PreparedStatement editStmt = conn.prepareStatement("UPDATE `" + NAMETABLE + "` SET name = ?, role = ?, phone = ?, password = ?, "
+            PreparedStatement editStmt = conn.prepareStatement("UPDATE `" + NAMETABLE + "` SET name = ?, role = ?, username = ?, phone = ?, password = ?, "
                     + "status = ?, updated_date = ? WHERE id = ? ");
             editStmt.setString(1, name);
             editStmt.setInt(2, role);
-            editStmt.setString(3, phone);
-            editStmt.setString(4, password);
-            editStmt.setInt(5, status);
-            editStmt.setString(6, System.currentTimeMillis() + "");
-            editStmt.setInt(7, id);
+            editStmt.setString(3, username);
+            editStmt.setString(4, phone);
+            editStmt.setString(5, password);
+            editStmt.setInt(6, status);
+            editStmt.setString(7, System.currentTimeMillis() + "");
+            editStmt.setInt(8, id);
 
             int rs = editStmt.executeUpdate();
 
@@ -286,23 +314,4 @@ public class AdminModel {
         return false;
     }
 
-    private static final String SECRET_KEY = "ngandethuong";
-
-    public static String genAuthenCookie(String phone) {
-        return phone + "," + SecurityHelper.getMD5Hash(phone + SECRET_KEY);
-    }
-
-    public static String getAuthenCookie(String cookie) {
-        String[] arrCookie = cookie.split("\\,");
-        if (arrCookie.length == 2) {
-            String phone = arrCookie[0];
-            String hash = arrCookie[1];
-
-            if (hash.equals(SecurityHelper.getMD5Hash(phone + SECRET_KEY))) {
-                return phone;
-            }
-        }
-
-        return "";
-    }
 }

@@ -65,8 +65,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </select>
                                 </div>
                                 <div class="form-group">
+                                    <label>Username</label>
+                                    <input ng-model="username" type="text" class="form-control" placeholder="Username">
+                                </div>
+                                <div class="form-group">
                                     <label>Phone</label>
-                                    <input ng-model="phone" type="text" class="form-control" placeholder="Phone">
+                                    <input ng-model="phone" type="text" class="form-control" placeholder="Phone" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
@@ -126,6 +130,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 $scope.id = $scope.editAdmin.id;
                 $scope.name = $scope.editAdmin.name;
                 $scope.role = $scope.editAdmin.role + "";
+                $scope.username = $scope.editAdmin.username;
                 $scope.phone = $scope.editAdmin.phone;
                 $scope.password = $scope.editAdmin.password;
                 $scope.status = $scope.editAdmin.status + "";
@@ -133,30 +138,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             $scope.saveDataEdit = function() { //item hay biến khác cũng được, không cần phải trùng tên với bên user
                 //lưu dữ liệu về
-                var data = $.param({
-                    id: $scope.id,
-                    name: $scope.name,
-                    role: $scope.role,
-                    phone: $scope.phone,
-                    password: $scope.password,
-                    status: $scope.status
-                });
+                if ($scope.name && $scope.role && $scope.username && $scope.phone && $scope.password && $scope.status) {
+                    var data = $.param({
+                        id: $scope.id,
+                        name: $scope.name,
+                        role: $scope.role,
+                        username: $scope.username,
+                        phone: $scope.phone,
+                        password: $scope.password,
+                        status: $scope.status
+                    });
 
-                // console.log(data);
-                var config = {
-                    headers: {
-                        'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                    // console.log(data);
+                    var config = {
+                        headers: {
+                            'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                        }
                     }
+                    $http.post($scope.APP_DOMAIN + 'admin/api/mnadmin?action=edit', data, config)
+                        .then(function(response) {
+                            console.log(response);
+                            showNotification("success", response.data.message);
+                            window.location.replace($scope.APP_DOMAIN + "admin/mnadmin");
+                        }, function(error) {
+                            console.log(error.data.message);
+                            showNotification("error", error.data.message);
+                        })
+                } else {
+                    showNotification("error", "Dữ liệu không hợp lệ!");
                 }
-                $http.post($scope.APP_DOMAIN + 'admin/api/mnadmin?action=edit', data, config)
-                    .then(function(response) {
-                        console.log(response);
-                        showNotification("success", response.data.message);
-                        window.location.replace($scope.APP_DOMAIN + "admin/mnadmin");
-                    }, function(error) {
-                        console.log(error.data.message);
-                        showNotification("error", error.data.message);
-                    })
+
             }
 
 
