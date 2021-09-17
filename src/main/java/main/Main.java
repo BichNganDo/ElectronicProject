@@ -1,16 +1,17 @@
 package main;
 
+import javax.servlet.DispatcherType;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import servlets.API.APIAdminServlet;
 import servlets.API.APICategoryNewsServlet;
 import servlets.API.APICategoryServlet;
-import servlets.API.APILoginServlet;
 import servlets.API.APINewsServlet;
 import servlets.API.APIProductServlet;
 import servlets.API.APISlidesServlet;
@@ -22,11 +23,13 @@ import servlets.PartialServlet;
 import servlets.admin.AddAdminServlet;
 import servlets.admin.EditAdminServlet;
 import servlets.admin.LoginServlet;
+import servlets.admin.LogoutServlet;
 import servlets.admin.ManageAdminServlet;
 import servlets.cate_news.AddCategoryNewsServlet;
 import servlets.cate_news.EditCategoryNewsServlet;
 import servlets.cate_news.ManageCategoryNewsServlet;
 import servlets.client.ManageIndexServlet;
+import servlets.filter.AuthenFilter;
 import servlets.news.AddNewsServlet;
 import servlets.news.EditNewsServlet;
 import servlets.news.ManageNewsServlet;
@@ -53,6 +56,7 @@ public class Main {
         context.addServlet(new ServletHolder(new ManageSlidesServlet()), "/admin/slides");
         context.addServlet(new ServletHolder(new ManageAdminServlet()), "/admin/mnadmin");
         context.addServlet(new ServletHolder(new LoginServlet()), "/admin/login");
+        context.addServlet(new ServletHolder(new LogoutServlet()), "/admin/logout");
 
         context.addServlet(new ServletHolder(new ManageIndexServlet()), "/client/index");
 
@@ -79,9 +83,12 @@ public class Main {
         context.addServlet(new ServletHolder(new APINewsServlet()), "/admin/api/news");
         context.addServlet(new ServletHolder(new APISlidesServlet()), "/admin/api/slides");
         context.addServlet(new ServletHolder(new APIAdminServlet()), "/admin/api/mnadmin");
-        context.addServlet(new ServletHolder(new APILoginServlet()), "/admin/api/login");
 
         context.addServlet(new ServletHolder(new PartialServlet()), "/admin/partital/*");
+
+        FilterHolder authenFilter = new FilterHolder(new AuthenFilter());
+        authenFilter.setName("AuthenFilter");
+        context.addFilter(authenFilter, "/admin/*", null);
 
         ContextHandler resourceHandler = new ContextHandler("/static");
         String resource = "./public";

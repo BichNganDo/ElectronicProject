@@ -288,22 +288,39 @@ public class AdminModel {
         return ErrorCode.FAIL.getValue();
     }
 
-    public boolean checkLogin(String phone, String password) {
+    public Admin checkLogin(String phone, String password) {
+        Admin admin = new Admin();
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
             if (null == conn) {
-                return false;
+                return admin;
             }
-            PreparedStatement checkLogin = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` WHERE phone = ? AND password = ?");
-            checkLogin.setString(1, phone);
-            checkLogin.setString(2, password);
-            ResultSet rs = checkLogin.executeQuery();
+            PreparedStatement checkLoginStmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` WHERE phone = ? AND password = ?");
+            checkLoginStmt.setString(1, phone);
+            checkLoginStmt.setString(2, password);
+            ResultSet rs = checkLoginStmt.executeQuery();
             if (rs.next()) {
-                if (rs.getString("phone") != null && !rs.getString("phone").trim().isEmpty()) {
-                    return true;
-                }
+                admin.setId(rs.getInt("id"));
+                admin.setName(rs.getString("name"));
+                admin.setRole(rs.getInt("role"));
+                admin.setUsername(rs.getString("username"));
+                admin.setPhone(rs.getString("phone"));
+                admin.setPassword(rs.getString("password"));
+                admin.setStatus(rs.getInt("status"));
+
+                long currentTimeMillis = rs.getLong("created_date");
+                Date date = new Date(currentTimeMillis);
+                String dateString = sdf.format(date);
+                admin.setCreated_date(dateString);
+
+                long currentTimeUpdated = rs.getLong("updated_date");
+                Date dateUpdated = new Date(currentTimeUpdated);
+                String dateStringUpdated = sdf.format(dateUpdated);
+                admin.setUpdated_date(dateStringUpdated);
             }
+
+            return admin;
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -311,7 +328,7 @@ public class AdminModel {
             dbClient.releaseDbConnection(conn);
         }
 
-        return false;
+        return admin;
     }
 
 }

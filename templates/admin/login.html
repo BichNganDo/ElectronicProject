@@ -27,7 +27,7 @@
                 <div ng-form="formlogin">
                     <form action="../../index3.html" method="post">
                         <div class="input-group mb-3">
-                            <input ng-model="admin.phone" type="text" class="form-control" placeholder="Phone" required>
+                            <input ng-model="admin.phone" type="text" class="form-control" name="phone" placeholder="Phone" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-phone"></span>
@@ -35,7 +35,7 @@
                             </div>
                         </div>
                         <div class="input-group mb-3">
-                            <input ng-model="admin.password" name="password" type="password" class="form-control" placeholder="Password" required>
+                            <input ng-model="admin.password" name="password" type="password" name="password" class="form-control" placeholder="Password" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-lock"></span>
@@ -113,12 +113,12 @@
                         'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
                     }
                 }
-                $http.post($scope.APP_DOMAIN + 'admin/api/login?action=login', data, config)
+                $http.post($scope.APP_DOMAIN + 'admin/login?action=login', data, config)
                     .then(function(response) {
                         if (response.data.errorCode >= 0) {
                             showNotification("success", response.data.message);
                             //chuyển hướng sang trang khác
-                            window.location.replace("http://localhost:8080/admin/mnadmin");
+                            window.location.replace($scope.APP_DOMAIN + "admin/mnadmin");
                         } else {
                             showNotification("error", response.data.message);
                         }
