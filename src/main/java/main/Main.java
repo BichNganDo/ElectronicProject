@@ -9,45 +9,46 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import servlets.API.APIAdminServlet;
-import servlets.API.APICategoryNewsServlet;
-import servlets.API.APICategoryServlet;
-import servlets.API.APINewsServlet;
-import servlets.API.APIProductServlet;
-import servlets.API.APISlidesServlet;
-import servlets.API.APISupplierServlet;
-import servlets.cate_product.AddCategoryServlet;
-import servlets.cate_product.EditCategoryServlet;
-import servlets.cate_product.ManageCategoryProductServlet;
-import servlets.PartialServlet;
-import servlets.admin.AddAdminServlet;
-import servlets.admin.EditAdminServlet;
-import servlets.admin.LoginServlet;
-import servlets.admin.LogoutServlet;
-import servlets.admin.ManageAdminServlet;
-import servlets.cate_news.AddCategoryNewsServlet;
-import servlets.cate_news.EditCategoryNewsServlet;
-import servlets.cate_news.ManageCategoryNewsServlet;
+import servlets.admin.api.APIAdminServlet;
+import servlets.admin.api.APICategoryNewsServlet;
+import servlets.admin.api.APICategoryServlet;
+import servlets.admin.api.APINewsServlet;
+import servlets.admin.api.APIProductServlet;
+import servlets.admin.api.APISlidesServlet;
+import servlets.admin.api.APISupplierServlet;
+import servlets.admin.cate_product.AddCategoryServlet;
+import servlets.admin.cate_product.EditCategoryServlet;
+import servlets.admin.cate_product.ManageCategoryProductServlet;
+import servlets.admin.PartialServlet;
+import servlets.admin.mnadmin.AddAdminServlet;
+import servlets.admin.mnadmin.EditAdminServlet;
+import servlets.admin.mnadmin.LoginServlet;
+import servlets.admin.mnadmin.LogoutServlet;
+import servlets.admin.mnadmin.ManageAdminServlet;
+import servlets.admin.cate_news.AddCategoryNewsServlet;
+import servlets.admin.cate_news.EditCategoryNewsServlet;
+import servlets.admin.cate_news.ManageCategoryNewsServlet;
 import servlets.client.ManageIndexServlet;
-import servlets.filter.AuthenFilter;
-import servlets.news.AddNewsServlet;
-import servlets.news.EditNewsServlet;
-import servlets.news.ManageNewsServlet;
-import servlets.product.AddProductServlet;
-import servlets.product.EditProductServlet;
-import servlets.product.ManageProductServlet;
-import servlets.slides.AddSlidesServlet;
-import servlets.slides.EditSlidesServlet;
-import servlets.slides.ManageSlidesServlet;
-import servlets.supplier.AddSupplierServlet;
-import servlets.supplier.EditSupplierServlet;
-import servlets.supplier.ManageSupplierServlet;
+import servlets.admin.filter.AuthenFilter;
+import servlets.admin.news.AddNewsServlet;
+import servlets.admin.news.EditNewsServlet;
+import servlets.admin.news.ManageNewsServlet;
+import servlets.admin.product.AddProductServlet;
+import servlets.admin.product.EditProductServlet;
+import servlets.admin.product.ManageProductServlet;
+import servlets.admin.slides.AddSlidesServlet;
+import servlets.admin.slides.EditSlidesServlet;
+import servlets.admin.slides.ManageSlidesServlet;
+import servlets.admin.supplier.AddSupplierServlet;
+import servlets.admin.supplier.EditSupplierServlet;
+import servlets.admin.supplier.ManageSupplierServlet;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        //<editor-fold defaultstate="collapsed" desc="Admin Servlet">
         context.addServlet(new ServletHolder(new ManageCategoryProductServlet()), "/admin/cate_product");
         context.addServlet(new ServletHolder(new ManageSupplierServlet()), "/admin/supplier");
         context.addServlet(new ServletHolder(new ManageProductServlet()), "/admin/product");
@@ -57,8 +58,6 @@ public class Main {
         context.addServlet(new ServletHolder(new ManageAdminServlet()), "/admin/mnadmin");
         context.addServlet(new ServletHolder(new LoginServlet()), "/admin/login");
         context.addServlet(new ServletHolder(new LogoutServlet()), "/admin/logout");
-
-        context.addServlet(new ServletHolder(new ManageIndexServlet()), "/client/index");
 
         context.addServlet(new ServletHolder(new AddCategoryServlet()), "/admin/cate_product/add");
         context.addServlet(new ServletHolder(new AddSupplierServlet()), "/admin/supplier/add");
@@ -85,6 +84,9 @@ public class Main {
         context.addServlet(new ServletHolder(new APIAdminServlet()), "/admin/api/mnadmin");
 
         context.addServlet(new ServletHolder(new PartialServlet()), "/admin/partital/*");
+        //</editor-fold>
+
+        context.addServlet(new ServletHolder(new ManageIndexServlet()), "/");
 
         FilterHolder authenFilter = new FilterHolder(new AuthenFilter());
         authenFilter.setName("AuthenFilter");
