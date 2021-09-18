@@ -8,6 +8,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     ${header_include}
 
+
 </head>
 
 <body class="hold-transition sidebar-mini" ng-app="myApp" ng-cloak>
@@ -19,7 +20,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
-
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="${app_domain}/admin/logout" role="button">
+                       Logout <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.navbar -->
@@ -33,12 +40,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Edit News</h1>
+                            <h1 class="m-0">Edit Slides</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Dashbroad</a></li>
-                                <li class="breadcrumb-item active">Manage News </li>
+                                <li class="breadcrumb-item active">Manage Slides</li>
                             </ol>
                         </div>
                     </div>
@@ -53,27 +60,34 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <form>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label>Category News</label>
-                                    <select ng-model="categoryNews" class="form-control">
-                                        <option value="0">Choose the Category News</option>
-                                        <option ng-repeat="item in listCategoryNews" value="{{item.id}}">{{item.name}}</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Title</label>
-                                    <input ng-model="title" type="text" class="form-control" placeholder="Title">
-                                </div>
-                                <div class="form-group">
-                                    <label>Info</label>
-                                    <input ng-model="info" type="text" class="form-control" placeholder="Info">
-                                </div>
-                                <div class="form-group">
-                                    <label>Content</label>
-                                    <textarea ng-model="content" class="form-control" rows="10" placeholder="Content"></textarea>
+                                    <label>Name</label>
+                                    <input ng-model="name" type="text" class="form-control" placeholder="Name">
                                 </div>
                                 <div class="form-group">
                                     <label>Image</label>
                                     <input ng-model="image" type="text" class="form-control" placeholder="Image">
+                                </div>
+                                <div class="form-group">
+                                    <label>Link</label>
+                                    <input ng-model="link" type="text" class="form-control" placeholder="Link">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Orders</label>
+                                            <input ng-model="orders" type="number" class="form-control" placeholder="Orders">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Status</label>
+                                            <select ng-model="status" ng-init="status='0'" class="form-control">
+                                                <option value="0">Choose the Status</option>
+                                                <option value="1">Show</option>
+                                                <option value="2">Hide</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
                                     <button type="button" ng-click="saveDataEdit()" class="btn btn-primary">Save</button>
@@ -97,59 +111,46 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     ${footer_include}
 
+
     <script>
-        var app = angular.module('myApp', []); //ngPagination
+        var app = angular.module('myApp', ['ngPagination']); //ngPagination
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
-            $scope.APP_DOMAIN = "http://localhost:8080/";
             var url = document.URL.split('/');
             var urltmp = url[4].split('?')[0];
             $rootScope.lastUri = urltmp.split('#')[0];
 
+            $scope.APP_DOMAIN = "http://localhost:8080/";
             //getIdNews
-            var id_news = getUrlParameter('id');
+            var id_slides = getUrlParameter('id');
             $http({
                 method: "GET",
-                url: $scope.APP_DOMAIN + "admin/api/news",
+                url: $scope.APP_DOMAIN + "admin/api/slides",
                 params: {
-                    action: 'getNewsById',
-                    id_news: id_news
+                    action: 'getSlidesById',
+                    id_slides: id_slides
 
                 },
             }).then(function(response) {
-                $scope.editNews = response.data.data;
-                console.log($scope.editNews);
-                $scope.id = $scope.editNews.id;
-                $scope.categoryNews = $scope.editNews.idCategoryNews + "";
-                $scope.title = $scope.editNews.title;
-                $scope.info = $scope.editNews.info;
-                $scope.content = $scope.editNews.content;
-                $scope.image = $scope.editNews.image;
-            })
-
-            //load CateNews
-            $http({
-                method: "GET",
-                url: $scope.APP_DOMAIN + "admin/api/cate_news",
-                params: {
-                    action: 'getnews',
-                    page_index: 1,
-                    limit: 100
-                },
-            }).then(function(response) {
-                console.log(response);
-                $scope.listCategoryNews = response.data.data.listCategoryNews;
+                $scope.editSlides = response.data.data;
+                console.log($scope.editSlides);
+                $scope.id = $scope.editSlides.id;
+                $scope.name = $scope.editSlides.name;
+                $scope.image = $scope.editSlides.image;
+                $scope.link = $scope.editSlides.link;
+                $scope.orders = $scope.editSlides.orders;
+                $scope.status = $scope.editSlides.status + "";
             })
 
             $scope.saveDataEdit = function() { //item hay biến khác cũng được, không cần phải trùng tên với bên user
                 //lấy dữ liệu về
-                if ($scope.categoryNews && $scope.title && $scope.info && $scope.content && $scope.image) {
+                if ($scope.name && $scope.image && $scope.link && $scope.orders && $scope.status) {
                     var data = $.param({
                         id: $scope.id,
-                        categoryNews: $scope.categoryNews,
-                        title: $scope.title,
-                        info: $scope.info,
-                        content: $scope.content,
-                        image: $scope.image
+                        name: $scope.name,
+                        image: $scope.image,
+                        link: $scope.link,
+                        orders: $scope.orders,
+                        status: $scope.status
                     });
 
                     console.log(data);
@@ -158,11 +159,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
                         }
                     }
-                    $http.post($scope.APP_DOMAIN + 'admin/api/news?action=edit', data, config)
+                    $http.post($scope.APP_DOMAIN + 'admin/api/slides?action=edit', data, config)
                         .then(function(response) {
                             // console.log(response);
                             showNotification("success", response.data.message);
-                            window.location.replace($scope.APP_DOMAIN + "admin/news");
+                            window.location.replace($scope.APP_DOMAIN + "admin/slides");
                         }, function(error) {
                             // console.log(error.data.message);
                             showNotification("error", error.data.message);
@@ -172,7 +173,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 }
 
             }
-
         })
     </script>
 </body>

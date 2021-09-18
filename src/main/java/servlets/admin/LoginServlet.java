@@ -28,7 +28,7 @@ public class LoginServlet extends HttpServlet {
         pageVariables.put("message", "hello word");
 
         response.setContentType("text/html;charset=UTF-8");
-        response.getWriter().println(PageGenerator.instance().getPage("admin/login.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("admin/mnadmin/login.html", pageVariables));
 
         response.setStatus(HttpServletResponse.SC_OK);
     }

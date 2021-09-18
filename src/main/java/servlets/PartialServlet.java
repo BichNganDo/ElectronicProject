@@ -19,7 +19,7 @@ public class PartialServlet extends HttpServlet {
         pageVariables.put("app_domain", Config.APP_DOMAIN);
         pageVariables.put("static_domain", Config.STATIC_DOMAIN);
 
-        String pathInfo = "include/" + request.getPathInfo().replaceFirst("/", "");
+        String pathInfo = "admin/include/" + request.getPathInfo().replaceFirst("/", "");
 
         response.setContentType("text/html;charset=UTF-8");
         response.getWriter().println(PageGenerator.instance().getPage(pathInfo, pageVariables));

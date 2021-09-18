@@ -20,11 +20,11 @@ public class ManageNewsServlet extends HttpServlet {
 
         Map<String, Object> pageVariablesHeader = new HashMap<>();
         pageVariablesHeader.put("static_domain", Config.STATIC_DOMAIN);
-        pageVariables.put("header_include", PageGenerator.instance().getPage("include/header.html", pageVariablesHeader));
-        pageVariables.put("footer_include", PageGenerator.instance().getPage("include/footer.html", pageVariablesHeader));
+        pageVariables.put("header_include", PageGenerator.instance().getPage("admin/include/header.html", pageVariablesHeader));
+        pageVariables.put("footer_include", PageGenerator.instance().getPage("admin/include/footer.html", pageVariablesHeader));
 
         response.setContentType("text/html;charset=UTF-8");
-        response.getWriter().println(PageGenerator.instance().getPage("news/manage_news.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("admin/news/manage_news.html", pageVariables));
 
         response.setStatus(HttpServletResponse.SC_OK);
     }

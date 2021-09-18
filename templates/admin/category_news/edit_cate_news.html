@@ -19,7 +19,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
-
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="${app_domain}/admin/logout" role="button">
+                       Logout <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.navbar -->
@@ -33,12 +39,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Edit Admin</h1>
+                            <h1 class="m-0">Edit Category News</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Dashbroad</a></li>
-                                <li class="breadcrumb-item active">Manage Admin</li>
+                                <li class="breadcrumb-item active">Manage Category News </li>
                             </ol>
                         </div>
                     </div>
@@ -57,24 +63,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <input ng-model="name" type="text" class="form-control" placeholder="Name">
                                 </div>
                                 <div class="form-group">
-                                    <label>Role</label>
-                                    <select ng-model="role" class="form-control">
-                                        <option value="0">Choose the Role</option>
-                                        <option value="1">Quản lý</option>
-                                        <option value="2">Nhân viên </option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Username</label>
-                                    <input ng-model="username" type="text" class="form-control" placeholder="Username">
-                                </div>
-                                <div class="form-group">
-                                    <label>Phone</label>
-                                    <input ng-model="phone" type="text" class="form-control" placeholder="Phone" disabled>
-                                </div>
-                                <div class="form-group">
-                                    <label>Password</label>
-                                    <input ng-model="password" type="password" class="form-control" placeholder="Password">
+                                    <label>Orders</label>
+                                    <input ng-model="orders" type="number" class="form-control" placeholder="Orders">
                                 </div>
                                 <div class="form-group">
                                     <label>Status</label>
@@ -114,52 +104,46 @@ scratch. This page gets rid of all links and provides the needed markup only.
             $rootScope.lastUri = urltmp.split('#')[0];
 
             $scope.APP_DOMAIN = "http://localhost:8080/";
-            //getIdAdmin
-            var id_admin = getUrlParameter('id');
+            //getIdNews
+            var id_news = getUrlParameter('id');
             $http({
                 method: "GET",
-                url: $scope.APP_DOMAIN + "admin/api/mnadmin",
+                url: $scope.APP_DOMAIN + "admin/api/cate_news",
                 params: {
-                    action: 'getAdminById',
-                    id_admin: id_admin
+                    action: 'getNewsById',
+                    id_news: id_news
 
                 },
             }).then(function(response) {
-                $scope.editAdmin = response.data.data;
-                // console.log($scope.editAdmin);
-                $scope.id = $scope.editAdmin.id;
-                $scope.name = $scope.editAdmin.name;
-                $scope.role = $scope.editAdmin.role + "";
-                $scope.username = $scope.editAdmin.username;
-                $scope.phone = $scope.editAdmin.phone;
-                $scope.password = $scope.editAdmin.password;
-                $scope.status = $scope.editAdmin.status + "";
+                $scope.editNews = response.data.data;
+                console.log($scope.editNews);
+                $scope.id = $scope.editNews.id;
+                $scope.name = $scope.editNews.name;
+                $scope.orders = $scope.editNews.orders;
+                $scope.status = $scope.editNews.status + "";
             })
 
             $scope.saveDataEdit = function() { //item hay biến khác cũng được, không cần phải trùng tên với bên user
-                //lưu dữ liệu về
-                if ($scope.name && $scope.role && $scope.username && $scope.phone && $scope.password && $scope.status) {
+                //lấy dữ liệu về
+                if ($scope.name && $scope.orders && $scope.status) {
                     var data = $.param({
                         id: $scope.id,
                         name: $scope.name,
-                        role: $scope.role,
-                        username: $scope.username,
-                        phone: $scope.phone,
-                        password: $scope.password,
+                        orders: $scope.orders,
                         status: $scope.status
                     });
 
-                    // console.log(data);
+                    console.log(data);
                     var config = {
                         headers: {
                             'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
                         }
                     }
-                    $http.post($scope.APP_DOMAIN + 'admin/api/mnadmin?action=edit', data, config)
+                    $http.post($scope.APP_DOMAIN + 'admin/api/cate_news?action=edit', data, config)
                         .then(function(response) {
                             console.log(response);
                             showNotification("success", response.data.message);
-                            window.location.replace($scope.APP_DOMAIN + "admin/mnadmin");
+                            window.location.replace($scope.APP_DOMAIN + "admin/cate_news");
                         }, function(error) {
                             console.log(error.data.message);
                             showNotification("error", error.data.message);
