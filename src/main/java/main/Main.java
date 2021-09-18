@@ -48,6 +48,8 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+
+        //<editor-fold defaultstate="collapsed" desc="Admin Servlet">
         context.addServlet(new ServletHolder(new ManageCategoryProductServlet()), "/admin/cate_product");
         context.addServlet(new ServletHolder(new ManageSupplierServlet()), "/admin/supplier");
         context.addServlet(new ServletHolder(new ManageProductServlet()), "/admin/product");
@@ -57,8 +59,6 @@ public class Main {
         context.addServlet(new ServletHolder(new ManageAdminServlet()), "/admin/mnadmin");
         context.addServlet(new ServletHolder(new LoginServlet()), "/admin/login");
         context.addServlet(new ServletHolder(new LogoutServlet()), "/admin/logout");
-
-        context.addServlet(new ServletHolder(new ManageIndexServlet()), "/client/index");
 
         context.addServlet(new ServletHolder(new AddCategoryServlet()), "/admin/cate_product/add");
         context.addServlet(new ServletHolder(new AddSupplierServlet()), "/admin/supplier/add");
@@ -85,6 +85,9 @@ public class Main {
         context.addServlet(new ServletHolder(new APIAdminServlet()), "/admin/api/mnadmin");
 
         context.addServlet(new ServletHolder(new PartialServlet()), "/admin/partital/*");
+        //</editor-fold>
+
+        context.addServlet(new ServletHolder(new ManageIndexServlet()), "/");
 
         FilterHolder authenFilter = new FilterHolder(new AuthenFilter());
         authenFilter.setName("AuthenFilter");

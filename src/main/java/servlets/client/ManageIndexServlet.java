@@ -16,7 +16,7 @@ public class ManageIndexServlet extends HttpServlet {
 
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("app_domain", Config.APP_DOMAIN);
-        pageVariables.put("static_domain", Config.STATIC_ADMIN_DOMAIN);
+        pageVariables.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
 
         response.setContentType("text/html;charset=UTF-8");
         response.getWriter().println(PageGenerator.instance().getPage("client/index.html", pageVariables));
