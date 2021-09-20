@@ -28,10 +28,11 @@ public class APIProductServlet extends HttpServlet {
                 String searchQuery = request.getParameter("search_query");
                 int searchCate = NumberUtils.toInt(request.getParameter("search_cate"));
                 int searchSupplier = NumberUtils.toInt(request.getParameter("search_supplier"));
+                int searchProperty = NumberUtils.toInt(request.getParameter("search_property"));
 
                 int offset = (pageIndex - 1) * limit;
-                List<Product> sliceProduct = ProductModel.INSTANCE.getSliceProduct(offset, limit, searchQuery, searchCate, searchSupplier);
-                int totalProduct = ProductModel.INSTANCE.getTotalProduct(searchQuery, searchCate, searchSupplier);
+                List<Product> sliceProduct = ProductModel.INSTANCE.getSliceProduct(offset, limit, searchQuery, searchCate, searchSupplier, searchProperty);
+                int totalProduct = ProductModel.INSTANCE.getTotalProduct(searchQuery, searchCate, searchSupplier, searchProperty);
 
                 ListProduct listProduct = new ListProduct();
                 listProduct.setTotal(totalProduct);

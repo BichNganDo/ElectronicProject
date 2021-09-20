@@ -19,7 +19,7 @@ public class ProductModel {
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     public static ProductModel INSTANCE = new ProductModel();
 
-    public List<Product> getSliceProduct(int offset, int limit, String searchQuery, int searchCate, int searchSupplier) {
+    public List<Product> getSliceProduct(int offset, int limit, String searchQuery, int searchCate, int searchSupplier, int searchProperty) {
         List<Product> resultListProduct = new ArrayList<>();
         Connection conn = null;
         try {
@@ -45,6 +45,10 @@ public class ProductModel {
             if (searchSupplier > 0) {
                 sql = sql + " AND product.id_supplier = ? ";
             }
+
+            if (searchProperty > 0) {
+                sql = sql + " AND product.property = ? ";
+            }
             sql = sql + " LIMIT ? OFFSET ? ";
             PreparedStatement ps = conn.prepareStatement(sql);
             int param = 1;
@@ -59,6 +63,10 @@ public class ProductModel {
 
             if (searchSupplier > 0) {
                 ps.setInt(param++, searchSupplier);
+            }
+
+            if (searchProperty > 0) {
+                ps.setInt(param++, searchProperty);
             }
 
             ps.setInt(param++, limit);
@@ -99,7 +107,7 @@ public class ProductModel {
         return resultListProduct;
     }
 
-    public int getTotalProduct(String searchQuery, int searchCate, int searchSupplier) {
+    public int getTotalProduct(String searchQuery, int searchCate, int searchSupplier, int searchProperty) {
         int total = 0;
         Connection conn = null;
         try {
@@ -120,6 +128,11 @@ public class ProductModel {
             if (searchSupplier > 0) {
                 sql = sql + " AND product.id_supplier = ? ";
             }
+
+            if (searchProperty > 0) {
+                sql = sql + " AND product.property = ? ";
+            }
+
             PreparedStatement ps = conn.prepareStatement(sql);
             int param = 1;
 
@@ -133,6 +146,10 @@ public class ProductModel {
 
             if (searchSupplier > 0) {
                 ps.setInt(param++, searchSupplier);
+            }
+
+            if (searchProperty > 0) {
+                ps.setInt(param++, searchProperty);
             }
 
             ResultSet rs = ps.executeQuery();

@@ -57,7 +57,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-sm-5">
+                                <div class="col-sm-6">
                                     <div class="input-group">
                                         <input ng-model="search_query" type="text" name="search" class="form-control" placeholder="Search">
                                         <div class="input-group-append">
@@ -78,7 +78,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </div>
                                 </div>
 
-                                <div class="col-sm-3 text-right">
+                                <div class="col-sm-2 text-right">
                                     <a class="btn btn-primary" href="/admin/cate_product/add">
                                         <i class="fas fa-plus"></i> Add Category
                                     </a>
@@ -197,7 +197,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         page_index: $scope.selectedPageIndex,
                         limit: 10,
                         search_query: $scope.search_query,
-                        search_status: $scope.search_status
+                        search_status: $scope.search_status,
                     },
                 }).then(function(response) {
                     console.log(response);
