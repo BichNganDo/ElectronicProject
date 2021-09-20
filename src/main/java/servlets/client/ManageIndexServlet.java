@@ -2,6 +2,7 @@ package servlets.client;
 
 import common.Config;
 import entity.category_product.CategoryProduct;
+import entity.product.Product;
 import entity.slides.Slides;
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.CategoryProductModel;
+import model.ProductModel;
 import model.SlidesModel;
 import templater.PageGenerator;
 
@@ -28,6 +30,14 @@ public class ManageIndexServlet extends HttpServlet {
         List<Slides> listSlideStatusShow = SlidesModel.INSTANCE.getSliceSlides(0, 50, "", 1);
         pageVariables.put("list_slides", listSlideStatusShow);
 
+        List<Product> listProductPromo = ProductModel.INSTANCE.getSliceProduct(0, 12, "", 0, 0, 4);
+        pageVariables.put("list_products", listProductPromo);
+
+        List<Product> listProductHot = ProductModel.INSTANCE.getSliceProduct(0, 12, "", 0, 0, 1);
+        pageVariables.put("list_products_hot", listProductHot);
+
+        List<Product> listProductNew = ProductModel.INSTANCE.getSliceProduct(0, 12, "", 0, 0, 2);
+        pageVariables.put("list_products_new", listProductNew);
         response.setContentType("text/html;charset=UTF-8");
         response.getWriter().println(PageGenerator.instance().getPage("client/index.html", pageVariables));
 

@@ -88,6 +88,10 @@ public class ProductModel {
                 product.setContent(rs.getString("content"));
                 product.setWarranty(rs.getString("warranty"));
                 product.setProperty(rs.getInt("property"));
+                product.setView(rs.getInt("view"));
+
+                int discount = ProductModel.INSTANCE.percentDiscount(product.getPrice(), product.getPrice_sale());
+                product.setDiscount(discount);
 
                 long currentTimeMillis = rs.getLong("created_date");
                 Date date = new Date(currentTimeMillis);
@@ -105,6 +109,15 @@ public class ProductModel {
         }
 
         return resultListProduct;
+    }
+
+    public int percentDiscount(int price, int priceSale) {
+        int tu = (price - priceSale);
+        int percentDiscount = 0;
+        if (price > 0) {
+            percentDiscount = tu * 100 / price;
+        }
+        return percentDiscount;
     }
 
     public int getTotalProduct(String searchQuery, int searchCate, int searchSupplier, int searchProperty) {
@@ -191,6 +204,9 @@ public class ProductModel {
                 result.setContent(rs.getString("content"));
                 result.setWarranty(rs.getString("warranty"));
                 result.setProperty(rs.getInt("property"));
+                result.setView(rs.getInt("view"));
+                int discount = ProductModel.INSTANCE.percentDiscount(result.getPrice(), result.getPrice_sale());
+                result.setDiscount(discount);
 
                 long currentTimeMillis = rs.getLong("created_date");
                 Date date = new Date(currentTimeMillis);
@@ -217,8 +233,8 @@ public class ProductModel {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
             PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (id_cate, id_supplier, name, price, price_sale, "
-                    + "quantity, image_url, content, warranty, property, created_date ) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    + "quantity, image_url, content, warranty, property, created_date, view ) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)");
             addStmt.setInt(1, id_cate);
             addStmt.setInt(2, id_supplier);
             addStmt.setString(3, name);

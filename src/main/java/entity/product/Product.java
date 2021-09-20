@@ -16,13 +16,13 @@ public class Product {
     private String warranty;
     private Property property;
     private String created_date;
+    private int discount;
+    private int view;
 
     public Product() {
     }
 
-    public Product(int id, int id_cate, int id_supplier, String category, String supplier,
-            String name, int price, int price_sale, int quantity, String image_url, String content,
-            String warranty, Property property, String created_date) {
+    public Product(int id, int id_cate, int id_supplier, String category, String supplier, String name, int price, int price_sale, int quantity, String image_url, String content, String warranty, Property property, String created_date, int discount, int view) {
         this.id = id;
         this.id_cate = id_cate;
         this.id_supplier = id_supplier;
@@ -37,6 +37,8 @@ public class Product {
         this.warranty = warranty;
         this.property = property;
         this.created_date = created_date;
+        this.discount = discount;
+        this.view = view;
     }
 
     public int getId() {
@@ -153,6 +155,22 @@ public class Product {
 
     public void setCreated_date(String created_date) {
         this.created_date = created_date;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    public int getView() {
+        return view;
+    }
+
+    public void setView(int view) {
+        this.view = view;
     }
 
     public class Property {
