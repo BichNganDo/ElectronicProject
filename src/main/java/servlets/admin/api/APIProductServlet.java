@@ -2,6 +2,7 @@ package servlets.admin.api;
 
 import com.google.gson.Gson;
 import common.APIResult;
+import entity.product.FilterProduct;
 import entity.product.ListProduct;
 import entity.product.Product;
 import helper.ServletUtil;
@@ -23,16 +24,26 @@ public class APIProductServlet extends HttpServlet {
         String action = request.getParameter("action");
         switch (action) {
             case "getproduct": {
+                FilterProduct filterProduct = new FilterProduct();
                 int pageIndex = NumberUtils.toInt(request.getParameter("page_index"));
                 int limit = NumberUtils.toInt(request.getParameter("limit"), 10);
                 String searchQuery = request.getParameter("search_query");
                 int searchCate = NumberUtils.toInt(request.getParameter("search_cate"));
                 int searchSupplier = NumberUtils.toInt(request.getParameter("search_supplier"));
                 int searchProperty = NumberUtils.toInt(request.getParameter("search_property"));
-
+                int orderView = NumberUtils.toInt(request.getParameter("order_view"));
                 int offset = (pageIndex - 1) * limit;
-                List<Product> sliceProduct = ProductModel.INSTANCE.getSliceProduct(offset, limit, searchQuery, searchCate, searchSupplier, searchProperty);
-                int totalProduct = ProductModel.INSTANCE.getTotalProduct(searchQuery, searchCate, searchSupplier, searchProperty);
+
+                filterProduct.setLimit(limit);
+                filterProduct.setOffset(offset);
+                filterProduct.setSearchQuery(searchQuery);
+                filterProduct.setSearchCate(searchCate);
+                filterProduct.setSearchSupplier(searchSupplier);
+                filterProduct.setSearchProperty(searchProperty);
+                filterProduct.setOrderView(orderView);
+
+                List<Product> sliceProduct = ProductModel.INSTANCE.getSliceProduct(filterProduct);
+                int totalProduct = ProductModel.INSTANCE.getTotalProduct(filterProduct);
 
                 ListProduct listProduct = new ListProduct();
                 listProduct.setTotal(totalProduct);

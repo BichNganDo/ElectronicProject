@@ -2,6 +2,8 @@ package model;
 
 import client.MysqlClient;
 import common.ErrorCode;
+import entity.category_product.CategoryProduct;
+import entity.product.FilterProduct;
 import entity.product.Product;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +11,9 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 public class ProductModel {
@@ -19,7 +23,7 @@ public class ProductModel {
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     public static ProductModel INSTANCE = new ProductModel();
 
-    public List<Product> getSliceProduct(int offset, int limit, String searchQuery, int searchCate, int searchSupplier, int searchProperty) {
+    public List<Product> getSliceProduct(FilterProduct filterProduct) {
         List<Product> resultListProduct = new ArrayList<>();
         Connection conn = null;
         try {
@@ -34,43 +38,47 @@ public class ProductModel {
                     + "INNER JOIN category_product ON product.id_cate= category_product.id "
                     + "INNER JOIN supplier ON product.id_supplier = supplier.id WHERE 1=1";
 
-            if (StringUtils.isNotEmpty(searchQuery)) {
+            if (StringUtils.isNotEmpty(filterProduct.getSearchQuery())) {
                 sql = sql + " AND product.name LIKE ? ";
             }
 
-            if (searchCate > 0) {
+            if (filterProduct.getSearchCate() > 0) {
                 sql = sql + " AND product.id_cate = ? ";
             }
 
-            if (searchSupplier > 0) {
+            if (filterProduct.getSearchSupplier() > 0) {
                 sql = sql + " AND product.id_supplier = ? ";
             }
 
-            if (searchProperty > 0) {
+            if (filterProduct.getSearchProperty() > 0) {
                 sql = sql + " AND product.property = ? ";
+            }
+
+            if (filterProduct.getOrderView() > 0) {
+                sql = sql + " ORDER BY product.view DESC ";
             }
             sql = sql + " LIMIT ? OFFSET ? ";
             PreparedStatement ps = conn.prepareStatement(sql);
             int param = 1;
 
-            if (StringUtils.isNotEmpty(searchQuery)) {
-                ps.setString(param++, "%" + searchQuery + "%");
+            if (StringUtils.isNotEmpty(filterProduct.getSearchQuery())) {
+                ps.setString(param++, "%" + filterProduct.getSearchQuery() + "%");
             }
 
-            if (searchCate > 0) {
-                ps.setInt(param++, searchCate);
+            if (filterProduct.getSearchCate() > 0) {
+                ps.setInt(param++, filterProduct.getSearchCate());
             }
 
-            if (searchSupplier > 0) {
-                ps.setInt(param++, searchSupplier);
+            if (filterProduct.getSearchSupplier() > 0) {
+                ps.setInt(param++, filterProduct.getSearchSupplier());
             }
 
-            if (searchProperty > 0) {
-                ps.setInt(param++, searchProperty);
+            if (filterProduct.getSearchProperty() > 0) {
+                ps.setInt(param++, filterProduct.getSearchProperty());
             }
 
-            ps.setInt(param++, limit);
-            ps.setInt(param++, offset);
+            ps.setInt(param++, filterProduct.getLimit());
+            ps.setInt(param++, filterProduct.getOffset());
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -120,7 +128,29 @@ public class ProductModel {
         return percentDiscount;
     }
 
-    public int getTotalProduct(String searchQuery, int searchCate, int searchSupplier, int searchProperty) {
+    public Map<Integer, List<Product>> multiGetProductByCategory(List<CategoryProduct> listCategory) {
+        Map<Integer, List<Product>> result = new HashMap<>();
+        for (int i = 0; i < listCategory.size(); i++) {
+            CategoryProduct category = listCategory.get(i);
+            int id = category.getId();
+
+            FilterProduct filterProduct = new FilterProduct();
+            filterProduct.setOffset(0);
+            filterProduct.setLimit(16);
+            filterProduct.setSearchCate(id);
+            filterProduct.setSearchProperty(0);
+            filterProduct.setSearchQuery("");
+            filterProduct.setSearchSupplier(0);
+            filterProduct.setOrderView(0);
+
+            List<Product> listProduct = ProductModel.INSTANCE.getSliceProduct(filterProduct);
+            result.put(id, listProduct);
+        }
+        return result;
+
+    }
+
+    public int getTotalProduct(FilterProduct filterProduct) {
         int total = 0;
         Connection conn = null;
         try {
@@ -130,39 +160,43 @@ public class ProductModel {
             }
 
             String sql = "SELECT COUNT(id) AS total FROM `" + NAMETABLE + "` WHERE 1 = 1";
-            if (StringUtils.isNotEmpty(searchQuery)) {
+            if (StringUtils.isNotEmpty(filterProduct.getSearchQuery())) {
                 sql = sql + " AND product.name LIKE ? ";
             }
 
-            if (searchCate > 0) {
+            if (filterProduct.getSearchCate() > 0) {
                 sql = sql + " AND product.id_cate = ? ";
             }
 
-            if (searchSupplier > 0) {
+            if (filterProduct.getSearchSupplier() > 0) {
                 sql = sql + " AND product.id_supplier = ? ";
             }
 
-            if (searchProperty > 0) {
+            if (filterProduct.getSearchProperty() > 0) {
                 sql = sql + " AND product.property = ? ";
+            }
+
+            if (filterProduct.getOrderView() > 0) {
+                sql = sql + " ORDER BY product.view DESC ";
             }
 
             PreparedStatement ps = conn.prepareStatement(sql);
             int param = 1;
 
-            if (StringUtils.isNotEmpty(searchQuery)) {
-                ps.setString(param++, "%" + searchQuery + "%");
+            if (StringUtils.isNotEmpty(filterProduct.getSearchQuery())) {
+                ps.setString(param++, "%" + filterProduct.getSearchQuery() + "%");
             }
 
-            if (searchCate > 0) {
-                ps.setInt(param++, searchCate);
+            if (filterProduct.getSearchCate() > 0) {
+                ps.setInt(param++, filterProduct.getSearchCate());
             }
 
-            if (searchSupplier > 0) {
-                ps.setInt(param++, searchSupplier);
+            if (filterProduct.getSearchSupplier() > 0) {
+                ps.setInt(param++, filterProduct.getSearchSupplier());
             }
 
-            if (searchProperty > 0) {
-                ps.setInt(param++, searchProperty);
+            if (filterProduct.getSearchProperty() > 0) {
+                ps.setInt(param++, filterProduct.getSearchProperty());
             }
 
             ResultSet rs = ps.executeQuery();

@@ -19,7 +19,7 @@ public class CategoryProductModel {
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     public static CategoryProductModel INSTANCE = new CategoryProductModel();
 
-    public List<CategoryProduct> getSliceCategory(int offset, int limit, String searchQuery, int searchStatus) {
+    public List<CategoryProduct> getSliceCategory(int offset, int limit, String searchQuery, int searchStatus, int hot) {
         List<CategoryProduct> resultListCategory = new ArrayList<>();
         Connection conn = null;
         try {
@@ -38,6 +38,10 @@ public class CategoryProductModel {
 
             if (searchStatus > 0) {
                 sql = sql + " AND c.status = ? ";
+            }
+
+            if (hot > 0) {
+                sql = sql + " AND c.hot = 1 ";
             }
 
             sql = sql + " ORDER BY `orders` DESC LIMIT ? OFFSET ? ";
@@ -65,6 +69,7 @@ public class CategoryProductModel {
                 categoryProduct.setOrders(rs.getInt("orders"));
                 categoryProduct.setStatus(rs.getInt("status"));
                 categoryProduct.setCate_parent(rs.getString("cate_parent"));
+                categoryProduct.setHot(rs.getInt("hot"));
 
                 long currentTimeMillis = rs.getLong("created_date");
                 Date date = new Date(currentTimeMillis);
@@ -172,7 +177,7 @@ public class CategoryProductModel {
         return result;
     }
 
-    public int addCategory(String name, int id_parent, int orders, int status) {
+    public int addCategory(String name, int id_parent, int orders, int status, int hot) {
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
@@ -180,15 +185,16 @@ public class CategoryProductModel {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
 
-            PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (name, id_parent, orders, status,"
+            PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (name, id_parent, orders, status, hot,"
                     + "created_date, updated_date) "
-                    + "VALUES (?, ?, ?, ?, ?, ?)");
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?)");
             addStmt.setString(1, name);
             addStmt.setInt(2, id_parent);
             addStmt.setInt(3, orders);
             addStmt.setInt(4, status);
-            addStmt.setString(5, System.currentTimeMillis() + "");
+            addStmt.setInt(5, hot);
             addStmt.setString(6, System.currentTimeMillis() + "");
+            addStmt.setString(7, System.currentTimeMillis() + "");
 
             int rs = addStmt.executeUpdate();
 
@@ -202,7 +208,7 @@ public class CategoryProductModel {
         return ErrorCode.FAIL.getValue();
     }
 
-    public int editCategory(int id, String name, int id_parent, int orders, int status) {
+    public int editCategory(int id, String name, int id_parent, int orders, int status, int hot) {
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
@@ -211,13 +217,14 @@ public class CategoryProductModel {
             }
 
             PreparedStatement editStmt = conn.prepareStatement("UPDATE `" + NAMETABLE + "` SET name = ?, id_parent = ?, orders = ?, "
-                    + "status = ?, updated_date = ? WHERE id = ? ");
+                    + "status = ?, hot = ?, updated_date = ? WHERE id = ? ");
             editStmt.setString(1, name);
             editStmt.setInt(2, id_parent);
             editStmt.setInt(3, orders);
             editStmt.setInt(4, status);
-            editStmt.setString(5, System.currentTimeMillis() + "");
-            editStmt.setInt(6, id);
+            editStmt.setInt(5, hot);
+            editStmt.setString(6, System.currentTimeMillis() + "");
+            editStmt.setInt(7, id);
 
             int rs = editStmt.executeUpdate();
 

@@ -1,5 +1,8 @@
 package entity.category_product;
 
+import entity.product.Product;
+import java.util.List;
+
 public class CategoryProduct {
 
     private int id;
@@ -10,11 +13,12 @@ public class CategoryProduct {
     private String created_date;
     private String updated_date;
     private String cate_parent;
+    private int hot;
 
     public CategoryProduct() {
     }
 
-    public CategoryProduct(int id, String name, int id_parent, int orders, int status, String created_date, String updated_date, String cate_parent) {
+    public CategoryProduct(int id, String name, int id_parent, int orders, int status, String created_date, String updated_date, String cate_parent, int hot) {
         this.id = id;
         this.name = name;
         this.id_parent = id_parent;
@@ -23,6 +27,7 @@ public class CategoryProduct {
         this.created_date = created_date;
         this.updated_date = updated_date;
         this.cate_parent = cate_parent;
+        this.hot = hot;
     }
 
     public int getId() {
@@ -87,6 +92,14 @@ public class CategoryProduct {
 
     public void setCate_parent(String cate_parent) {
         this.cate_parent = cate_parent;
+    }
+
+    public int getHot() {
+        return hot;
+    }
+
+    public void setHot(int hot) {
+        this.hot = hot;
     }
 
 }

@@ -27,9 +27,9 @@ public class APICategoryServlet extends HttpServlet {
                 int limit = NumberUtils.toInt(request.getParameter("limit"), 10);
                 String searchQuery = request.getParameter("search_query");
                 int searchStatus = NumberUtils.toInt(request.getParameter("search_status"));
-
+                int hot = NumberUtils.toInt(request.getParameter("hot"));
                 int offset = (pageIndex - 1) * limit;
-                List<CategoryProduct> listCategory = CategoryProductModel.INSTANCE.getSliceCategory(offset, limit, searchQuery, searchStatus);
+                List<CategoryProduct> listCategory = CategoryProductModel.INSTANCE.getSliceCategory(offset, limit, searchQuery, searchStatus, hot);
                 int totalCategory = CategoryProductModel.INSTANCE.getTotalCategory(searchQuery, searchStatus);
 
                 ListCategoryProduct listCategoryProduct = new ListCategoryProduct();
@@ -82,8 +82,9 @@ public class APICategoryServlet extends HttpServlet {
                 int id_parent = NumberUtils.toInt(request.getParameter("id_parent"));
                 int orders = NumberUtils.toInt(request.getParameter("orders"));
                 int status = NumberUtils.toInt(request.getParameter("status"));
+                int hot = NumberUtils.toInt(request.getParameter("hot"));
 
-                int addCategory = CategoryProductModel.INSTANCE.addCategory(name, id_parent, orders, status);
+                int addCategory = CategoryProductModel.INSTANCE.addCategory(name, id_parent, orders, status, hot);
 
                 if (addCategory >= 0) {
                     result.setErrorCode(0);
@@ -100,6 +101,7 @@ public class APICategoryServlet extends HttpServlet {
                 int id_parent = NumberUtils.toInt(request.getParameter("id_parent"));
                 int orders = NumberUtils.toInt(request.getParameter("orders"));
                 int status = NumberUtils.toInt(request.getParameter("status"));
+                int hot = NumberUtils.toInt(request.getParameter("hot"));
 
                 CategoryProduct categoryByID = CategoryProductModel.INSTANCE.getCategoryByID(id);
                 if (categoryByID.getId() == 0) {
@@ -108,7 +110,7 @@ public class APICategoryServlet extends HttpServlet {
                     return;
                 }
 
-                int editCategory = CategoryProductModel.INSTANCE.editCategory(id, name, id_parent, orders, status);
+                int editCategory = CategoryProductModel.INSTANCE.editCategory(id, name, id_parent, orders, status, hot);
 
                 if (editCategory >= 0) {
                     result.setErrorCode(0);

@@ -69,12 +69,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <div class="col-sm-4">
                                     <div class="input-group">
                                         <select ng-model="search_status" ng-change="getListCategory()" class="form-control">
-                                            <option value="0">Choose the status</option>
+                                            <option value="0">Filter status</option>
                                             <option value="1">Show</option>
                                             <option value="2">Hide</option>
-                                            
-                                          </select>
-
+                                        </select>
                                     </div>
                                 </div>
 
@@ -106,7 +104,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <th style="width: 1%">
                                             Id
                                         </th>
-                                        <th style="width: 20%">
+                                        <th style="width: 17%">
                                             Name
                                         </th>
                                         <th style="width: 10%">
@@ -118,10 +116,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <th style="width: 10%">
                                             Status
                                         </th>
-                                        <th style="width: 15%">
+                                        <th style="width: 5%">
+                                            Hot
+                                        </th>
+                                        <th style="width: 14%">
                                             Created Date
                                         </th>
-                                        <th style="width: 15%">
+                                        <th style="width: 14%">
                                             Updated Date
                                         </th>
                                         <th>
@@ -139,6 +140,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             <span ng-if="item.status==1" class="badge badge-info">Show</span>
                                             <span ng-if="item.status==2" class="badge badge-danger">Hide</span>
                                         </td>
+                                        <td>{{item.hot}}</td>
                                         <td>{{item.created_date}}</td>
                                         <td>{{item.updated_date}}</td>
                                         <td class="project-actions text-right">

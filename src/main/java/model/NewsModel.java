@@ -40,7 +40,7 @@ public class NewsModel {
                 sql = sql + " AND news.id_cate_news = ? ";
             }
 
-            sql = sql + " LIMIT ? OFFSET ? ";
+            sql = sql + " ORDER BY `created_date` DESC LIMIT ? OFFSET ? ";
 
             PreparedStatement ps = conn.prepareStatement(sql);
             int param = 1;

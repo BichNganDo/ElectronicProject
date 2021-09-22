@@ -1414,7 +1414,7 @@
                                         </li>
                                     </ul>
                                     <div class="tab-content space-db--30" id="myTabContent">
-                                        <div class="tab-pane  active" id="shop" role="tabpanel" aria-labelledby="shop-tab">
+                                        <div class="tab-pane active" id="shop" role="tabpanel" aria-labelledby="shop-tab">
                                             <div class="product-slider multiple-row slider-border-multiple-row  sb-slick-slider" data-slick-setting='{
                                                 "autoplay": true,
                                                 "autoplaySpeed": 8000,
@@ -1460,8 +1460,10 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="price-block">
-                                                                    <span class="price">${product.price} đ</span>
-                                                                    <del class="price-old">${product.price_sale} đ</del>
+                                                                    <span class="price">${product.price_sale} đ</span>
+                                                                    <#if product.price gt product.price_sale>
+                                                                        <del class="price-old">${product.price}</del>
+                                                                    </#if>
 
                                                                     <#if product.discount gt 0>
                                                                         <span class="price-discount">${product.discount} %</span>
@@ -1520,8 +1522,10 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="price-block">
-                                                                    <span class="price">${product.price}</span>
-                                                                    <del class="price-old">${product.price_sale}</del>
+                                                                    <span class="price">${product.price_sale}</span>
+                                                                    <#if product.price gt product.price_sale>
+                                                                        <del class="price-old">${product.price}</del>
+                                                                    </#if>
                                                                     <#if product.discount gt 0>
                                                                         <span class="price-discount">${product.discount} %</span>
                                                                     </#if>
@@ -1546,486 +1550,51 @@
                                                     {"breakpoint":480, "settings": {"slidesToShow": 1} },
                                                     {"breakpoint":320, "settings": {"slidesToShow": 1} }
                                                 ]'>
-                                                <div class="single-slide">
-                                                    <div class="product-card">
-                                                        <div class="product-header">
-                                                            <a href="" class="author">
-                                                                Apple
-                                                            </a>
-                                                            <h3><a href="product-details.html">iPad with
-                                                                        Retina Display</a></h3>
-                                                        </div>
-                                                        <div class="product-card--body">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-1.jpg" alt="">
-                                                                <div class="hover-contents">
-                                                                    <a href="product-details.html" class="hover-image">
-                                                                        <img src="${static_domain}/image/products/product-1.jpg" alt="">
-                                                                    </a>
-                                                                    <div class="hover-btns">
-                                                                        <a href="cart.html" class="single-btn">
-                                                                            <i class="fas fa-shopping-basket"></i>
+                                                <#list list_products_view as product>
+                                                    <div class="single-slide">
+                                                        <div class="product-card">
+                                                            <div class="product-header">
+                                                                <a href="" class="author">
+                                                                    <!-- Apple -->
+                                                                </a>
+                                                                <h3><a href="product-details.html">${product.name}</a></h3>
+                                                            </div>
+                                                            <div class="product-card--body">
+                                                                <div class="card-image">
+                                                                    <img src="${product.image_url}" alt="">
+                                                                    <div class="hover-contents">
+                                                                        <a href="product-details.html" class="hover-image">
+                                                                            <img src="${product.image_url}" alt="">
                                                                         </a>
-                                                                        <a href="wishlist.html" class="single-btn">
-                                                                            <i class="fas fa-heart"></i>
-                                                                        </a>
-                                                                        <a href="compare.html" class="single-btn">
-                                                                            <i class="fas fa-random"></i>
-                                                                        </a>
-                                                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </a>
+                                                                        <div class="hover-btns">
+                                                                            <a href="cart.html" class="single-btn">
+                                                                                <i class="fas fa-shopping-basket"></i>
+                                                                            </a>
+                                                                            <a href="wishlist.html" class="single-btn">
+                                                                                <i class="fas fa-heart"></i>
+                                                                            </a>
+                                                                            <a href="compare.html" class="single-btn">
+                                                                                <i class="fas fa-random"></i>
+                                                                            </a>
+                                                                            <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
+                                                                                <i class="fas fa-eye"></i>
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="price-block">
-                                                                <span class="price">£51.20</span>
-                                                                <del class="price-old">£51.20</del>
-                                                                <span class="price-discount">20%</span>
+                                                                <div class="price-block">
+                                                                    <span class="price">${product.price_sale}</span>
+                                                                    <#if product.price gt product.price_sale>
+                                                                        <del class="price-old">${product.price}</del>
+                                                                    </#if>
+                                                                    <#if product.discount gt 0>
+                                                                        <span class="price-discount">${product.discount} %</span>
+                                                                    </#if>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="single-slide">
-                                                    <div class="product-card">
-                                                        <div class="product-header">
-                                                            <a href="" class="author">
-                                                                Apple
-                                                            </a>
-                                                            <h3><a href="product-details.html">iPad with
-                                                                        Retina Display</a></h3>
-                                                        </div>
-                                                        <div class="product-card--body">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-2.jpg" alt="">
-                                                                <div class="hover-contents">
-                                                                    <a href="product-details.html" class="hover-image">
-                                                                        <img src="${static_domain}/image/products/product-3.jpg" alt="">
-                                                                    </a>
-                                                                    <div class="hover-btns">
-                                                                        <a href="cart.html" class="single-btn">
-                                                                            <i class="fas fa-shopping-basket"></i>
-                                                                        </a>
-                                                                        <a href="wishlist.html" class="single-btn">
-                                                                            <i class="fas fa-heart"></i>
-                                                                        </a>
-                                                                        <a href="compare.html" class="single-btn">
-                                                                            <i class="fas fa-random"></i>
-                                                                        </a>
-                                                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="price-block">
-                                                                <span class="price">£51.20</span>
-                                                                <del class="price-old">£51.20</del>
-                                                                <span class="price-discount">20%</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="single-slide">
-                                                    <div class="product-card">
-                                                        <div class="product-header">
-                                                            <a href="" class="author">
-                                                                Apple
-                                                            </a>
-                                                            <h3><a href="product-details.html">iPad with
-                                                                        Retina Display</a></h3>
-                                                        </div>
-                                                        <div class="product-card--body">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-3.jpg" alt="">
-                                                                <div class="hover-contents">
-                                                                    <a href="product-details.html" class="hover-image">
-                                                                        <img src="${static_domain}/image/products/product-2.jpg" alt="">
-                                                                    </a>
-                                                                    <div class="hover-btns">
-                                                                        <a href="cart.html" class="single-btn">
-                                                                            <i class="fas fa-shopping-basket"></i>
-                                                                        </a>
-                                                                        <a href="wishlist.html" class="single-btn">
-                                                                            <i class="fas fa-heart"></i>
-                                                                        </a>
-                                                                        <a href="compare.html" class="single-btn">
-                                                                            <i class="fas fa-random"></i>
-                                                                        </a>
-                                                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="price-block">
-                                                                <span class="price">£51.20</span>
-                                                                <del class="price-old">£51.20</del>
-                                                                <span class="price-discount">20%</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="single-slide">
-                                                    <div class="product-card">
-                                                        <div class="product-header">
-                                                            <a href="" class="author">
-                                                                Apple
-                                                            </a>
-                                                            <h3><a href="product-details.html">iPad with
-                                                                        Retina Display</a></h3>
-                                                        </div>
-                                                        <div class="product-card--body">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-4.jpg" alt="">
-                                                                <div class="hover-contents">
-                                                                    <a href="product-details.html" class="hover-image">
-                                                                        <img src="${static_domain}/image/products/product-5.jpg" alt="">
-                                                                    </a>
-                                                                    <div class="hover-btns">
-                                                                        <a href="cart.html" class="single-btn">
-                                                                            <i class="fas fa-shopping-basket"></i>
-                                                                        </a>
-                                                                        <a href="wishlist.html" class="single-btn">
-                                                                            <i class="fas fa-heart"></i>
-                                                                        </a>
-                                                                        <a href="compare.html" class="single-btn">
-                                                                            <i class="fas fa-random"></i>
-                                                                        </a>
-                                                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="price-block">
-                                                                <span class="price">£51.20</span>
-                                                                <del class="price-old">£51.20</del>
-                                                                <span class="price-discount">20%</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="single-slide">
-                                                    <div class="product-card">
-                                                        <div class="product-header">
-                                                            <a href="" class="author">
-                                                                Apple
-                                                            </a>
-                                                            <h3><a href="product-details.html">iPad with
-                                                                        Retina Display</a></h3>
-                                                        </div>
-                                                        <div class="product-card--body">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-5.jpg" alt="">
-                                                                <div class="hover-contents">
-                                                                    <a href="product-details.html" class="hover-image">
-                                                                        <img src="${static_domain}/image/products/product-4.jpg" alt="">
-                                                                    </a>
-                                                                    <div class="hover-btns">
-                                                                        <a href="cart.html" class="single-btn">
-                                                                            <i class="fas fa-shopping-basket"></i>
-                                                                        </a>
-                                                                        <a href="wishlist.html" class="single-btn">
-                                                                            <i class="fas fa-heart"></i>
-                                                                        </a>
-                                                                        <a href="compare.html" class="single-btn">
-                                                                            <i class="fas fa-random"></i>
-                                                                        </a>
-                                                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="price-block">
-                                                                <span class="price">£51.20</span>
-                                                                <del class="price-old">£51.20</del>
-                                                                <span class="price-discount">20%</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="single-slide">
-                                                    <div class="product-card">
-                                                        <div class="product-header">
-                                                            <a href="" class="author">
-                                                                Apple
-                                                            </a>
-                                                            <h3><a href="product-details.html">iPad with
-                                                                        Retina Display</a></h3>
-                                                        </div>
-                                                        <div class="product-card--body">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-6.jpg" alt="">
-                                                                <div class="hover-contents">
-                                                                    <a href="product-details.html" class="hover-image">
-                                                                        <img src="${static_domain}/image/products/product-7.jpg" alt="">
-                                                                    </a>
-                                                                    <div class="hover-btns">
-                                                                        <a href="cart.html" class="single-btn">
-                                                                            <i class="fas fa-shopping-basket"></i>
-                                                                        </a>
-                                                                        <a href="wishlist.html" class="single-btn">
-                                                                            <i class="fas fa-heart"></i>
-                                                                        </a>
-                                                                        <a href="compare.html" class="single-btn">
-                                                                            <i class="fas fa-random"></i>
-                                                                        </a>
-                                                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="price-block">
-                                                                <span class="price">£51.20</span>
-                                                                <del class="price-old">£51.20</del>
-                                                                <span class="price-discount">20%</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="single-slide">
-                                                    <div class="product-card">
-                                                        <div class="product-header">
-                                                            <a href="" class="author">
-                                                                Apple
-                                                            </a>
-                                                            <h3><a href="product-details.html">iPad with
-                                                                        Retina Display</a></h3>
-                                                        </div>
-                                                        <div class="product-card--body">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-7.jpg" alt="">
-                                                                <div class="hover-contents">
-                                                                    <a href="product-details.html" class="hover-image">
-                                                                        <img src="${static_domain}/image/products/product-6.jpg" alt="">
-                                                                    </a>
-                                                                    <div class="hover-btns">
-                                                                        <a href="cart.html" class="single-btn">
-                                                                            <i class="fas fa-shopping-basket"></i>
-                                                                        </a>
-                                                                        <a href="wishlist.html" class="single-btn">
-                                                                            <i class="fas fa-heart"></i>
-                                                                        </a>
-                                                                        <a href="compare.html" class="single-btn">
-                                                                            <i class="fas fa-random"></i>
-                                                                        </a>
-                                                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="price-block">
-                                                                <span class="price">£51.20</span>
-                                                                <del class="price-old">£51.20</del>
-                                                                <span class="price-discount">20%</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="single-slide">
-                                                    <div class="product-card">
-                                                        <div class="product-header">
-                                                            <a href="" class="author">
-                                                                Apple
-                                                            </a>
-                                                            <h3><a href="product-details.html">iPad with
-                                                                        Retina Display</a></h3>
-                                                        </div>
-                                                        <div class="product-card--body">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-8.jpg" alt="">
-                                                                <div class="hover-contents">
-                                                                    <a href="product-details.html" class="hover-image">
-                                                                        <img src="${static_domain}/image/products/product-9.jpg" alt="">
-                                                                    </a>
-                                                                    <div class="hover-btns">
-                                                                        <a href="cart.html" class="single-btn">
-                                                                            <i class="fas fa-shopping-basket"></i>
-                                                                        </a>
-                                                                        <a href="wishlist.html" class="single-btn">
-                                                                            <i class="fas fa-heart"></i>
-                                                                        </a>
-                                                                        <a href="compare.html" class="single-btn">
-                                                                            <i class="fas fa-random"></i>
-                                                                        </a>
-                                                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="price-block">
-                                                                <span class="price">£51.20</span>
-                                                                <del class="price-old">£51.20</del>
-                                                                <span class="price-discount">20%</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="single-slide">
-                                                    <div class="product-card">
-                                                        <div class="product-header">
-                                                            <a href="" class="author">
-                                                                Apple
-                                                            </a>
-                                                            <h3><a href="product-details.html">iPad with
-                                                                        Retina Display</a></h3>
-                                                        </div>
-                                                        <div class="product-card--body">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-9.jpg" alt="">
-                                                                <div class="hover-contents">
-                                                                    <a href="product-details.html" class="hover-image">
-                                                                        <img src="${static_domain}/image/products/product-8.jpg" alt="">
-                                                                    </a>
-                                                                    <div class="hover-btns">
-                                                                        <a href="cart.html" class="single-btn">
-                                                                            <i class="fas fa-shopping-basket"></i>
-                                                                        </a>
-                                                                        <a href="wishlist.html" class="single-btn">
-                                                                            <i class="fas fa-heart"></i>
-                                                                        </a>
-                                                                        <a href="compare.html" class="single-btn">
-                                                                            <i class="fas fa-random"></i>
-                                                                        </a>
-                                                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="price-block">
-                                                                <span class="price">£51.20</span>
-                                                                <del class="price-old">£51.20</del>
-                                                                <span class="price-discount">20%</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="single-slide">
-                                                    <div class="product-card">
-                                                        <div class="product-header">
-                                                            <a href="" class="author">
-                                                                Apple
-                                                            </a>
-                                                            <h3><a href="product-details.html">iPad with
-                                                                        Retina Display</a></h3>
-                                                        </div>
-                                                        <div class="product-card--body">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-10.jpg" alt="">
-                                                                <div class="hover-contents">
-                                                                    <a href="product-details.html" class="hover-image">
-                                                                        <img src="${static_domain}/image/products/product-11.jpg" alt="">
-                                                                    </a>
-                                                                    <div class="hover-btns">
-                                                                        <a href="cart.html" class="single-btn">
-                                                                            <i class="fas fa-shopping-basket"></i>
-                                                                        </a>
-                                                                        <a href="wishlist.html" class="single-btn">
-                                                                            <i class="fas fa-heart"></i>
-                                                                        </a>
-                                                                        <a href="compare.html" class="single-btn">
-                                                                            <i class="fas fa-random"></i>
-                                                                        </a>
-                                                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="price-block">
-                                                                <span class="price">£51.20</span>
-                                                                <del class="price-old">£51.20</del>
-                                                                <span class="price-discount">20%</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="single-slide">
-                                                    <div class="product-card">
-                                                        <div class="product-header">
-                                                            <a href="" class="author">
-                                                                Apple
-                                                            </a>
-                                                            <h3><a href="product-details.html">iPad with
-                                                                        Retina Display</a></h3>
-                                                        </div>
-                                                        <div class="product-card--body">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-11.jpg" alt="">
-                                                                <div class="hover-contents">
-                                                                    <a href="product-details.html" class="hover-image">
-                                                                        <img src="${static_domain}/image/products/product-10.jpg" alt="">
-                                                                    </a>
-                                                                    <div class="hover-btns">
-                                                                        <a href="cart.html" class="single-btn">
-                                                                            <i class="fas fa-shopping-basket"></i>
-                                                                        </a>
-                                                                        <a href="wishlist.html" class="single-btn">
-                                                                            <i class="fas fa-heart"></i>
-                                                                        </a>
-                                                                        <a href="compare.html" class="single-btn">
-                                                                            <i class="fas fa-random"></i>
-                                                                        </a>
-                                                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="price-block">
-                                                                <span class="price">£51.20</span>
-                                                                <del class="price-old">£51.20</del>
-                                                                <span class="price-discount">20%</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="single-slide">
-                                                    <div class="product-card">
-                                                        <div class="product-header">
-                                                            <a href="" class="author">
-                                                                Apple
-                                                            </a>
-                                                            <h3><a href="product-details.html">iPad with
-                                                                        Retina Display</a></h3>
-                                                        </div>
-                                                        <div class="product-card--body">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-12.jpg" alt="">
-                                                                <div class="hover-contents">
-                                                                    <a href="product-details.html" class="hover-image">
-                                                                        <img src="${static_domain}/image/products/product-11.jpg" alt="">
-                                                                    </a>
-                                                                    <div class="hover-btns">
-                                                                        <a href="cart.html" class="single-btn">
-                                                                            <i class="fas fa-shopping-basket"></i>
-                                                                        </a>
-                                                                        <a href="wishlist.html" class="single-btn">
-                                                                            <i class="fas fa-heart"></i>
-                                                                        </a>
-                                                                        <a href="compare.html" class="single-btn">
-                                                                            <i class="fas fa-random"></i>
-                                                                        </a>
-                                                                        <a href="#" data-toggle="modal" data-target="#quickModal" class="single-btn">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="price-block">
-                                                                <span class="price">£51.20</span>
-                                                                <del class="price-old">£51.20</del>
-                                                                <span class="price-discount">20%</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                </#list>
                                             </div>
                                         </div>
                                     </div>
@@ -2049,25 +1618,19 @@
                                 <div class="home-right-block bg-white">
                                     <div class="sb-custom-tab text-lg-left text-center">
                                         <ul class="nav nav-tabs nav-style-2" id="myTab2" role="tablist">
-                                            <li class="nav-item">
-                                                <a class="nav-link active" id="shop-tab2" data-toggle="tab" href="#shop2" role="tab" aria-controls="shop2" aria-selected="true">
-                                                    ARTS & PHOTOGRAPHY
+                                            <#list list_category_hot as category>
+                                                <li class="nav-item">
+                                                    <a class="nav-link <#if category?index == 0>active</#if>" id="shop-tab2" data-toggle="tab" href="#tabCate_${category.id}" role="tab" aria-controls="shop2" aria-selected="true">
+                                                   ${category.name}
                                                 </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" id="men-tab2" data-toggle="tab" href="#men2" role="tab" aria-controls="men2" aria-selected="true">
-                                                    CHILDREN'S BOOKS
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" id="woman-tab2" data-toggle="tab" href="#woman2" role="tab" aria-controls="woman2" aria-selected="false">
-                                                    BIOGRAPHIES
-                                                </a>
-                                            </li>
+                                                </li>
+                                            </#list>
+
                                         </ul>
                                         <div class="tab-content" id="myTabContent2">
-                                            <div class="tab-pane show active" id="shop2" role="tabpanel" aria-labelledby="shop-tab2">
-                                                <div class="product-slider product-list-slider multiple-row slider-border-multiple-row  sb-slick-slider" data-slick-setting='{
+                                            <#list list_category_hot as category>
+                                                <div class="tab-pane <#if category?index == 0>active</#if>" id="tabCate_${category.id}" role="tabpanel" aria-labelledby="shop-tab2">
+                                                    <div class="product-slider product-list-slider multiple-row slider-border-multiple-row  sb-slick-slider" data-slick-setting='{
                                                         "autoplay": true,
                                                         "autoplaySpeed": 8000,
                                                         "slidesToShow": 2,
@@ -2078,1053 +1641,41 @@
                     
                                                         {"breakpoint":768, "settings": {"slidesToShow": 1} }
                                                     ]'>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-1.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Fpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">5 Ways To Get
-                                                                            Through To Your BOOK</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-2.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Gpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">What Can You Do
-                                                                            To Save Your BOOK</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-3.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Hpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">From Destruction
-                                                                            By Social Media?</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-4.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Gpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Find Out More
-                                                                            About BOOK ?</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-5.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Dpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">
-                                                                            Controversial BOOK By Social Media?</a>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-6.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Cpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Koss
-                                                                            Lightweight Portable Headphone</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-7.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Apple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Ways To Have
-                                                                            Appealing BOOK</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-8.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Xpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Ways To Have
-                                                                            Appealing BOOK</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-9.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Tpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">In 10 Minutes,
-                                                                            I'll Give Truth About</a>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-10.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Fpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">What Can You Do
-                                                                            To Save Your BOOK</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-11.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Fpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">From Destruction
-                                                                            By Social Media?</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-12.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Spple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Lorem ipsum dolor
-                                                                            sit amet reasons</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-13.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Kpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Find Out More
-                                                                            About BOOK ?</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-1.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Apple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">
-                                                                            Controversial BOOK By Social Media?</a>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-2.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Apple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">iPad with
-                                                                            Retina ready Display </a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-5.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Gpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Koss
-                                                                            Lightweight Portable Headphone</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+
+                                                        <#list list_product_by_cate as k, cproducts>
+                                                            <#if k==category.id>
+                                                                <#list cproducts as product>
+                                                                    <div class="single-slide">
+                                                                        <div class="product-card card-style-list">
+                                                                            <div class="card-image">
+                                                                                <img src="${product.image_url}" alt="">
+                                                                            </div>
+                                                                            <div class="product-card--body">
+                                                                                <div class="product-header">
+                                                                                    <a href="" class="author">
+                                                                                        <!-- dsds -->
+                                                                                    </a>
+                                                                                    <h3><a href="product-details.html">${product.name}</a></h3>
+                                                                                </div>
+                                                                                <div class="price-block">
+                                                                                    <span class="price">${product.price_sale}</span>
+                                                                                    <#if product.price gt product.price_sale>
+                                                                                        <del class="price-old">${product.price}</del>
+                                                                                    </#if>
+
+                                                                                    <#if product.discount gt 0>
+                                                                                        <span class="price-discount">${product.discount} %</span>
+                                                                                    </#if>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </#list>
+                                                            </#if>
+                                                        </#list>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="tab-pane" id="men2" role="tabpanel" aria-labelledby="men-tab2">
-                                                <div class="product-slider product-list-slider multiple-row slider-border-multiple-row  sb-slick-slider" data-slick-setting='{
-                                                        "autoplay": true,
-                                                        "autoplaySpeed": 8000,
-                                                        "slidesToShow": 2,
-                                                        "rows":4,
-                                                        "dots":true
-                                                    }' data-slick-responsive='[
-                                                        {"breakpoint":992, "settings": {"slidesToShow": 2,"rows": 3} },
-                    
-                                                        {"breakpoint":768, "settings": {"slidesToShow": 1} }
-                                                    ]'>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-1.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Fpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">5 Ways To Get
-                                                                            Through To Your BOOK</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-2.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Gpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">What Can You Do
-                                                                            To Save Your BOOK</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-3.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Hpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">From Destruction
-                                                                            By Social Media?</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-4.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Gpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Find Out More
-                                                                            About BOOK ?</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-5.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Dpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">
-                                                                            Controversial BOOK By Social Media?</a>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-6.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Cpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Koss
-                                                                            Lightweight Portable Headphone</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-7.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Apple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Ways To Have
-                                                                            Appealing BOOK</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-8.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Xpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Ways To Have
-                                                                            Appealing BOOK</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-9.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Tpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">In 10 Minutes,
-                                                                            I'll Give Truth About</a>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-10.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Fpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">What Can You Do
-                                                                            To Save Your BOOK</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-11.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Fpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">From Destruction
-                                                                            By Social Media?</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-12.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Spple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Find Out More
-                                                                        About BOOK By Social Media?</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-13.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Kpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Find Out More
-                                                                            About BOOK ?</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-1.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Apple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">
-                                                                            Controversial BOOK By Social Media?</a>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-2.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Apple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">iPad with
-                                                                            Retina ready Display </a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-5.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Gpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Koss
-                                                                            Lightweight Portable Headphone</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane" id="woman2" role="tabpanel" aria-labelledby="woman-tab2">
-                                                <div class="product-slider product-list-slider multiple-row slider-border-multiple-row  sb-slick-slider" data-slick-setting='{
-                                                            "autoplay": true,
-                                                            "autoplaySpeed": 8000,
-                                                            "slidesToShow": 2,
-                                                            "rows":4,
-                                                            "dots":true
-                                                        }' data-slick-responsive='[
-                                                            {"breakpoint":992, "settings": {"slidesToShow": 2,"rows": 3} },
-                        
-                                                            {"breakpoint":768, "settings": {"slidesToShow": 1} }
-                                                        ]'>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-1.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Fpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">5 Ways To Get
-                                                                            Through To Your BOOK</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-2.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Gpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">What Can You Do
-                                                                            To Save Your BOOK</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-3.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Hpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">From Destruction
-                                                                            By Social Media?</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-4.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Gpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Find Out More
-                                                                            About BOOK ?</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-5.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Dpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">
-                                                                            Controversial BOOK By Social Media?</a>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-6.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Cpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Koss
-                                                                            Lightweight Portable Headphone</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-7.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Apple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Ways To Have
-                                                                            Appealing BOOK</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-8.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Xpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Ways To Have
-                                                                            Appealing BOOK</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-9.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Tpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">In 10 Minutes,
-                                                                            I'll Give Truth About</a>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-10.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Fpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">What Can You Do
-                                                                            To Save Your BOOK</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-11.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Fpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">From Destruction
-                                                                            By Social Media?</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-12.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Spple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Find Out More
-                                                                        About BOOK By Social Media?</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-13.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Kpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Find Out More
-                                                                            About BOOK ?</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-1.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Apple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">
-                                                                            Controversial BOOK By Social Media?</a>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-2.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Apple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">iPad with
-                                                                            Retina ready Display </a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-slide">
-                                                        <div class="product-card card-style-list">
-                                                            <div class="card-image">
-                                                                <img src="${static_domain}/image/products/product-5.jpg" alt="">
-                                                            </div>
-                                                            <div class="product-card--body">
-                                                                <div class="product-header">
-                                                                    <a href="" class="author">
-                                                                        Gpple
-                                                                    </a>
-                                                                    <h3><a href="product-details.html">Koss
-                                                                            Lightweight Portable Headphone</a></h3>
-                                                                </div>
-                                                                <div class="price-block">
-                                                                    <span class="price">£51.20</span>
-                                                                    <del class="price-old">£51.20</del>
-                                                                    <span class="price-discount">20%</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            </#list>
                                         </div>
                                     </div>
                                 </div>
@@ -3136,90 +1687,37 @@
                         "slidesToShow": 1,
                         "dots": true
                     }'>
-                                    <div class="single-slide">
-                                        <div class="blog-card">
-                                            <div class="image">
-                                                <img src="${static_domain}/image/others/home-blog-1.jpg" alt="">
-                                            </div>
-                                            <div class="content">
-                                                <div class="content-header">
-                                                    <div class="date-badge">
+                                    <#list list_news as news>
+                                        <div class="single-slide">
+                                            <div class="blog-card">
+                                                <div class="image">
+                                                    <img src="${news.image}" alt="" width="270px" height="250pxpx">
+                                                </div>
+                                                <div class="content">
+                                                    <div class="content-header">
+                                                        <!-- <div class="date-badge">
                                                         <span class="date">
                                                             30
                                                         </span>
                                                         <span class="month">
                                                             OCT
                                                         </span>
+                                                    </div> -->
+                                                        <h3 class="title"><a href="blog-details.html">${news.title}</a></h3>
                                                     </div>
-                                                    <h3 class="title"><a href="blog-details.html">How to Water and Care
-                                                            for Mounted</a></h3>
-                                                </div>
-                                                <p class="meta-para"><i class="fas fa-user-edit"></i>Post by <a href="#">Hastech</a></p>
-                                                <article class="blog-paragraph">
-                                                    <h2 class="sr-only">blog-paragraph</h2>
-                                                    <p>Virtual reality and 3-D technology are already well-established in the entertainment...</p>
-                                                </article>
-                                                <a href="blog-details.html" class="card-link">Read More <i
+                                                    <p class="meta-para"><i class="fas fa-calendar-alt"></i>${news.created_date}</p>
+                                                    <article class="blog-paragraph">
+                                                        <h2 class="sr-only">blog-paragraph</h2>
+                                                        <p>${news.info}</p>
+                                                    </article>
+                                                    <a href="blog-details.html" class="card-link">Read More <i
                                                         class="fas fa-chevron-circle-right"></i></a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="single-slide">
-                                        <div class="blog-card">
-                                            <div class="image">
-                                                <img src="${static_domain}/image/others/home-blog-2.jpg" alt="">
-                                            </div>
-                                            <div class="content">
-                                                <div class="content-header">
-                                                    <div class="date-badge">
-                                                        <span class="date">
-                                                            30
-                                                        </span>
-                                                        <span class="month">
-                                                            OCT
-                                                        </span>
-                                                    </div>
-                                                    <h3 class="title"><a href="blog-details.html">How to Grow Epiphytic
-                                                            Tropical Plants</a></h3>
-                                                </div>
-                                                <p class="meta-para"><i class="fas fa-user-edit"></i>Post by <a href="#">Hastech</a></p>
-                                                <article class="blog-paragraph">
-                                                    <h2 class="sr-only">blog-paragraph</h2>
-                                                    <p>Virtual reality and 3-D technology are already well-established in the entertainment...</p>
-                                                </article>
-                                                <a href="blog-details.html" class="card-link">Read More <i
-                                                        class="fas fa-chevron-circle-right"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="single-slide">
-                                        <div class="blog-card">
-                                            <div class="image">
-                                                <img src="${static_domain}/image/others/home-blog-1.jpg" alt="">
-                                            </div>
-                                            <div class="content">
-                                                <div class="content-header">
-                                                    <div class="date-badge">
-                                                        <span class="date">
-                                                            30
-                                                        </span>
-                                                        <span class="month">
-                                                            OCT
-                                                        </span>
-                                                    </div>
-                                                    <h3 class="title"><a href="blog-details.html">How To Pot Up and Care
-                                                            For Juvenile</a></h3>
-                                                </div>
-                                                <p class="meta-para"><i class="fas fa-user-edit"></i>Post by <a href="#">Hastech</a></p>
-                                                <article class="blog-paragraph">
-                                                    <h2 class="sr-only">blog-paragraph</h2>
-                                                    <p>Virtual reality and 3-D technology are already well-established in the entertainment...</p>
-                                                </article>
-                                                <a href="blog-details.html" class="card-link">Read More <i
-                                                        class="fas fa-chevron-circle-right"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </#list>
+
+
                                 </div>
                             </div>
                         </div>

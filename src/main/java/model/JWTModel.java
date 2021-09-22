@@ -15,7 +15,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class JWTModel {
 
     private static final String SECRET_KEY = "asdfSFS34wfsdfsdfSDSD32dfsddDDerQSNCK34SOWEK5354fdgdf4";
-    private static final long _1_HOUR_IN_MILI = 3600000;
+    private static final long _1_DAY_IN_MILI = 86400000;
     public static JWTModel INSTANCE = new JWTModel();
 
     private JWTModel() {
@@ -26,7 +26,7 @@ public class JWTModel {
                 SignatureAlgorithm.HS256.getJcaName());
 
         Date now = new Date(System.currentTimeMillis());
-        Date expire = new Date(System.currentTimeMillis() + _1_HOUR_IN_MILI);
+        Date expire = new Date(System.currentTimeMillis() + _1_DAY_IN_MILI);
         System.out.println(now);
         String jwtToken = Jwts.builder()
                 .claim("username", username)
