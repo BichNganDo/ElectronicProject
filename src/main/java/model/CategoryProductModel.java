@@ -94,6 +94,38 @@ public class CategoryProductModel {
         return resultListCategory;
     }
 
+    public List<CategoryProduct> getAllCategory() {
+        List<CategoryProduct> allCategory = INSTANCE.getSliceCategory(0, 50, "", 1, 0);
+        List<CategoryProduct> newListCategory = new ArrayList<>();
+        for (int i = 0; i < allCategory.size(); i++) {
+            CategoryProduct category = allCategory.get(i);
+            if (category.getId() == 19) {
+                System.out.println("zzzzzzz");
+            }
+            if (category.getId_parent() > 0) {
+                CategoryProduct parentCategory = INSTANCE.searchByID(allCategory, category.getId_parent());
+                if (parentCategory != null) {
+                    parentCategory.addSubCategory(category);
+                }
+            } else {
+                newListCategory.add(category);
+            }
+
+        }
+        return newListCategory;
+    }
+
+    public CategoryProduct searchByID(List<CategoryProduct> allCategory, int id) {
+        for (int i = 0; i < allCategory.size(); i++) {
+            CategoryProduct category = allCategory.get(i);
+            if (category.getId() == id) {
+                return category;
+            }
+
+        }
+        return null;
+    }
+
     public int getTotalCategory(String searchQuery, int searchStatus) {
         int total = 0;
         Connection conn = null;
@@ -156,6 +188,7 @@ public class CategoryProductModel {
                 result.setId_parent(rs.getInt("id_parent"));
                 result.setOrders(rs.getInt("orders"));
                 result.setStatus(rs.getInt("status"));
+                result.setHot(rs.getInt("hot"));
 
                 long currentTimeMillis = rs.getLong("created_date");
                 Date date = new Date(currentTimeMillis);

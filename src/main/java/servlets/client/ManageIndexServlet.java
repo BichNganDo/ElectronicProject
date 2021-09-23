@@ -28,6 +28,9 @@ public class ManageIndexServlet extends HttpServlet {
         pageVariables.put("app_domain", Config.APP_DOMAIN);
         pageVariables.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
 
+        List<CategoryProduct> allCategory = CategoryProductModel.INSTANCE.getAllCategory();
+        pageVariables.put("list_category", allCategory);
+
         List<News> listNews = NewsModel.INSTANCE.getSliceNews(0, 5, "", 0);
         pageVariables.put("list_news", listNews);
 
