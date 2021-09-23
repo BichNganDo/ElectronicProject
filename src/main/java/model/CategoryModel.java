@@ -12,12 +12,12 @@ import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
-public class CategoryProductModel {
+public class CategoryModel {
 
     private static final MysqlClient dbClient = MysqlClient.getMysqlCli();
     private final String NAMETABLE = "category_product";
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-    public static CategoryProductModel INSTANCE = new CategoryProductModel();
+    public static CategoryModel INSTANCE = new CategoryModel();
 
     public List<CategoryProduct> getSliceCategory(int offset, int limit, String searchQuery, int searchStatus, int hot) {
         List<CategoryProduct> resultListCategory = new ArrayList<>();

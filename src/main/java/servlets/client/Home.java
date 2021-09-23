@@ -14,13 +14,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.CategoryProductModel;
+import model.CategoryModel;
 import model.NewsModel;
 import model.ProductModel;
 import model.SlidesModel;
 import templater.PageGenerator;
 
-public class ManageIndexServlet extends HttpServlet {
+public class Home extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -28,13 +28,13 @@ public class ManageIndexServlet extends HttpServlet {
         pageVariables.put("app_domain", Config.APP_DOMAIN);
         pageVariables.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
 
-        List<CategoryProduct> allCategory = CategoryProductModel.INSTANCE.getAllCategory();
+        List<CategoryProduct> allCategory = CategoryModel.INSTANCE.getAllCategory();
         pageVariables.put("list_category", allCategory);
 
         List<News> listNews = NewsModel.INSTANCE.getSliceNews(0, 5, "", 0);
         pageVariables.put("list_news", listNews);
 
-        List<CategoryProduct> listCategoryHot = CategoryProductModel.INSTANCE.getSliceCategory(0, 3, "", 1, 1);
+        List<CategoryProduct> listCategoryHot = CategoryModel.INSTANCE.getSliceCategory(0, 3, "", 1, 1);
         pageVariables.put("list_category_hot", listCategoryHot);
         Map<Integer, List<Product>> listProductByCategory = ProductModel.INSTANCE.multiGetProductByCategory(listCategoryHot);
         pageVariables.put("list_product_by_cate", listProductByCategory);
@@ -85,6 +85,11 @@ public class ManageIndexServlet extends HttpServlet {
         filterProductView.setOrderView(1);
         List<Product> listProductView = ProductModel.INSTANCE.getSliceProduct(filterProductView);
         pageVariables.put("list_products_view", listProductView);
+
+        Map<String, Object> pageVariablesHeader = new HashMap<>();
+        pageVariablesHeader.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+        pageVariables.put("header_include", PageGenerator.instance().getPage("client/include/header.html", pageVariablesHeader));
+        pageVariables.put("footer_include", PageGenerator.instance().getPage("client/include/footer.html", pageVariablesHeader));
 
         response.setContentType("text/html;charset=UTF-8");
         response.getWriter().println(PageGenerator.instance().getPage("client/index.html", pageVariables));

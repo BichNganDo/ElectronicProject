@@ -11,7 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.CategoryProductModel;
+import model.CategoryModel;
 import org.apache.commons.lang3.math.NumberUtils;
 
 public class APICategoryServlet extends HttpServlet {
@@ -29,8 +29,8 @@ public class APICategoryServlet extends HttpServlet {
                 int searchStatus = NumberUtils.toInt(request.getParameter("search_status"));
                 int hot = NumberUtils.toInt(request.getParameter("hot"));
                 int offset = (pageIndex - 1) * limit;
-                List<CategoryProduct> listCategory = CategoryProductModel.INSTANCE.getSliceCategory(offset, limit, searchQuery, searchStatus, hot);
-                int totalCategory = CategoryProductModel.INSTANCE.getTotalCategory(searchQuery, searchStatus);
+                List<CategoryProduct> listCategory = CategoryModel.INSTANCE.getSliceCategory(offset, limit, searchQuery, searchStatus, hot);
+                int totalCategory = CategoryModel.INSTANCE.getTotalCategory(searchQuery, searchStatus);
 
                 ListCategoryProduct listCategoryProduct = new ListCategoryProduct();
                 listCategoryProduct.setTotal(totalCategory);
@@ -50,7 +50,7 @@ public class APICategoryServlet extends HttpServlet {
             case "getCateById": {
                 int idCate = NumberUtils.toInt(request.getParameter("id_cate"));
 
-                CategoryProduct cateById = CategoryProductModel.INSTANCE.getCategoryByID(idCate);
+                CategoryProduct cateById = CategoryModel.INSTANCE.getCategoryByID(idCate);
 
                 if (cateById.getId() > 0) {
                     result.setErrorCode(0);
@@ -84,7 +84,7 @@ public class APICategoryServlet extends HttpServlet {
                 int status = NumberUtils.toInt(request.getParameter("status"));
                 int hot = NumberUtils.toInt(request.getParameter("hot"));
 
-                int addCategory = CategoryProductModel.INSTANCE.addCategory(name, id_parent, orders, status, hot);
+                int addCategory = CategoryModel.INSTANCE.addCategory(name, id_parent, orders, status, hot);
 
                 if (addCategory >= 0) {
                     result.setErrorCode(0);
@@ -103,14 +103,14 @@ public class APICategoryServlet extends HttpServlet {
                 int status = NumberUtils.toInt(request.getParameter("status"));
                 int hot = NumberUtils.toInt(request.getParameter("hot"));
 
-                CategoryProduct categoryByID = CategoryProductModel.INSTANCE.getCategoryByID(id);
+                CategoryProduct categoryByID = CategoryModel.INSTANCE.getCategoryByID(id);
                 if (categoryByID.getId() == 0) {
                     result.setErrorCode(-1);
                     result.setMessage("Thất bại!");
                     return;
                 }
 
-                int editCategory = CategoryProductModel.INSTANCE.editCategory(id, name, id_parent, orders, status, hot);
+                int editCategory = CategoryModel.INSTANCE.editCategory(id, name, id_parent, orders, status, hot);
 
                 if (editCategory >= 0) {
                     result.setErrorCode(0);
@@ -124,7 +124,7 @@ public class APICategoryServlet extends HttpServlet {
 
             case "delete": {
                 int id = NumberUtils.toInt(request.getParameter("id"));
-                int deleteCategory = CategoryProductModel.INSTANCE.deleteCategory(id);
+                int deleteCategory = CategoryModel.INSTANCE.deleteCategory(id);
                 if (deleteCategory >= 0) {
                     result.setErrorCode(0);
                     result.setMessage("Xóa Category thành công!");

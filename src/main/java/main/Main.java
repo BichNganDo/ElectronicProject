@@ -28,7 +28,7 @@ import servlets.admin.mnadmin.ManageAdminServlet;
 import servlets.admin.cate_news.AddCategoryNewsServlet;
 import servlets.admin.cate_news.EditCategoryNewsServlet;
 import servlets.admin.cate_news.ManageCategoryNewsServlet;
-import servlets.client.ManageIndexServlet;
+import servlets.client.Home;
 import servlets.admin.filter.AuthenFilter;
 import servlets.admin.news.AddNewsServlet;
 import servlets.admin.news.EditNewsServlet;
@@ -42,6 +42,7 @@ import servlets.admin.slides.ManageSlidesServlet;
 import servlets.admin.supplier.AddSupplierServlet;
 import servlets.admin.supplier.EditSupplierServlet;
 import servlets.admin.supplier.ManageSupplierServlet;
+import servlets.client.CateProduct;
 
 public class Main {
 
@@ -86,7 +87,8 @@ public class Main {
         context.addServlet(new ServletHolder(new PartialServlet()), "/admin/partital/*");
         //</editor-fold>
 
-        context.addServlet(new ServletHolder(new ManageIndexServlet()), "/");
+        context.addServlet(new ServletHolder(new Home()), "/");
+        context.addServlet(new ServletHolder(new CateProduct()), "/danh-muc");
 
         FilterHolder authenFilter = new FilterHolder(new AuthenFilter());
         authenFilter.setName("AuthenFilter");
