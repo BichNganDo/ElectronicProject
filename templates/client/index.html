@@ -139,11 +139,11 @@
 
                                         <#list list_category as category>
                                             <li class="cat-item <#if category.listSubCategory?size gt 1>has-children</#if>">
-                                                <a href="#">${category.name}</a>
+                                                <a href="${app_domain}/danh-muc?id=${category.id}">${category.name}</a>
                                                 <#if category.listSubCategory?size gt 1>
                                                     <ul class="sub-menu">
                                                         <#list category.listSubCategory as subCategory>
-                                                            <li><a href="#">${subCategory.name}</a></li>
+                                                            <li><a href="${app_domain}/danh-muc?id=${subCategory.id}">${subCategory.name}</a></li>
                                                         </#list>
                                                     </ul>
                                                 </#if>
@@ -891,8 +891,14 @@
                                                     </div>
                                                     <div class="price-block">
                                                         <span class="price">${product.price_sale} đ</span>
-                                                        <del class="price-old">${product.price} đ</del>
-                                                        <span class="price-discount">-${product.discount} %</span>
+                                                        <#if product.price gt product.price_sale>
+                                                            <del class="price-old">${product.price} đ</del>
+                                                        </#if>
+
+                                                        <#if product.discount gt 0>
+                                                            <span class="price-discount">-${product.discount} %</span>
+                                                        </#if>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -1369,7 +1375,7 @@
                                                                 <div class="price-block">
                                                                     <span class="price">${product.price_sale} đ</span>
                                                                     <#if product.price gt product.price_sale>
-                                                                        <del class="price-old">${product.price}</del>
+                                                                        <del class="price-old">${product.price} đ</del>
                                                                     </#if>
 
                                                                     <#if product.discount gt 0>
