@@ -13,7 +13,7 @@
                     <div class="row align-items-center">
                         <div class="col-lg-3 ">
                             <a href="index.html" class="site-brand">
-                                <img src="image/logo.png" alt="">
+                                <img src="${static_domain}/image/logo.png" alt="">
                             </a>
                         </div>
                         <div class="col-lg-3">
@@ -156,109 +156,20 @@
                             <nav class="category-nav   ">
                                 <div>
                                     <a href="javascript:void(0)" class="category-trigger"><i
-											class="fa fa-bars"></i>Browse
-										categories</a>
+											class="fa fa-bars"></i>Danh mục</a>
                                     <ul class="category-menu">
-                                        <li class="cat-item has-children">
-                                            <a href="#">Arts & Photography</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="#">Bags & Cases</a></li>
-                                                <li><a href="#">Binoculars & Scopes</a></li>
-                                                <li><a href="#">Digital Cameras</a></li>
-                                                <li><a href="#">Film Photography</a></li>
-                                                <li><a href="#">Lighting & Studio</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="cat-item has-children mega-menu"><a href="#">Biographies</a>
-                                            <ul class="sub-menu">
-                                                <li class="single-block">
-                                                    <h3 class="title">WHEEL SIMULATORS</h3>
-                                                    <ul>
-                                                        <li><a href="#">Bags & Cases</a></li>
-                                                        <li><a href="#">Binoculars & Scopes</a></li>
-                                                        <li><a href="#">Digital Cameras</a></li>
-                                                        <li><a href="#">Film Photography</a></li>
-                                                        <li><a href="#">Lighting & Studio</a></li>
+                                        <#list list_category as category>
+                                            <li class="cat-item <#if category.listSubCategory?size gt 1>has-children</#if>">
+                                                <a href="${app_domain}/danh-muc?id=${category.id}">${category.name}</a>
+                                                <#if category.listSubCategory?size gt 1>
+                                                    <ul class="sub-menu">
+                                                        <#list category.listSubCategory as subCategory>
+                                                            <li><a href="${app_domain}/danh-muc?id=${subCategory.id}">${subCategory.name}</a></li>
+                                                        </#list>
                                                     </ul>
-                                                </li>
-                                                <li class="single-block">
-                                                    <h3 class="title">WHEEL SIMULATORS</h3>
-                                                    <ul>
-                                                        <li><a href="#">Bags & Cases</a></li>
-                                                        <li><a href="#">Binoculars & Scopes</a></li>
-                                                        <li><a href="#">Digital Cameras</a></li>
-                                                        <li><a href="#">Film Photography</a></li>
-                                                        <li><a href="#">Lighting & Studio</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="single-block">
-                                                    <h3 class="title">WHEEL SIMULATORS</h3>
-                                                    <ul>
-                                                        <li><a href="#">Bags & Cases</a></li>
-                                                        <li><a href="#">Binoculars & Scopes</a></li>
-                                                        <li><a href="#">Digital Cameras</a></li>
-                                                        <li><a href="#">Film Photography</a></li>
-                                                        <li><a href="#">Lighting & Studio</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="single-block">
-                                                    <h3 class="title">WHEEL SIMULATORS</h3>
-                                                    <ul>
-                                                        <li><a href="#">Bags & Cases</a></li>
-                                                        <li><a href="#">Binoculars & Scopes</a></li>
-                                                        <li><a href="#">Digital Cameras</a></li>
-                                                        <li><a href="#">Film Photography</a></li>
-                                                        <li><a href="#">Lighting & Studio</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="cat-item has-children"><a href="#">Business & Money</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="">Brake Tools</a></li>
-                                                <li><a href="">Driveshafts</a></li>
-                                                <li><a href="">Emergency Brake</a></li>
-                                                <li><a href="">Spools</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="cat-item has-children"><a href="#">Calendars</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="">Brake Tools</a></li>
-                                                <li><a href="">Driveshafts</a></li>
-                                                <li><a href="">Emergency Brake</a></li>
-                                                <li><a href="">Spools</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="cat-item has-children"><a href="#">Children's Books</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="">Brake Tools</a></li>
-                                                <li><a href="">Driveshafts</a></li>
-                                                <li><a href="">Emergency Brake</a></li>
-                                                <li><a href="">Spools</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="cat-item has-children"><a href="#">Comics</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="">Brake Tools</a></li>
-                                                <li><a href="">Driveshafts</a></li>
-                                                <li><a href="">Emergency Brake</a></li>
-                                                <li><a href="">Spools</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="cat-item"><a href="#">Perfomance Filters</a></li>
-                                        <li class="cat-item has-children"><a href="#">Cookbooks</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="">Brake Tools</a></li>
-                                                <li><a href="">Driveshafts</a></li>
-                                                <li><a href="">Emergency Brake</a></li>
-                                                <li><a href="">Spools</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="cat-item "><a href="#">Accessories</a></li>
-                                        <li class="cat-item "><a href="#">Education</a></li>
-                                        <li class="cat-item hidden-menu-item"><a href="#">Indoor Living</a></li>
-                                        <li class="cat-item"><a href="#" class="js-expand-hidden-menu">More
-												Categories</a></li>
+                                                </#if>
+                                            </li>
+                                        </#list>
                                     </ul>
                                 </div>
                             </nav>
@@ -293,7 +204,7 @@
                                             <div class=" single-cart-block ">
                                                 <div class="cart-product">
                                                     <a href="product-details.html" class="image">
-                                                        <img src="image/products/cart-product-1.jpg" alt="">
+                                                        <img src="${static_domain}/image/products/cart-product-1.jpg" alt="">
                                                     </a>
                                                     <div class="content">
                                                         <h3 class="title"><a href="product-details.html">Kodak PIXPRO
@@ -326,116 +237,27 @@
                     <div class="row align-items-sm-end align-items-center">
                         <div class="col-md-4 col-7">
                             <a href="index.html" class="site-brand">
-                                <img src="image/logo.png" alt="">
+                                <img src="${static_domain}/image/logo.png" alt="">
                             </a>
                         </div>
                         <div class="col-md-5 order-3 order-md-2">
                             <nav class="category-nav   ">
                                 <div>
                                     <a href="javascript:void(0)" class="category-trigger"><i
-											class="fa fa-bars"></i>Browse
-										categories</a>
+											class="fa fa-bars"></i>Danh mục</a>
                                     <ul class="category-menu">
-                                        <li class="cat-item has-children">
-                                            <a href="#">Arts & Photography</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="#">Bags & Cases</a></li>
-                                                <li><a href="#">Binoculars & Scopes</a></li>
-                                                <li><a href="#">Digital Cameras</a></li>
-                                                <li><a href="#">Film Photography</a></li>
-                                                <li><a href="#">Lighting & Studio</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="cat-item has-children mega-menu"><a href="#">Biographies</a>
-                                            <ul class="sub-menu">
-                                                <li class="single-block">
-                                                    <h3 class="title">WHEEL SIMULATORS</h3>
-                                                    <ul>
-                                                        <li><a href="#">Bags & Cases</a></li>
-                                                        <li><a href="#">Binoculars & Scopes</a></li>
-                                                        <li><a href="#">Digital Cameras</a></li>
-                                                        <li><a href="#">Film Photography</a></li>
-                                                        <li><a href="#">Lighting & Studio</a></li>
+                                        <#list list_category as category>
+                                            <li class="cat-item <#if category.listSubCategory?size gt 1>has-children</#if>">
+                                                <a href="${app_domain}/danh-muc?id=${category.id}">${category.name}</a>
+                                                <#if category.listSubCategory?size gt 1>
+                                                    <ul class="sub-menu">
+                                                        <#list category.listSubCategory as subCategory>
+                                                            <li><a href="${app_domain}/danh-muc?id=${subCategory.id}">${subCategory.name}</a></li>
+                                                        </#list>
                                                     </ul>
-                                                </li>
-                                                <li class="single-block">
-                                                    <h3 class="title">WHEEL SIMULATORS</h3>
-                                                    <ul>
-                                                        <li><a href="#">Bags & Cases</a></li>
-                                                        <li><a href="#">Binoculars & Scopes</a></li>
-                                                        <li><a href="#">Digital Cameras</a></li>
-                                                        <li><a href="#">Film Photography</a></li>
-                                                        <li><a href="#">Lighting & Studio</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="single-block">
-                                                    <h3 class="title">WHEEL SIMULATORS</h3>
-                                                    <ul>
-                                                        <li><a href="#">Bags & Cases</a></li>
-                                                        <li><a href="#">Binoculars & Scopes</a></li>
-                                                        <li><a href="#">Digital Cameras</a></li>
-                                                        <li><a href="#">Film Photography</a></li>
-                                                        <li><a href="#">Lighting & Studio</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="single-block">
-                                                    <h3 class="title">WHEEL SIMULATORS</h3>
-                                                    <ul>
-                                                        <li><a href="#">Bags & Cases</a></li>
-                                                        <li><a href="#">Binoculars & Scopes</a></li>
-                                                        <li><a href="#">Digital Cameras</a></li>
-                                                        <li><a href="#">Film Photography</a></li>
-                                                        <li><a href="#">Lighting & Studio</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="cat-item has-children"><a href="#">Business & Money</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="">Brake Tools</a></li>
-                                                <li><a href="">Driveshafts</a></li>
-                                                <li><a href="">Emergency Brake</a></li>
-                                                <li><a href="">Spools</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="cat-item has-children"><a href="#">Calendars</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="">Brake Tools</a></li>
-                                                <li><a href="">Driveshafts</a></li>
-                                                <li><a href="">Emergency Brake</a></li>
-                                                <li><a href="">Spools</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="cat-item has-children"><a href="#">Children's Books</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="">Brake Tools</a></li>
-                                                <li><a href="">Driveshafts</a></li>
-                                                <li><a href="">Emergency Brake</a></li>
-                                                <li><a href="">Spools</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="cat-item has-children"><a href="#">Comics</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="">Brake Tools</a></li>
-                                                <li><a href="">Driveshafts</a></li>
-                                                <li><a href="">Emergency Brake</a></li>
-                                                <li><a href="">Spools</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="cat-item"><a href="#">Perfomance Filters</a></li>
-                                        <li class="cat-item has-children"><a href="#">Cookbooks</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="">Brake Tools</a></li>
-                                                <li><a href="">Driveshafts</a></li>
-                                                <li><a href="">Emergency Brake</a></li>
-                                                <li><a href="">Spools</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="cat-item "><a href="#">Accessories</a></li>
-                                        <li class="cat-item "><a href="#">Education</a></li>
-                                        <li class="cat-item hidden-menu-item"><a href="#">Indoor Living</a></li>
-                                        <li class="cat-item"><a href="#" class="js-expand-hidden-menu">More
-												Categories</a></li>
+                                                </#if>
+                                            </li>
+                                        </#list>
                                     </ul>
                                 </div>
                             </nav>
@@ -628,7 +450,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-4">
                         <a href="index.html" class="site-brand">
-                            <img src="image/logo.png" alt="">
+                            <img src="${static_domain}/image/logo.png" alt="">
                         </a>
                     </div>
                     <div class="col-lg-8">
@@ -777,21 +599,12 @@
                         "swipe": false,
                         "asNavFor": ".product-slider-nav"
                         }'>
-                                    <div class="single-slide">
-                                        <img src="image/products/product-1.jpg" alt="">
-                                    </div>
-                                    <div class="single-slide">
-                                        <img src="image/products/product-2.jpg" alt="">
-                                    </div>
-                                    <div class="single-slide">
-                                        <img src="image/products/product-3.jpg" alt="">
-                                    </div>
-                                    <div class="single-slide">
-                                        <img src="image/products/product-4.jpg" alt="">
-                                    </div>
-                                    <div class="single-slide">
-                                        <img src="image/products/product-5.jpg" alt="">
-                                    </div>
+
+                                    <#list product_by_id.listImage as image>
+                                        <div class="single-slide">
+                                            <img src="${image}" alt="">
+                                        </div>
+                                    </#list>
                                 </div>
                             </div>
                             <div class="col-sm-3 ">
@@ -817,39 +630,31 @@
                                 } 
                               }
                             ]'>
-                                    <div class="single-slide">
-                                        <img src="image/products/product-1.jpg" alt="">
-                                    </div>
-                                    <div class="single-slide">
-                                        <img src="image/products/product-2.jpg" alt="">
-                                    </div>
-                                    <div class="single-slide">
-                                        <img src="image/products/product-3.jpg" alt="">
-                                    </div>
-                                    <div class="single-slide">
-                                        <img src="image/products/product-4.jpg" alt="">
-                                    </div>
-                                    <div class="single-slide">
-                                        <img src="image/products/product-5.jpg" alt="">
-                                    </div>
+                                    <#list product_by_id.listImage as image>
+                                        <div class="single-slide">
+                                            <img src="${image}" alt="">
+                                        </div>
+                                    </#list>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-7">
                         <div class="product-details-info pr-lg--30 ">
-                            <p class="tag-block">Tags: <a href="#">Movado</a>, <a href="#">Omega</a></p>
-                            <h3 class="product-title">Beats EP Wired On-Ear Headphone-Black</h3>
+                            <!-- <p class="tag-block">Tags: <a href="#">Movado</a>, <a href="#">Omega</a></p> -->
+                            <h3 class="product-title">${product_by_id.name}</h3>
                             <ul class="list-unstyled">
-                                <li>Ex Tax: <span class="list-value"> £60.24</span></li>
-                                <li>Brands: <a href="#" class="list-value font-weight-bold"> Canon</a></li>
-                                <li>Product Code: <span class="list-value"> model1</span></li>
-                                <li>Reward Points: <span class="list-value"> 200</span></li>
-                                <li>Availability: <span class="list-value"> In Stock</span></li>
+                                <li>Nhà cung cấp: ${product_by_id.supplier}
+                                    <a href="#" class="list-value font-weight-bold"></a>
+                                </li>
+                                <li>Số lượng trong kho: <span class="list-value"> ${product_by_id.quantity}</span></li>
+                                <li>Thông tin bảo hành: <span class="list-value"> ${product_by_id.warranty}</span></li>
                             </ul>
                             <div class="price-block">
-                                <span class="price-new">£73.79</span>
-                                <del class="price-old">£91.86</del>
+                                <span class="price-new">${product_by_id.price_sale} đ</span>
+                                <#if product_by_id.price gt product_by_id.price_sale>
+                                    <del class="price-old">${product_by_id.price} đ</del>
+                                </#if>
                             </div>
                             <div class="rating-widget">
                                 <div class="rating-block">
@@ -891,22 +696,20 @@
                     <ul class="nav nav-tabs nav-style-2" id="myTab2" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="tab1" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">
-								DESCRIPTION
+								MÔ TẢ
 							</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="tab2" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="true">
-								REVIEWS (1)
+								ĐÁNH GIÁ (1)
 							</a>
                         </li>
                     </ul>
                     <div class="tab-content space-db--20" id="myTabContent">
                         <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="tab1">
-                            <article class="review-article">
-                                <h1 class="sr-only">Tab Article</h1>
-                                <p>Fashion has been creating well-designed collections since 2010. The brand offers feminine designs delivering stylish separates and statement dresses which have since evolved into a full ready-to-wear collection in which
-                                    every item is a vital part of a woman's wardrobe. The result? Cool, easy, chic looks with youthful elegance and unmistakable signature style. All the beautiful pieces are made in Italy and manufactured with the greatest
-                                    attention. Now Fashion extends to a range of accessories including shoes, hats, belts and more!</p>
+                            <article class="pre review-article">
+                                <!-- <h1 class="sr-only">Tab Article</h1> -->
+                                <p>${product_by_id.content}</p>
                             </article>
                         </div>
                         <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="tab2">
@@ -914,7 +717,7 @@
                                 <h2 class="title-lg mb--20">1 REVIEW FOR AUCTOR GRAVIDA ENIM</h2>
                                 <div class="review-comment mb--20">
                                     <div class="avatar">
-                                        <img src="image/icon/author-logo.png" alt="">
+                                        <img src="${static_domain}/image/icon/author-logo.png" alt="">
                                     </div>
                                     <div class="text">
                                         <div class="rating-block mb--15">
@@ -989,7 +792,7 @@
             <section class="">
                 <div class="container">
                     <div class="section-title section-title--bordered">
-                        <h2>RELATED PRODUCTS</h2>
+                        <h2>SẢN PHẨM LIÊN QUAN</h2>
                     </div>
                     <div class="product-slider sb-slick-slider slider-border-single-row" data-slick-setting='{
                 "autoplay": true,
@@ -1013,10 +816,10 @@
                                 </div>
                                 <div class="product-card--body">
                                     <div class="card-image">
-                                        <img src="image/products/product-10.jpg" alt="">
+                                        <img src="${static_domain}/image/products/product-10.jpg" alt="">
                                         <div class="hover-contents">
                                             <a href="product-details.html" class="hover-image">
-                                                <img src="image/products/product-1.jpg" alt="">
+                                                <img src="${static_domain}/image/products/product-1.jpg" alt="">
                                             </a>
                                             <div class="hover-btns">
                                                 <a href="cart.html" class="single-btn">
@@ -1052,10 +855,10 @@
                                 </div>
                                 <div class="product-card--body">
                                     <div class="card-image">
-                                        <img src="image/products/product-2.jpg" alt="">
+                                        <img src="${static_domain}/image/products/product-2.jpg" alt="">
                                         <div class="hover-contents">
                                             <a href="product-details.html" class="hover-image">
-                                                <img src="image/products/product-1.jpg" alt="">
+                                                <img src="${static_domain}/image/products/product-1.jpg" alt="">
                                             </a>
                                             <div class="hover-btns">
                                                 <a href="cart.html" class="single-btn">
@@ -1091,10 +894,10 @@
                                 </div>
                                 <div class="product-card--body">
                                     <div class="card-image">
-                                        <img src="image/products/product-3.jpg" alt="">
+                                        <img src="${static_domain}/image/products/product-3.jpg" alt="">
                                         <div class="hover-contents">
                                             <a href="product-details.html" class="hover-image">
-                                                <img src="image/products/product-2.jpg" alt="">
+                                                <img src="${static_domain}/image/products/product-2.jpg" alt="">
                                             </a>
                                             <div class="hover-btns">
                                                 <a href="cart.html" class="single-btn">
@@ -1130,10 +933,10 @@
                                 </div>
                                 <div class="product-card--body">
                                     <div class="card-image">
-                                        <img src="image/products/product-5.jpg" alt="">
+                                        <img src="${static_domain}/image/products/product-5.jpg" alt="">
                                         <div class="hover-contents">
                                             <a href="product-details.html" class="hover-image">
-                                                <img src="image/products/product-4.jpg" alt="">
+                                                <img src="${static_domain}/image/products/product-4.jpg" alt="">
                                             </a>
                                             <div class="hover-btns">
                                                 <a href="cart.html" class="single-btn">
@@ -1169,10 +972,10 @@
                                 </div>
                                 <div class="product-card--body">
                                     <div class="card-image">
-                                        <img src="image/products/product-6.jpg" alt="">
+                                        <img src="${static_domain}/image/products/product-6.jpg" alt="">
                                         <div class="hover-contents">
                                             <a href="product-details.html" class="hover-image">
-                                                <img src="image/products/product-4.jpg" alt="">
+                                                <img src="${static_domain}/image/products/product-4.jpg" alt="">
                                             </a>
                                             <div class="hover-btns">
                                                 <a href="cart.html" class="single-btn">
@@ -1221,19 +1024,19 @@
               "asNavFor": ".product-slider-nav"
               }'>
                                         <div class="single-slide">
-                                            <img src="image/products/product-details-1.jpg" alt="">
+                                            <img src="${static_domain}/image/products/product-details-1.jpg" alt="">
                                         </div>
                                         <div class="single-slide">
-                                            <img src="image/products/product-details-2.jpg" alt="">
+                                            <img src="${static_domain}/image/products/product-details-2.jpg" alt="">
                                         </div>
                                         <div class="single-slide">
-                                            <img src="image/products/product-details-3.jpg" alt="">
+                                            <img src="${static_domain}/image/products/product-details-3.jpg" alt="">
                                         </div>
                                         <div class="single-slide">
-                                            <img src="image/products/product-details-4.jpg" alt="">
+                                            <img src="${static_domain}/image/products/product-details-4.jpg" alt="">
                                         </div>
                                         <div class="single-slide">
-                                            <img src="image/products/product-details-5.jpg" alt="">
+                                            <img src="${static_domain}/image/products/product-details-5.jpg" alt="">
                                         </div>
                                     </div>
                                     <!-- Product Details Slider Nav -->
@@ -1249,19 +1052,19 @@
               "focusOnSelect": true
               }'>
                                         <div class="single-slide">
-                                            <img src="image/products/product-details-1.jpg" alt="">
+                                            <img src="${static_domain}/image/products/product-details-1.jpg" alt="">
                                         </div>
                                         <div class="single-slide">
-                                            <img src="image/products/product-details-2.jpg" alt="">
+                                            <img src="${static_domain}/image/products/product-details-2.jpg" alt="">
                                         </div>
                                         <div class="single-slide">
-                                            <img src="image/products/product-details-3.jpg" alt="">
+                                            <img src="${static_domain}/image/products/product-details-3.jpg" alt="">
                                         </div>
                                         <div class="single-slide">
-                                            <img src="image/products/product-details-4.jpg" alt="">
+                                            <img src="${static_domain}/image/products/product-details-4.jpg" alt="">
                                         </div>
                                         <div class="single-slide">
-                                            <img src="image/products/product-details-5.jpg" alt="">
+                                            <img src="${static_domain}/image/products/product-details-5.jpg" alt="">
                                         </div>
                                     </div>
                                 </div>
@@ -1350,28 +1153,28 @@
                 {"breakpoint":320, "settings": {"slidesToShow": 1} }
             ]'>
                 <div class="single-slide">
-                    <img src="image/others/brand-1.jpg" alt="">
+                    <img src="${static_domain}/image/others/brand-1.jpg" alt="">
                 </div>
                 <div class="single-slide">
-                    <img src="image/others/brand-2.jpg" alt="">
+                    <img src="${static_domain}/image/others/brand-2.jpg" alt="">
                 </div>
                 <div class="single-slide">
-                    <img src="image/others/brand-3.jpg" alt="">
+                    <img src="${static_domain}/image/others/brand-3.jpg" alt="">
                 </div>
                 <div class="single-slide">
-                    <img src="image/others/brand-4.jpg" alt="">
+                    <img src="${static_domain}/image/others/brand-4.jpg" alt="">
                 </div>
                 <div class="single-slide">
-                    <img src="image/others/brand-5.jpg" alt="">
+                    <img src="${static_domain}/image/others/brand-5.jpg" alt="">
                 </div>
                 <div class="single-slide">
-                    <img src="image/others/brand-6.jpg" alt="">
+                    <img src="${static_domain}/image/others/brand-6.jpg" alt="">
                 </div>
                 <div class="single-slide">
-                    <img src="image/others/brand-1.jpg" alt="">
+                    <img src="${static_domain}/image/others/brand-1.jpg" alt="">
                 </div>
                 <div class="single-slide">
-                    <img src="image/others/brand-2.jpg" alt="">
+                    <img src="${static_domain}/image/others/brand-2.jpg" alt="">
                 </div>
             </div>
         </div>
@@ -1385,7 +1188,7 @@
                 <div class=" col-xl-3 col-lg-4 col-sm-6">
                     <div class="single-footer pb--40">
                         <div class="brand-footer footer-title">
-                            <img src="image/logo--footer.png" alt="">
+                            <img src="${static_domain}/image/logo--footer.png" alt="">
                         </div>
                         <div class="footer-contact">
                             <p><span class="label">Address:</span><span class="text">Example Street 98, HH2 BacHa, New
@@ -1451,7 +1254,7 @@
             <div class="container">
                 <p class="copyright-heading">Suspendisse in auctor augue. Cras fermentum est ac fermentum tempor. Etiam vel magna volutpat, posuere eros</p>
                 <a href="#" class="payment-block">
-                    <img src="image/icon/payment.png" alt="">
+                    <img src="${static_domain}/image/icon/payment.png" alt="">
                 </a>
                 <p class="copyright-text">Copyright © 2019 <a href="#" class="author">Pustok</a>. All Right Reserved.
                     <br> Design By Pustok</p>

@@ -1,5 +1,7 @@
 package entity.product;
 
+import java.util.List;
+
 public class Product {
 
     private int id;
@@ -12,6 +14,7 @@ public class Product {
     private int price_sale;
     private int quantity;
     private String image_url;
+    private List<String> listImage;
     private String content;
     private String warranty;
     private Property property;
@@ -171,6 +174,14 @@ public class Product {
 
     public void setView(int view) {
         this.view = view;
+    }
+
+    public List<String> getListImage() {
+        return listImage;
+    }
+
+    public void setListImage(List<String> listImage) {
+        this.listImage = listImage;
     }
 
     public class Property {

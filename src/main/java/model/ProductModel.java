@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -229,7 +230,9 @@ public class ProductModel {
             if (null == conn) {
                 return result;
             }
-            PreparedStatement getProductByIdStmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` WHERE id = ? ");
+            PreparedStatement getProductByIdStmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` "
+                    + "INNER JOIN supplier ON product.id_supplier = supplier.id"
+                    + " WHERE product.id = ? ");
             getProductByIdStmt.setInt(1, id);
 
             ResultSet rs = getProductByIdStmt.executeQuery();
@@ -238,11 +241,13 @@ public class ProductModel {
                 result.setId(rs.getInt("id"));
                 result.setId_cate(rs.getInt("id_cate"));
                 result.setId_supplier(rs.getInt("id_supplier"));
+                result.setSupplier(rs.getString("supplier.name"));
                 result.setName(rs.getString("name"));
                 result.setPrice(rs.getInt("price"));
                 result.setPrice_sale(rs.getInt("price_sale"));
                 result.setQuantity(rs.getInt("quantity"));
                 result.setImage_url(rs.getString("image_url"));
+                result.setListImage(Arrays.asList(rs.getString("image_url"))); //làm sau
                 result.setContent(rs.getString("content"));
                 result.setWarranty(rs.getString("warranty"));
                 result.setProperty(rs.getInt("property"));
