@@ -43,6 +43,7 @@ import servlets.admin.supplier.AddSupplierServlet;
 import servlets.admin.supplier.EditSupplierServlet;
 import servlets.admin.supplier.ManageSupplierServlet;
 import servlets.client.CateProduct;
+import servlets.client.ProductDetail;
 
 public class Main {
 
@@ -89,6 +90,7 @@ public class Main {
 
         context.addServlet(new ServletHolder(new Home()), "/");
         context.addServlet(new ServletHolder(new CateProduct()), "/danh-muc");
+        context.addServlet(new ServletHolder(new ProductDetail()), "/chi-tiet-san-pham");
 
         FilterHolder authenFilter = new FilterHolder(new AuthenFilter());
         authenFilter.setName("AuthenFilter");
