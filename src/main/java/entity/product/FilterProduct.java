@@ -9,6 +9,7 @@ public class FilterProduct {
     private int searchSupplier;
     private int searchProperty;
     private int orderView;
+    private int sortByPrice;
 
     public FilterProduct() {
     }
@@ -77,6 +78,14 @@ public class FilterProduct {
 
     public void setOrderView(int orderView) {
         this.orderView = orderView;
+    }
+
+    public int getSortByPrice() {
+        return sortByPrice;
+    }
+
+    public void setSortByPrice(int sortByPrice) {
+        this.sortByPrice = sortByPrice;
     }
 
 }

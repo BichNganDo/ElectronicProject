@@ -57,6 +57,14 @@ public class ProductModel {
             if (filterProduct.getOrderView() > 0) {
                 sql = sql + " ORDER BY product.view DESC ";
             }
+
+            if (filterProduct.getSortByPrice() == 1) {
+                sql = sql + " ORDER BY product.price DESC ";
+            }
+
+            if (filterProduct.getSortByPrice() == 2) {
+                sql = sql + " ORDER BY product.price ASC ";
+            }
             sql = sql + " LIMIT ? OFFSET ? ";
             PreparedStatement ps = conn.prepareStatement(sql);
             int param = 1;

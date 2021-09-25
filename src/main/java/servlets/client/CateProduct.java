@@ -14,12 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.CategoryModel;
 import model.ProductModel;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import templater.PageGenerator;
 
 public class CateProduct extends HttpServlet {
 
-    private int ITEM_PER_PAGE = 4;
+    private int DEFAULT_ITEM_PER_PAGE = 4;
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -30,28 +31,60 @@ public class CateProduct extends HttpServlet {
         List<CategoryProduct> allCategory = CategoryModel.INSTANCE.getAllCategory();
         pageVariables.put("list_category", allCategory);
 
+        int itemPerPage = NumberUtils.toInt(request.getParameter("limit"), DEFAULT_ITEM_PER_PAGE);
+        if (itemPerPage < 0 && itemPerPage > 50) {
+            itemPerPage = DEFAULT_ITEM_PER_PAGE;
+        }
+        pageVariables.put("item_per_page", itemPerPage);
+
         int id = NumberUtils.toInt(request.getParameter("id"));
         pageVariables.put("id_cate", id);
 
+        String sortBy = StringUtils.defaultIfEmpty(request.getParameter("sort"), "");
+        pageVariables.put("sort_by", sortBy);
         FilterProduct totalProduct = new FilterProduct();
         totalProduct.setSearchCate(id);
+        if ("hot".equals(sortBy)) {
+            totalProduct.setSearchProperty(1);
+        } else if ("promo".equals(sortBy)) {
+            totalProduct.setSearchProperty(4);
+        }
         int totalProductByCate = ProductModel.INSTANCE.getTotalProduct(totalProduct);
         pageVariables.put("total_product_by_cate", totalProductByCate);
 
-        int totalPage = (int) Math.ceil((double) totalProductByCate / ITEM_PER_PAGE);
+        int totalPage = (int) Math.ceil((double) totalProductByCate / itemPerPage);
         pageVariables.put("total_page", totalPage);
 
         int page = NumberUtils.toInt(request.getParameter("page"), 1);
         if (page > totalPage) {
             page = totalPage;
         }
-        int offset = (page - 1) * ITEM_PER_PAGE;
+        if (page <= 0) {
+            page = 1;
+        }
         pageVariables.put("current_page", page);
+
+        int offset = (page - 1) * itemPerPage;
+        pageVariables.put("offset", offset);
+        int showingLast = offset + itemPerPage;
+        if (showingLast > totalProductByCate) {
+            showingLast = totalProductByCate;
+        }
+        pageVariables.put("showing_last", showingLast);
 
         FilterProduct allProduct = new FilterProduct();
         allProduct.setOffset(offset);
-        allProduct.setLimit(ITEM_PER_PAGE);
+        allProduct.setLimit(itemPerPage);
         allProduct.setSearchCate(id);
+        if ("hot".equals(sortBy)) {
+            allProduct.setSearchProperty(1);
+        } else if ("promo".equals(sortBy)) {
+            allProduct.setSearchProperty(4);
+        } else if ("priceLowtoHight".equals(sortBy)) {
+            allProduct.setSortByPrice(2);
+        } else if ("priceHightToLow".equals(sortBy)) {
+            allProduct.setSortByPrice(1);
+        }
         List<Product> listProductByCate = ProductModel.INSTANCE.getSliceProduct(allProduct);
         pageVariables.put("list_product_by_cate", listProductByCate);
 
