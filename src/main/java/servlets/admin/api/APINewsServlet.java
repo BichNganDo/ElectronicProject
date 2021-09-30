@@ -4,17 +4,31 @@ import com.google.gson.Gson;
 import common.APIResult;
 import entity.news.ListNews;
 import entity.news.News;
+import entity.product.Product;
 import helper.ServletUtil;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.NewsModel;
+import model.ProductModel;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 public class APINewsServlet extends HttpServlet {
+
+    private static final MultipartConfigElement MULTI_PART_CONFIG = new MultipartConfigElement("C:\\Users\\Ngan Do\\Documents\\NetBeansProjects\\ElectronicProject\\upload\\news");
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Gson gson = new Gson();
@@ -76,19 +90,66 @@ public class APINewsServlet extends HttpServlet {
         String action = request.getParameter("action");
         switch (action) {
             case "add": {
-                int id_categoryNews = NumberUtils.toInt(request.getParameter("categoryNews"));
-                String title = request.getParameter("title");
-                String info = request.getParameter("info");
-                String content = request.getParameter("content");
-                String image = request.getParameter("image");
+                try {
+                    boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+                    if (isMultipart) {
+                        News newsData = new News();
+                        ServletFileUpload upload = new ServletFileUpload(new DiskFileItemFactory());
+                        upload.setHeaderEncoding("UTF-8");
 
-                int addNews = NewsModel.INSTANCE.addNews(id_categoryNews, title, info, content, image);
-                if (addNews >= 0) {
-                    result.setErrorCode(0);
-                    result.setMessage("Thêm news thành công!");
-                } else {
-                    result.setErrorCode(-1);
-                    result.setMessage("Thêm news thất bại!");
+                        List<FileItem> items = upload.parseRequest(request);
+                        for (FileItem item : items) {
+                            if (item.isFormField()) {
+                                // Process regular form field (input type="text|radio|checkbox|etc", select, etc).
+                                String fieldname = item.getFieldName();
+                                String fieldvalue = item.getString("UTF-8");
+
+                                switch (fieldname) {
+                                    case "categoryNews": {
+                                        newsData.setIdCategoryNews(NumberUtils.toInt(fieldvalue));
+                                        break;
+                                    }
+                                    case "title": {
+                                        newsData.setTitle(fieldvalue);
+                                        break;
+                                    }
+                                    case "info": {
+                                        newsData.setInfo(fieldvalue);
+                                        break;
+                                    }
+                                    case "content": {
+                                        newsData.setContent(fieldvalue);
+                                        break;
+                                    }
+
+                                }
+
+                            } else {
+                                // Process form file field (input type="file").
+                                String filename = FilenameUtils.getName(item.getName());
+                                InputStream a = item.getInputStream();
+                                Path uploadDir = Paths.get("upload/news/" + filename);
+                                Files.copy(a, uploadDir, StandardCopyOption.REPLACE_EXISTING);
+                                newsData.setImage("upload/news/" + filename);
+                            }
+                        }
+
+                        int addNews = NewsModel.INSTANCE.addNews(newsData);
+
+                        if (addNews >= 0) {
+                            result.setErrorCode(0);
+                            result.setMessage("Thêm news thành công!");
+                        } else {
+                            result.setErrorCode(-1);
+                            result.setMessage("Thêm news thất bại!");
+                        }
+                    } else {
+                        result.setErrorCode(-4);
+                        result.setMessage("Có lỗi");
+                    }
+
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
                 break;
             }

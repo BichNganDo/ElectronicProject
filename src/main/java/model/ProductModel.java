@@ -101,7 +101,7 @@ public class ProductModel {
                 product.setPrice(rs.getInt("price"));
                 product.setPrice_sale(rs.getInt("price_sale"));
                 product.setQuantity(rs.getInt("quantity"));
-                product.setImage_url(rs.getString("image_url"));
+                product.setImageUrlWithBaseDomain(rs.getString("image_url"));
                 product.setContent(rs.getString("content"));
                 product.setWarranty(rs.getString("warranty"));
                 product.setProperty(rs.getInt("property"));
@@ -246,7 +246,7 @@ public class ProductModel {
                 result.setPrice(rs.getInt("price"));
                 result.setPrice_sale(rs.getInt("price_sale"));
                 result.setQuantity(rs.getInt("quantity"));
-                result.setImage_url(rs.getString("image_url"));
+                result.setImageUrlWithBaseDomain(rs.getString("image_url"));
                 result.setListImage(Arrays.asList(rs.getString("image_url"))); //làm sau
                 result.setContent(rs.getString("content"));
                 result.setWarranty(rs.getString("warranty"));
@@ -271,6 +271,7 @@ public class ProductModel {
         return result;
     }
 
+    //<editor-fold defaultstate="collapsed" desc="addProduct">
     public int addProduct(int id_cate, int id_supplier, String name, int price, int price_sale, int quantity,
             String image_url, String content, String warranty, int property) {
         Connection conn = null;
@@ -305,7 +306,43 @@ public class ProductModel {
 
         return ErrorCode.FAIL.getValue();
     }
+//</editor-fold>
 
+    public int addProduct(Product product) {
+        Connection conn = null;
+        try {
+            conn = dbClient.getDbConnection();
+            if (null == conn) {
+                return ErrorCode.CONNECTION_FAIL.getValue();
+            }
+            PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (id_cate, id_supplier, name, price, price_sale, "
+                    + "quantity, image_url, content, warranty, property, created_date, view ) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)");
+
+            addStmt.setInt(1, product.getId_cate());
+            addStmt.setInt(2, product.getId_supplier());
+            addStmt.setString(3, product.getName());
+            addStmt.setInt(4, product.getPrice());
+            addStmt.setInt(5, product.getPrice_sale());
+            addStmt.setInt(6, product.getQuantity());
+            addStmt.setString(7, product.getImage_url());
+            addStmt.setString(8, product.getContent());
+            addStmt.setString(9, product.getWarranty());
+            addStmt.setInt(10, product.getProperty().getValue());
+            addStmt.setString(11, System.currentTimeMillis() + "");
+            int rs = addStmt.executeUpdate();
+
+            return rs;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dbClient.releaseDbConnection(conn);
+        }
+
+        return ErrorCode.FAIL.getValue();
+    }
+
+    //<editor-fold defaultstate="collapsed" desc="editProduct">
     public int editProduct(int id, int id_cate, int id_supplier, String name, int price,
             int price_sale, int quantity, String image_url, String content, String warranty, int property) {
         Connection conn = null;
@@ -327,6 +364,38 @@ public class ProductModel {
             editStmt.setInt(9, property);
             editStmt.setString(10, content);
             editStmt.setInt(11, id);
+            int rs = editStmt.executeUpdate();
+
+            return rs;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dbClient.releaseDbConnection(conn);
+        }
+        return ErrorCode.FAIL.getValue();
+    }
+//</editor-fold>
+
+    public int editProduct(Product product) {
+        Connection conn = null;
+        try {
+            conn = dbClient.getDbConnection();
+            if (null == conn) {
+                return ErrorCode.CONNECTION_FAIL.getValue();
+            }
+            PreparedStatement editStmt = conn.prepareStatement("UPDATE `" + NAMETABLE + "` SET id_cate = ?, id_supplier = ?, name = ?, "
+                    + "price = ?, price_sale = ?, quantity = ?, image_url = ?, warranty = ?, property = ?, content = ? WHERE id = ? ");
+            editStmt.setInt(1, product.getId_cate());
+            editStmt.setInt(2, product.getId_supplier());
+            editStmt.setString(3, product.getName());
+            editStmt.setInt(4, product.getPrice());
+            editStmt.setInt(5, product.getPrice_sale());
+            editStmt.setInt(6, product.getQuantity());
+            editStmt.setString(7, product.getImage_url());
+            editStmt.setString(8, product.getWarranty());
+            editStmt.setInt(9, product.getProperty().getValue());
+            editStmt.setString(10, product.getContent());
+            editStmt.setInt(11, product.getId());
             int rs = editStmt.executeUpdate();
 
             return rs;

@@ -1,6 +1,7 @@
 package servlets.client;
 
 import common.Config;
+import entity.category_news.CategoryNews;
 import entity.category_product.CategoryProduct;
 import entity.product.FilterProduct;
 import entity.product.Product;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.CategoryModel;
+import model.CategoryNewsModel;
 import model.ProductModel;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;

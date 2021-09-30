@@ -1,5 +1,6 @@
 package entity.product;
 
+import common.Config;
 import java.util.List;
 
 public class Product {
@@ -120,8 +121,16 @@ public class Product {
         return image_url;
     }
 
-    public void setImage_url(String image_url) {
+    public void setImage_url(String image_url) { // set de put vao database
         this.image_url = image_url;
+    }
+
+    public void setImageUrlWithBaseDomain(String image_url) { // set de hien thi
+        if (image_url.startsWith("http")) {
+            this.image_url = image_url;
+        } else {
+            this.image_url = Config.APP_DOMAIN + "/" + image_url;
+        }
     }
 
     public String getContent() {
@@ -207,6 +216,20 @@ public class Product {
             this.hot = hot;
             this.productNew = productNew;
             this.promo = promo;
+        }
+
+        public int getValue() {
+            int property = 0;
+            if (this.hot) {
+                property = property + 1;
+            }
+            if (this.productNew) {
+                property = property + 2;
+            }
+            if (this.promo) {
+                property = property + 4;
+            }
+            return property;
         }
 
         public boolean isHot() {

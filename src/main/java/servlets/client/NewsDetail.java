@@ -2,6 +2,7 @@ package servlets.client;
 
 import common.Config;
 import entity.category_product.CategoryProduct;
+import entity.news.News;
 import entity.product.Product;
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,11 +13,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.CategoryModel;
+import model.NewsModel;
 import model.ProductModel;
 import org.apache.commons.lang3.math.NumberUtils;
 import templater.PageGenerator;
 
-public class ProductDetail extends HttpServlet {
+public class NewsDetail extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -24,14 +26,9 @@ public class ProductDetail extends HttpServlet {
         pageVariables.put("app_domain", Config.APP_DOMAIN);
         pageVariables.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
 
-        List<CategoryProduct> allCategory = CategoryModel.INSTANCE.getAllCategory();
-        pageVariables.put("list_category", allCategory);
-
         int id = NumberUtils.toInt(request.getParameter("id"));
-        Product productById = ProductModel.INSTANCE.getProductByID(id);
-        pageVariables.put("product_by_id", productById);
-
-        int id_cate = productById.getId_cate();
+        News news = NewsModel.INSTANCE.getNewsByID(id);
+        pageVariables.put("news_by_id", news);
 
         Map<String, Object> pageVariablesHeader = new HashMap<>();
         pageVariablesHeader.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
@@ -39,7 +36,7 @@ public class ProductDetail extends HttpServlet {
         pageVariables.put("footer_include", PageGenerator.instance().getPage("client/include/footer.html", pageVariablesHeader));
 
         response.setContentType("text/html;charset=UTF-8");
-        response.getWriter().println(PageGenerator.instance().getPage("client/product-details.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("client/news-details.html", pageVariables));
 
         response.setStatus(HttpServletResponse.SC_OK);
     }

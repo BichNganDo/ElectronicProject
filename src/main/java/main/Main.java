@@ -20,6 +20,7 @@ import servlets.admin.cate_product.AddCategoryServlet;
 import servlets.admin.cate_product.EditCategoryServlet;
 import servlets.admin.cate_product.ManageCategoryProductServlet;
 import servlets.admin.PartialServlet;
+import servlets.admin.UploadFileServlet;
 import servlets.admin.mnadmin.AddAdminServlet;
 import servlets.admin.mnadmin.EditAdminServlet;
 import servlets.admin.mnadmin.LoginServlet;
@@ -43,6 +44,8 @@ import servlets.admin.supplier.AddSupplierServlet;
 import servlets.admin.supplier.EditSupplierServlet;
 import servlets.admin.supplier.ManageSupplierServlet;
 import servlets.client.CateProduct;
+import servlets.client.NewsDetail;
+import servlets.client.NewsServlet;
 import servlets.client.ProductDetail;
 
 public class Main {
@@ -88,9 +91,14 @@ public class Main {
         context.addServlet(new ServletHolder(new PartialServlet()), "/admin/partital/*");
         //</editor-fold>
 
+        // Test UploadFile
+        context.addServlet(new ServletHolder(new UploadFileServlet()), "/admin/upload-file");
+
         context.addServlet(new ServletHolder(new Home()), "/");
         context.addServlet(new ServletHolder(new CateProduct()), "/danh-muc");
         context.addServlet(new ServletHolder(new ProductDetail()), "/chi-tiet-san-pham");
+        context.addServlet(new ServletHolder(new NewsServlet()), "/tin-tuc");
+        context.addServlet(new ServletHolder(new NewsDetail()), "/chi-tiet-tin-tuc");
 
         FilterHolder authenFilter = new FilterHolder(new AuthenFilter());
         authenFilter.setName("AuthenFilter");
@@ -98,13 +106,16 @@ public class Main {
 
         ContextHandler resourceHandler = new ContextHandler("/static");
         String resource = "./public";
-        if (!resource.isEmpty()) {
-            resourceHandler.setResourceBase(resource);
-            resourceHandler.setHandler(new ResourceHandler());
-        }
+        resourceHandler.setResourceBase(resource);
+        resourceHandler.setHandler(new ResourceHandler());
+
+        ContextHandler uploadHandler = new ContextHandler("/upload");
+        String resourceUpload = "./upload";
+        uploadHandler.setResourceBase(resourceUpload);
+        uploadHandler.setHandler(new ResourceHandler());
 
         HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[]{resourceHandler, context});
+        handlers.setHandlers(new Handler[]{resourceHandler, uploadHandler, context});
 
         Server server = new Server(8080);
 

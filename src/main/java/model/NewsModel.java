@@ -40,7 +40,7 @@ public class NewsModel {
                 sql = sql + " AND news.id_cate_news = ? ";
             }
 
-            sql = sql + " ORDER BY `created_date` DESC LIMIT ? OFFSET ? ";
+            sql = sql + " ORDER BY created_date DESC LIMIT ? OFFSET ? ";
 
             PreparedStatement ps = conn.prepareStatement(sql);
             int param = 1;
@@ -65,7 +65,7 @@ public class NewsModel {
                 news.setTitle(rs.getString("title"));
                 news.setInfo(rs.getString("info"));
                 news.setContent(rs.getString("content"));
-                news.setImage(rs.getString("image"));
+                news.setImageUrlWithBaseDomain(rs.getString("image"));
 
                 long currentTimeMillis = rs.getLong("created_date");
                 Date date = new Date(currentTimeMillis);
@@ -150,7 +150,7 @@ public class NewsModel {
                 result.setTitle(rs.getString("title"));
                 result.setInfo(rs.getString("info"));
                 result.setContent(rs.getString("content"));
-                result.setImage(rs.getString("image"));
+                result.setImageUrlWithBaseDomain(rs.getString("image"));
 
                 long currentTimeMillis = rs.getLong("created_date");
                 Date date = new Date(currentTimeMillis);
@@ -173,6 +173,7 @@ public class NewsModel {
         return result;
     }
 
+    //<editor-fold defaultstate="collapsed" desc="addNews">
     public int addNews(int idCategoryNews, String title, String info, String content, String image) {
         Connection conn = null;
         try {
@@ -202,7 +203,39 @@ public class NewsModel {
 
         return ErrorCode.FAIL.getValue();
     }
+//</editor-fold>
 
+    public int addNews(News news) {
+        Connection conn = null;
+        try {
+            conn = dbClient.getDbConnection();
+            if (null == conn) {
+                return ErrorCode.CONNECTION_FAIL.getValue();
+            }
+            PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (id_cate_news, title, info, content, image, "
+                    + "created_date, updated_date) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+            addStmt.setInt(1, news.getIdCategoryNews());
+            addStmt.setString(2, news.getTitle());
+            addStmt.setString(3, news.getInfo());
+            addStmt.setString(4, news.getContent());
+            addStmt.setString(5, news.getImage());
+            addStmt.setString(6, System.currentTimeMillis() + "");
+            addStmt.setString(7, System.currentTimeMillis() + "");
+
+            int rs = addStmt.executeUpdate();
+
+            return rs;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dbClient.releaseDbConnection(conn);
+        }
+
+        return ErrorCode.FAIL.getValue();
+    }
+
+    //<editor-fold defaultstate="collapsed" desc="editNews">
     public int editNews(int id, int id_cate_news, String title, String info, String content, String image) {
         Connection conn = null;
         try {
@@ -220,6 +253,36 @@ public class NewsModel {
             editStmt.setString(5, image);
             editStmt.setString(6, System.currentTimeMillis() + "");
             editStmt.setInt(7, id);
+
+            int rs = editStmt.executeUpdate();
+
+            return rs;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dbClient.releaseDbConnection(conn);
+        }
+        return ErrorCode.FAIL.getValue();
+    }
+//</editor-fold>
+
+    public int editNews(News news) {
+        Connection conn = null;
+        try {
+            conn = dbClient.getDbConnection();
+            if (null == conn) {
+                return ErrorCode.CONNECTION_FAIL.getValue();
+            }
+
+            PreparedStatement editStmt = conn.prepareStatement("UPDATE `" + NAMETABLE + "` SET id_cate_news = ?, title = ?, info = ?, "
+                    + "content = ?, image = ?, updated_date = ? WHERE id = ? ");
+            editStmt.setInt(1, news.getIdCategoryNews());
+            editStmt.setString(2, news.getTitle());
+            editStmt.setString(3, news.getInfo());
+            editStmt.setString(4, news.getContent());
+            editStmt.setString(5, news.getImage());
+            editStmt.setString(6, System.currentTimeMillis() + "");
+            editStmt.setInt(7, news.getId());
 
             int rs = editStmt.executeUpdate();
 

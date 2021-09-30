@@ -49,6 +49,7 @@ public class AuthenFilter implements Filter {
             }
             fc.doFilter(request, response);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 

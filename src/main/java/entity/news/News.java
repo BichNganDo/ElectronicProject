@@ -1,5 +1,7 @@
 package entity.news;
 
+import common.Config;
+
 public class News {
 
     private int id;
@@ -73,6 +75,14 @@ public class News {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public void setImageUrlWithBaseDomain(String image) { // set de hien thi
+        if (image.startsWith("http")) {
+            this.image = image;
+        } else {
+            this.image = Config.APP_DOMAIN + "/" + image;
+        }
     }
 
     public String getCreated_date() {

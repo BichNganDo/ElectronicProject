@@ -102,9 +102,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Image Url</label>
-                                    <input ng-model="image_url" type="text" class="form-control" placeholder="Image Url">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Image Url</label>
+                                            <input ng-model="image_url" type="text" class="form-control" placeholder="Image Url">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-5">
+                                        <label>Upload File Image</label>
+                                        <br>
+                                        <input type="file" file="filex" name="file2" id="preImg" accept="image/png, image/gif, image/jpeg" required />
+                                        <br />
+                                        <img id="blah" src="#" alt="your image" onerror="this.style.display = 'none'" width="150px" height="150px" />
+                                        <br>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Content</label>
@@ -152,12 +165,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <script>
         var app = angular.module('myApp', []); //ngPagination
+        app.directive('file', function() {
+            return {
+                scope: {
+                    file: '='
+                },
+                link: function(scope, el, attrs) {
+                    el.bind('change', function(event) {
+                        var file = event.target.files[0];
+                        scope.file = file ? file : undefined;
+                        scope.$apply();
+                    });
+                }
+            };
+        });
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
             var url = document.URL.split('/');
             var urltmp = url[4].split('?')[0];
             $rootScope.lastUri = urltmp.split('#')[0];
 
             $scope.APP_DOMAIN = "http://localhost:8080/";
+
+
+            preImg.onchange = evt => {
+                const [file] = preImg.files
+                if (file) {
+                    blah.src = URL.createObjectURL(file)
+                    blah.style = "block";
+                }
+            }
+
             //load Supplier
             $http({
                 method: "GET",
@@ -199,7 +236,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 },
             }).then(function(response) {
                 $scope.editProduct = response.data.data
-                    // console.log($scope.editProduct);
+                console.log($scope.editProduct);
 
                 $scope.id = $scope.editProduct.id;
                 $scope.category = $scope.editProduct.id_cate + "";
@@ -216,6 +253,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 $scope.hot = property.hot;
                 $scope.new = property.productNew;
                 $scope.promo = property.promo;
+                $scope.upload = $scope.editProduct.filex;
 
 
 
@@ -235,38 +273,82 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     if ($scope.promo) {
                         property = property + 4;
                     }
-                    var data = $.param({
-                        id: $scope.id,
-                        category: $scope.category,
-                        supplier: $scope.supplier,
-                        name: $scope.name,
-                        price: $scope.price,
-                        price_sale: $scope.price_sale,
-                        image_url: $scope.image_url,
-                        quantity: $scope.quantity,
-                        content: $scope.content,
-                        warranty: $scope.warranty,
-                        property: property
+                    $http({
+                        method: 'POST',
+                        url: $scope.APP_DOMAIN + 'admin/api/product?action=edit',
+                        headers: {
+                            'content-type': undefined
+                        },
+                        data: {
+                            id: $scope.id,
+                            category: $scope.category,
+                            supplier: $scope.supplier,
+                            name: $scope.name,
+                            price: $scope.price,
+                            price_sale: $scope.price_sale,
+                            image_url: $scope.image_url,
+                            quantity: $scope.quantity,
+                            content: $scope.content,
+                            warranty: $scope.warranty,
+                            property: property,
+                            upload: $scope.filex,
+
+                        },
+
+                        transformRequest: function(data, headersGetter) {
+                            console.log(data);
+                            var formData = new FormData();
+                            angular.forEach(data, function(value, key) {
+                                formData.append(key, value);
+                            });
+
+                            return formData;
+
+                        }
+                    }).then(function(response) {
+                        showNotification("success", response.data.message);
+                        window.location.replace($scope.APP_DOMAIN + "admin/product");
+                    }, function(error) {
+                        showNotification("error", error.data.message);
 
                     })
-                    console.log(data);
-                    var config = {
-                        headers: {
-                            'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                        }
-                    }
-                    $http.post($scope.APP_DOMAIN + 'admin/api/product?action=edit', data, config)
-                        .then(function(response) {
-                            console.log(response);
-                            showNotification("success", response.data.message);
-                            window.location.replace($scope.APP_DOMAIN + "admin/product");
-                        }, function(error) {
-                            console.log(error.data.message);
-                            showNotification("error", error.data.message);
-                        })
                 } else {
                     showNotification("error", "Dữ liệu không hợp lệ!");
                 }
+                //     var data = $.param({
+                //         id: $scope.id,
+                //         category: $scope.category,
+                //         supplier: $scope.supplier,
+                //         name: $scope.name,
+                //         price: $scope.price,
+                //         price_sale: $scope.price_sale,
+                //         image_url: $scope.image_url,
+                //         quantity: $scope.quantity,
+                //         info: $scope.info,
+                //         content: $scope.content,
+                //         warranty: $scope.warranty,
+                //         property: property,
+                //         upload: $scope.filex,
+
+                //     })
+                //     console.log(data);
+                //     var config = {
+                //         headers: {
+                //             'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                //         }
+                //     }
+                //     $http.post($scope.APP_DOMAIN + 'admin/api/product?action=edit', data, config)
+                //         .then(function(response) {
+                //             console.log(response);
+                //             showNotification("success", response.data.message);
+                //             window.location.replace($scope.APP_DOMAIN + "admin/product");
+                //         }, function(error) {
+                //             console.log(error.data.message);
+                //             showNotification("error", error.data.message);
+                //         })
+                // } else {
+                //     showNotification("error", "Dữ liệu không hợp lệ!");
+                // }
 
             }
 
