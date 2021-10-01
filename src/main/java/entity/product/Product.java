@@ -19,6 +19,8 @@ public class Product {
     private String content;
     private String warranty;
     private Property property;
+    private String relatedProduct;
+    private List<Product> listRelatedProduct;
     private String created_date;
     private int discount;
     private int view;
@@ -159,6 +161,22 @@ public class Product {
 
     public void setProperty(int numberProperty) {
         this.property = new Property(numberProperty);
+    }
+
+    public String getRelatedProduct() {
+        return relatedProduct;
+    }
+
+    public void setRelatedProduct(String relatedProduct) {
+        this.relatedProduct = relatedProduct;
+    }
+
+    public List<Product> getListRelatedProduct() {
+        return listRelatedProduct;
+    }
+
+    public void setListRelatedProduct(List<Product> listRelatedProduct) {
+        this.listRelatedProduct = listRelatedProduct;
     }
 
     public String getCreated_date() {

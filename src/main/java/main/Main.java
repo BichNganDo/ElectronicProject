@@ -1,6 +1,5 @@
 package main;
 
-import javax.servlet.DispatcherType;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;

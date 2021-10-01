@@ -5,6 +5,7 @@ import common.ErrorCode;
 import entity.category_product.CategoryProduct;
 import entity.product.FilterProduct;
 import entity.product.Product;
+import helper.ServletUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 
 public class ProductModel {
 
@@ -102,8 +104,8 @@ public class ProductModel {
                 product.setPrice_sale(rs.getInt("price_sale"));
                 product.setQuantity(rs.getInt("quantity"));
                 product.setImageUrlWithBaseDomain(rs.getString("image_url"));
-                product.setContent(rs.getString("content"));
-                product.setWarranty(rs.getString("warranty"));
+                //product.setContent(rs.getString("content"));
+                //product.setWarranty(rs.getString("warranty"));
                 product.setProperty(rs.getInt("property"));
                 product.setView(rs.getInt("view"));
 
@@ -260,6 +262,16 @@ public class ProductModel {
                 String dateString = sdf.format(date);
                 result.setCreated_date(dateString);
 
+                //Process related production
+                String rlProduction = rs.getString("related_product");
+                result.setRelatedProduct(rlProduction);
+                List<Integer> listRelatedId = ServletUtil.convertStringToArray(rlProduction);
+                List<Product> listRelatedProduct = INSTANCE.multiGetProduct(listRelatedId);
+                result.setListRelatedProduct(listRelatedProduct);
+
+                //B1: 1, 2, 3 --> ArrayList
+                //B2: Viet ham getMulti (Arrl) -> List<Product>
+                //BB3: set vo production
             }
 
             return result;
@@ -271,7 +283,42 @@ public class ProductModel {
         return result;
     }
 
-    //<editor-fold defaultstate="collapsed" desc="addProduct">
+    public List<Product> multiGetProduct(List<Integer> listRelatedId) {
+        List<Product> listProduct = new ArrayList<>();
+
+        if (listRelatedId == null || listRelatedId.isEmpty()) {
+            return listProduct;
+        }
+
+        Connection conn = null;
+        try {
+            conn = dbClient.getDbConnection();
+            if (null == conn) {
+                return listProduct;
+            }
+            String listString = ServletUtil.convertArrayToString(listRelatedId);
+            PreparedStatement getMultiProduct = conn.prepareStatement("SELECT product.id, product.name FROM `" + NAMETABLE + "` "
+                    + "WHERE id IN (" + listString + ") ");
+
+//            getMultiProduct.setString(1, listString);
+            ResultSet rs = getMultiProduct.executeQuery();
+            while (rs.next()) {
+                Product product = new Product();
+                product.setId(rs.getInt("id"));
+                product.setName(rs.getString("name"));
+                listProduct.add(product);
+
+            }
+            return listProduct;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dbClient.releaseDbConnection(conn);
+        }
+        return listProduct;
+    }
+
+//<editor-fold defaultstate="collapsed" desc="addProduct">
     public int addProduct(int id_cate, int id_supplier, String name, int price, int price_sale, int quantity,
             String image_url, String content, String warranty, int property) {
         Connection conn = null;
@@ -316,8 +363,8 @@ public class ProductModel {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
             PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (id_cate, id_supplier, name, price, price_sale, "
-                    + "quantity, image_url, content, warranty, property, created_date, view ) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)");
+                    + "quantity, image_url, content, warranty, property, related_product, created_date, view ) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)");
 
             addStmt.setInt(1, product.getId_cate());
             addStmt.setInt(2, product.getId_supplier());
@@ -329,7 +376,8 @@ public class ProductModel {
             addStmt.setString(8, product.getContent());
             addStmt.setString(9, product.getWarranty());
             addStmt.setInt(10, product.getProperty().getValue());
-            addStmt.setString(11, System.currentTimeMillis() + "");
+            addStmt.setString(11, product.getRelatedProduct());
+            addStmt.setString(12, System.currentTimeMillis() + "");
             int rs = addStmt.executeUpdate();
 
             return rs;
@@ -384,7 +432,7 @@ public class ProductModel {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
             PreparedStatement editStmt = conn.prepareStatement("UPDATE `" + NAMETABLE + "` SET id_cate = ?, id_supplier = ?, name = ?, "
-                    + "price = ?, price_sale = ?, quantity = ?, image_url = ?, warranty = ?, property = ?, content = ? WHERE id = ? ");
+                    + "price = ?, price_sale = ?, quantity = ?, image_url = ?, warranty = ?, property = ?, related_product = ?, content = ? WHERE id = ? ");
             editStmt.setInt(1, product.getId_cate());
             editStmt.setInt(2, product.getId_supplier());
             editStmt.setString(3, product.getName());
@@ -394,8 +442,9 @@ public class ProductModel {
             editStmt.setString(7, product.getImage_url());
             editStmt.setString(8, product.getWarranty());
             editStmt.setInt(9, product.getProperty().getValue());
-            editStmt.setString(10, product.getContent());
-            editStmt.setInt(11, product.getId());
+            editStmt.setString(10, product.getRelatedProduct());
+            editStmt.setString(11, product.getContent());
+            editStmt.setInt(12, product.getId());
             int rs = editStmt.executeUpdate();
 
             return rs;

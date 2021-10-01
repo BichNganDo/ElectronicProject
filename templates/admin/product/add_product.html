@@ -124,6 +124,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <textarea ng-model="warranty" type="text" class="form-control" rows="5" placeholder="Warranty"></textarea>
                                 </div>
                                 <div class="form-group">
+                                    <label>Related Products</label>
+                                    <select id="loadDataOpt" class="form-control select2 js-example-basic-multiple" style="width: 100%;" name="states[]" multiple="multiple">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <div class="form-check">
                                         <input ng-model="hot" class="form-check-input" type="checkbox">
                                         <label class="form-check-label"><b>Hot</b></label>
@@ -177,6 +183,49 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 }
             };
         });
+
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2({
+                ajax: {
+                    url: 'http://localhost:8080/admin/api/product?action=getproduct',
+                    type: "GET",
+                    dataType: "json",
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            searchQuery: params.term,
+                            page_index: params.page || 1
+                        }
+                    },
+                    processResults: function(response) {
+                        let listResult = response.data.listProduct;
+                        // console.log(listResult);
+                        let results = [];
+
+                        for (let product of listResult) {
+                            results.push({
+                                "id": product.id,
+                                "text": product.name
+                            })
+                        }
+
+                        let hasMore = true;
+
+                        let objectSelectOpt = {
+                            "results": results,
+                            "pagination": {
+                                "more": hasMore
+                            }
+                        };
+
+                        console.log(objectSelectOpt);
+
+                        return objectSelectOpt;
+                    }
+                }
+            });
+        });
+
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
             var url = document.URL.split('/');
             var urltmp = url[4].split('?')[0];
@@ -217,16 +266,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     limit: 100
                 },
             }).then(function(response) {
-                console.log(response);
+                // console.log(response);
                 $scope.listCategory = response.data.data.listCategory;
             })
 
-
-
             $scope.addData = function() {
-
+                console.log($scope.category);
+                console.log($scope.supplier);
+                console.log($scope.name);
+                console.log($scope.price);
+                console.log($scope.price_sale);
+                console.log($scope.quantity);
+                console.log($scope.content);
+                console.log($scope.warranty);
+                console.log($('.js-example-basic-multiple').val());
                 if ($scope.category && $scope.supplier && $scope.name && $scope.price && $scope.price_sale &&
-                    $scope.quantity && $scope.image_url && $scope.content && $scope.warranty) {
+                    $scope.quantity && $scope.content && $scope.warranty) {
                     let property = 0;
                     if ($scope.hot) {
                         property = property + 1;
@@ -237,7 +292,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     if ($scope.promo) {
                         property = property + 4;
                     }
-                    console.log(property);
+
                     $http({
                             method: 'POST',
                             url: $scope.APP_DOMAIN + 'admin/api/product?action=add',
@@ -255,11 +310,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 warranty: $scope.warranty,
                                 property: property,
                                 upload: $scope.filex,
+                                related: JSON.stringify($('.js-example-basic-multiple').val())
 
                             },
-
                             transformRequest: function(data, headersGetter) {
-                                console.log(data);
+                                // console.log(data);
                                 var formData = new FormData();
                                 angular.forEach(data, function(value, key) {
                                     formData.append(key, value);
@@ -270,7 +325,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             }
                         })
                         .then(function(response) {
-                            console.log(response);
+                            // console.log(response);
                             $scope.category = "0";
                             $scope.supplier = "0";
                             $scope.name = "";
@@ -284,6 +339,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             $scope.promo = false;
                             $("#blah").css("display", "none");
                             $('#preImg').val('');
+                            $('.js-example-basic-multiple').val(null).trigger('change');
                             showNotification("success", response.data.message);
                         }, function(error) {
                             showNotification("error", error.data.message);

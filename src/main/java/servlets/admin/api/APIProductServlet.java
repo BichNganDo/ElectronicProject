@@ -38,7 +38,7 @@ public class APIProductServlet extends HttpServlet {
         switch (action) {
             case "getproduct": {
                 FilterProduct filterProduct = new FilterProduct();
-                int pageIndex = NumberUtils.toInt(request.getParameter("page_index"));
+                int pageIndex = NumberUtils.toInt(request.getParameter("page_index"), 1);
                 int limit = NumberUtils.toInt(request.getParameter("limit"), 10);
                 String searchQuery = request.getParameter("search_query");
                 int searchCate = NumberUtils.toInt(request.getParameter("search_cate"));
@@ -152,6 +152,10 @@ public class APIProductServlet extends HttpServlet {
                                         productData.setProperty(NumberUtils.toInt(fieldvalue));
                                         break;
                                     }
+                                    case "related": {
+                                        productData.setRelatedProduct(fieldvalue.replace("\"", "").replace("[", "").replace("]", ""));
+                                        break;
+                                    }
 
                                 }
 
@@ -248,6 +252,10 @@ public class APIProductServlet extends HttpServlet {
                                         productData.setProperty(NumberUtils.toInt(fieldvalue));
                                         break;
                                     }
+                                    case "related": {
+                                        productData.setRelatedProduct(fieldvalue.replace("\"", "").replace("[", "").replace("]", ""));
+                                        break;
+                                    }
 
                                 }
 
@@ -278,10 +286,10 @@ public class APIProductServlet extends HttpServlet {
 
                         if (editProduct >= 0) {
                             result.setErrorCode(0);
-                            result.setMessage("Thêm product thành công!");
+                            result.setMessage("Sửa product thành công!");
                         } else {
                             result.setErrorCode(-1);
-                            result.setMessage("Thêm product thất bại!");
+                            result.setMessage("Sửa product thất bại!");
                         }
                     } else {
                         result.setErrorCode(-4);

@@ -128,6 +128,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <textarea ng-model="warranty" type="text" class="form-control" rows="5" placeholder="Warranty"></textarea>
                                 </div>
                                 <div class="form-group">
+                                    <label>Related Products</label>
+                                    <select id="loadDataOpt" class="form-control select2 slc-related-product" style="width: 100%;" name="states[]" multiple="multiple">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <div class="form-check">
                                         <input ng-model="hot" ng-init="hot=false" class="form-check-input" type="checkbox">
                                         <label class="form-check-label"><b>Hot</b></label>
@@ -227,6 +233,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             var id_product = getUrlParameter('id');
             console.log(id_product);
 
+
+
             $http({
                 method: "GET",
                 url: $scope.APP_DOMAIN + "admin/api/product",
@@ -256,13 +264,73 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 $scope.upload = $scope.editProduct.filex;
 
 
+                initRelatedProductSlc2($scope.editProduct.listRelatedProduct);
 
             })
 
+            function initRelatedProductSlc2(listProduct) {
+                var selected = [];
+                var initials = [];
+                for (let i = 0; i < listProduct.length; i++) {
+                    let item = listProduct[i];
+                    selected.push(item.id);
+                    initials.push({
+                        id: item.id,
+                        text: item.name
+                    })
+
+                }
+                $('.slc-related-product').select2({
+                    data: initials,
+                    ajax: {
+                        url: 'http://localhost:8080/admin/api/product?action=getproduct',
+                        type: "GET",
+                        dataType: "json",
+                        delay: 250,
+                        data: function(params) {
+                            return {
+                                searchQuery: params.term,
+                                page_index: params.page || 1
+                            }
+                        },
+                        processResults: function(response) {
+                            let listResult = response.data.listProduct;
+                            // console.log(listResult);
+                            let results = [];
+
+                            for (let product of listResult) {
+                                results.push({
+                                    "id": product.id,
+                                    "text": product.name
+                                })
+                            }
+
+                            let hasMore = true;
+
+                            let objectSelectOpt = {
+                                "results": results,
+                                "pagination": {
+                                    "more": hasMore
+                                }
+                            };
+
+                            console.log(objectSelectOpt);
+
+                            return objectSelectOpt;
+                        },
+                        cache: true
+                    }
+                });
+                $('.slc-related-product').val(selected).trigger('change');
+            }
+
+
             //Save Data da sua
             $scope.saveDataEdit = function() {
+                console.log($('.slc-related-product').val());
+
                 if ($scope.category && $scope.supplier && $scope.name && $scope.price && $scope.price_sale &&
-                    $scope.quantity && $scope.image_url && $scope.content && $scope.warranty) {
+                    $scope.quantity && $scope.image_url && $scope.content && $scope.warranty && false) {
                     let property = 0;
                     if ($scope.hot) {
                         property = property + 1;
@@ -292,7 +360,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             warranty: $scope.warranty,
                             property: property,
                             upload: $scope.filex,
-
+                            related: JSON.stringify($('.js-example-basic-multiple').val())
                         },
 
                         transformRequest: function(data, headersGetter) {
@@ -315,40 +383,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 } else {
                     showNotification("error", "Dữ liệu không hợp lệ!");
                 }
-                //     var data = $.param({
-                //         id: $scope.id,
-                //         category: $scope.category,
-                //         supplier: $scope.supplier,
-                //         name: $scope.name,
-                //         price: $scope.price,
-                //         price_sale: $scope.price_sale,
-                //         image_url: $scope.image_url,
-                //         quantity: $scope.quantity,
-                //         info: $scope.info,
-                //         content: $scope.content,
-                //         warranty: $scope.warranty,
-                //         property: property,
-                //         upload: $scope.filex,
-
-                //     })
-                //     console.log(data);
-                //     var config = {
-                //         headers: {
-                //             'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                //         }
-                //     }
-                //     $http.post($scope.APP_DOMAIN + 'admin/api/product?action=edit', data, config)
-                //         .then(function(response) {
-                //             console.log(response);
-                //             showNotification("success", response.data.message);
-                //             window.location.replace($scope.APP_DOMAIN + "admin/product");
-                //         }, function(error) {
-                //             console.log(error.data.message);
-                //             showNotification("error", error.data.message);
-                //         })
-                // } else {
-                //     showNotification("error", "Dữ liệu không hợp lệ!");
-                // }
 
             }
 

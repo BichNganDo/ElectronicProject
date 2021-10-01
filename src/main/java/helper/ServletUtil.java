@@ -1,11 +1,18 @@
 package helper;
 
+import entity.product.Product;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 public class ServletUtil {
 
@@ -47,4 +54,40 @@ public class ServletUtil {
             }
         }
     }
+
+    public static List<Integer> convertStringToArray(String s) {
+        if (StringUtils.isEmpty(s)) {
+            return new ArrayList<>();
+        }
+
+        List<Integer> result = new ArrayList<>();
+
+        String[] arr = s.split(",");
+        for (String item : arr) {
+            result.add(NumberUtils.toInt(item));
+        }
+
+        return result;
+    }
+
+    public static String convertArrayToString(List<Integer> array) {
+        if (array == null || array.size() <= 0) {
+            return "";
+        }
+
+        String s = "";
+        for (Integer item : array) {
+            s = s + item + ",";
+        }
+
+        return s.substring(0, s.length() - 1);
+
+    }
+
+//    public static void main(String[] args) {
+//        String s = "1,2,3";
+//        List<Integer> result = ServletUtil.convertStringToArray(s);
+//        System.out.println(result);
+//
+//    }
 }
