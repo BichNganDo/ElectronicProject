@@ -74,9 +74,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <label>Info</label>
                                     <textarea ng-model="info" class="form-control" rows="3" placeholder="Info"></textarea>
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label>Content</label>
                                     <textarea ng-model="content" class="form-control" rows="10" placeholder="Content"></textarea>
+                                </div> -->
+                                <div class="form-group">
+                                    <label>Content</label>
+                                    <textarea id="summernote" class="form-control" placeholder="Content"></textarea>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
@@ -126,6 +130,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 }
             };
         });
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                height: 300
+            });
+        });
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
             var url = document.URL.split('/');
             var urltmp = url[4].split('?')[0];
@@ -155,7 +164,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             })
 
             $scope.addData = function() {
-                if ($scope.categoryNews && $scope.title && $scope.info && $scope.content && $scope.filex) {
+                var smContent = $('#summernote').summernote('code');
+                if ($scope.categoryNews && $scope.title && $scope.info && smContent && $scope.filex) {
                     $http({
                             method: 'POST',
                             url: $scope.APP_DOMAIN + 'admin/api/news?action=add',
@@ -166,7 +176,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 categoryNews: $scope.categoryNews,
                                 title: $scope.title,
                                 info: $scope.info,
-                                content: $scope.content,
+                                content: smContent,
                                 upload: $scope.filex,
 
                             },
@@ -187,7 +197,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             $scope.categoryNews = "0";
                             $scope.title = "";
                             $scope.info = "";
-                            $scope.content = "";
+                            $('#summernote').summernote('code', "");
                             $("#blah").css("display", "none");
                             $('#preImg').val('');
                             showNotification("success", response.data.message);

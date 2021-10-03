@@ -75,7 +75,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </div>
                                 <div class="form-group">
                                     <label>Content</label>
-                                    <textarea ng-model="content" class="form-control" rows="10" placeholder="Content"></textarea>
+                                    <textarea id="summernote" class="form-control" placeholder="Content"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Image</label>
@@ -104,6 +104,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     ${footer_include}
 
     <script>
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                height: 300
+            });
+        });
         var app = angular.module('myApp', []); //ngPagination
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
             $scope.APP_DOMAIN = "http://localhost:8080/";
@@ -128,7 +133,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 $scope.categoryNews = $scope.editNews.idCategoryNews + "";
                 $scope.title = $scope.editNews.title;
                 $scope.info = $scope.editNews.info;
-                $scope.content = $scope.editNews.content;
+                $('#summernote').summernote('code', $scope.editNews.content);
                 $scope.image = $scope.editNews.image;
             })
 
@@ -148,13 +153,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             $scope.saveDataEdit = function() { //item hay biến khác cũng được, không cần phải trùng tên với bên user
                 //lấy dữ liệu về
-                if ($scope.categoryNews && $scope.title && $scope.info && $scope.content && $scope.image) {
+                var contentEdit = $('#summernote').summernote('code');
+                if ($scope.categoryNews && $scope.title && $scope.info && contentEdit && $scope.image) {
                     var data = $.param({
                         id: $scope.id,
                         categoryNews: $scope.categoryNews,
                         title: $scope.title,
                         info: $scope.info,
-                        content: $scope.content,
+                        content: $('#summernote').summernote('code'),
                         image: $scope.image
                     });
 
