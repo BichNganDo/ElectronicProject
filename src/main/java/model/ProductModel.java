@@ -297,7 +297,7 @@ public class ProductModel {
                 return listProduct;
             }
             String listString = ServletUtil.convertArrayToString(listRelatedId);
-            PreparedStatement getMultiProduct = conn.prepareStatement("SELECT product.id, product.name FROM `" + NAMETABLE + "` "
+            PreparedStatement getMultiProduct = conn.prepareStatement("SELECT id, name, image_url, price, price_sale FROM `" + NAMETABLE + "` "
                     + "WHERE id IN (" + listString + ") ");
 
 //            getMultiProduct.setString(1, listString);
@@ -306,6 +306,11 @@ public class ProductModel {
                 Product product = new Product();
                 product.setId(rs.getInt("id"));
                 product.setName(rs.getString("name"));
+                product.setImageUrlWithBaseDomain(rs.getString("image_url"));
+                product.setPrice(rs.getInt("price"));
+                product.setPrice_sale(rs.getInt("price_sale"));
+                int discount = ProductModel.INSTANCE.percentDiscount(product.getPrice(), product.getPrice_sale());
+                product.setDiscount(discount);
                 listProduct.add(product);
 
             }
