@@ -117,7 +117,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </div>
                                 <div class="form-group">
                                     <label>Content</label>
-                                    <textarea ng-model="content" type="text" class="form-control" rows="10" placeholder="Content"></textarea>
+                                    <textarea id="summernote" class="form-control" placeholder="Content"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Warranty</label>
@@ -182,6 +182,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     });
                 }
             };
+        });
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                height: 300
+            });
         });
 
         $(document).ready(function() {
@@ -280,8 +285,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 console.log($scope.content);
                 console.log($scope.warranty);
                 console.log($('.slc-related-product').val());
+                var smContent = $('#summernote').summernote('code');
                 if ($scope.category && $scope.supplier && $scope.name && $scope.price && $scope.price_sale &&
-                    $scope.quantity && $scope.content && $scope.warranty) {
+                    $scope.quantity && smContent && $scope.warranty) {
                     let property = 0;
                     if ($scope.hot) {
                         property = property + 1;
@@ -306,7 +312,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 price: $scope.price,
                                 price_sale: $scope.price_sale,
                                 quantity: $scope.quantity,
-                                content: $scope.content,
+                                content: smContent,
                                 warranty: $scope.warranty,
                                 property: property,
                                 upload: $scope.filex,
@@ -332,7 +338,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             $scope.price = "";
                             $scope.price_sale = "";
                             $scope.quantity = "";
-                            $scope.content = "";
+                            $('#summernote').summernote('code', "");
                             $scope.warranty = "";
                             $scope.hot = false;
                             $scope.new = false;

@@ -121,7 +121,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </div>
                                 <div class="form-group">
                                     <label>Content</label>
-                                    <textarea ng-model="content" type="text" class="form-control" rows="10" placeholder="Content"></textarea>
+                                    <textarea id="summernote" class="form-control" placeholder="Content"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Warranty</label>
@@ -170,6 +170,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     ${footer_include}
 
     <script>
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                height: 300
+            });
+        });
         var app = angular.module('myApp', []); //ngPagination
         app.directive('file', function() {
             return {
@@ -254,7 +259,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 $scope.price_sale = $scope.editProduct.price_sale;
                 $scope.image_url = $scope.editProduct.image_url;
                 $scope.quantity = $scope.editProduct.quantity;
-                $scope.content = $scope.editProduct.content;
+                $('#summernote').summernote('code', $scope.editProduct.content);
                 $scope.warranty = $scope.editProduct.warranty;
                 let property = $scope.editProduct.property;
                 console.log(property);
@@ -328,9 +333,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
             //Save Data da sua
             $scope.saveDataEdit = function() {
                 console.log($('.slc-related-product').val());
-
+                var contentEdit = $('#summernote').summernote('code');
                 if ($scope.category && $scope.supplier && $scope.name && $scope.price && $scope.price_sale &&
-                    $scope.quantity && $scope.image_url && $scope.content && $scope.warranty) {
+                    $scope.quantity && $scope.image_url && contentEdit && $scope.warranty) {
                     let property = 0;
                     if ($scope.hot) {
                         property = property + 1;
@@ -356,7 +361,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             price_sale: $scope.price_sale,
                             image_url: $scope.image_url,
                             quantity: $scope.quantity,
-                            content: $scope.content,
+                            content: contentEdit,
                             warranty: $scope.warranty,
                             property: property,
                             upload: $scope.filex,

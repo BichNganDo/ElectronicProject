@@ -133,7 +133,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 $scope.categoryNews = $scope.editNews.idCategoryNews + "";
                 $scope.title = $scope.editNews.title;
                 $scope.info = $scope.editNews.info;
+
                 $('#summernote').summernote('code', $scope.editNews.content);
+                $('div.note-editable').height(300);
+
                 $scope.image = $scope.editNews.image;
             })
 
@@ -160,7 +163,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         categoryNews: $scope.categoryNews,
                         title: $scope.title,
                         info: $scope.info,
-                        content: $('#summernote').summernote('code'),
+                        content: contentEdit,
                         image: $scope.image
                     });
 
