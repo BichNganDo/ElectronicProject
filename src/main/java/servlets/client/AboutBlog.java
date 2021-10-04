@@ -13,7 +13,7 @@ import model.NewsModel;
 import org.apache.commons.lang3.math.NumberUtils;
 import templater.PageGenerator;
 
-public class NewsDetail extends HttpServlet {
+public class AboutBlog extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -21,9 +21,8 @@ public class NewsDetail extends HttpServlet {
         pageVariables.put("app_domain", Config.APP_DOMAIN);
         pageVariables.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
 
-        int id = NumberUtils.toInt(request.getParameter("id"));
-        News news = NewsModel.INSTANCE.getNewsByID(id);
-        pageVariables.put("news_by_id", news);
+        News aboutBlog = NewsModel.INSTANCE.getNewsByType("about");
+        pageVariables.put("about_blog", aboutBlog);
 
         Map<String, Object> pageVariablesHeader = new HashMap<>();
         pageVariablesHeader.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
@@ -31,7 +30,7 @@ public class NewsDetail extends HttpServlet {
         pageVariables.put("footer_include", PageGenerator.instance().getPage("client/include/footer.html", pageVariablesHeader));
 
         response.setContentType("text/html;charset=UTF-8");
-        response.getWriter().println(PageGenerator.instance().getPage("client/news-details.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("client/about-blog.html", pageVariables));
 
         response.setStatus(HttpServletResponse.SC_OK);
     }

@@ -90,14 +90,28 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="/admin/news" class="nav-link" ng-class="lastUri == 'news' ? 'active' : ''">
+                <li class="nav-item menu-is-opening menu-open">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-newspaper"></i>
                         <p>
                             Manage News
-                            <!-- <i class="right fas fa-angle-left"></i> -->
+                            <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview" style="display: block;">
+                        <li class="nav-item">
+                            <a href="/admin/news" class="nav-link" ng-class="lastUri == 'news' ? 'active' : ''">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>News</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/about-blog" class="nav-link" ng-class="lastUri == 'about-blog' ? 'active' : ''">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>About</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a href="/admin/slides" class="nav-link" ng-class="lastUri == 'slides' ? 'active' : ''">

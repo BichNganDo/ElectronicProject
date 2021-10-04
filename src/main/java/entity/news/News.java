@@ -10,6 +10,7 @@ public class News {
     private String info;
     private String content;
     private String image;
+    private String type;
     private String created_date;
     private String updated_date;
     private String categoryNews;
@@ -83,6 +84,14 @@ public class News {
         } else {
             this.image = Config.APP_DOMAIN + "/" + image;
         }
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getCreated_date() {

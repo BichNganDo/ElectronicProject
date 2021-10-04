@@ -75,6 +75,19 @@ public class APINewsServlet extends HttpServlet {
                 }
                 break;
             }
+            case "getAboutBlog": {
+                News newsByType = NewsModel.INSTANCE.getNewsByType("about");
+
+                if (newsByType.getId() > 0) {
+                    result.setErrorCode(0);
+                    result.setMessage("Success");
+                    result.setData(newsByType);
+                } else {
+                    result.setErrorCode(-1);
+                    result.setMessage("Error");
+                }
+                break;
+            }
 
             default:
                 throw new AssertionError();
@@ -133,7 +146,7 @@ public class APINewsServlet extends HttpServlet {
                                 newsData.setImage("upload/news/" + filename);
                             }
                         }
-
+                        newsData.setType("article");
                         int addNews = NewsModel.INSTANCE.addNews(newsData);
 
                         if (addNews >= 0) {

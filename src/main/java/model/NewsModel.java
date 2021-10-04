@@ -30,7 +30,7 @@ public class NewsModel {
             }
             String sql = "SELECT news.*, category_news.name AS `categoryNews` "
                     + "FROM news "
-                    + "INNER JOIN category_news ON news.id_cate_news= category_news.id  WHERE 1=1";
+                    + "INNER JOIN category_news ON news.id_cate_news= category_news.id  WHERE news.type='article'";
 
             if (StringUtils.isNotEmpty(searchQuery)) {
                 sql = sql + " AND news.title LIKE ? ";
@@ -98,7 +98,7 @@ public class NewsModel {
             if (null == conn) {
                 return total;
             }
-            String sql = "SELECT COUNT(id) AS total FROM `" + NAMETABLE + "` WHERE 1 = 1";
+            String sql = "SELECT COUNT(id) AS total FROM `" + NAMETABLE + "` WHERE type = 'article'";
             if (StringUtils.isNotEmpty(searchQuery)) {
                 sql = sql + " AND news.title LIKE ? ";
             }
@@ -162,6 +162,35 @@ public class NewsModel {
                 String dateStringUpdated = sdf.format(dateUpdated);
                 result.setUpdated_date(dateStringUpdated);
 
+            }
+
+            return result;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dbClient.releaseDbConnection(conn);
+        }
+        return result;
+    }
+
+    public News getNewsByType(String type) {
+        News result = new News();
+        Connection conn = null;
+        try {
+            conn = dbClient.getDbConnection();
+            if (null == conn) {
+                return result;
+            }
+            PreparedStatement getNewsByTypeStmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` WHERE type = ? ");
+            getNewsByTypeStmt.setString(1, type);
+
+            ResultSet rs = getNewsByTypeStmt.executeQuery();
+
+            if (rs.next()) {
+                result.setId(rs.getInt("id"));
+                result.setTitle(rs.getString("title"));
+                result.setContent(rs.getString("content"));
+                result.setImageUrlWithBaseDomain(rs.getString("image"));
             }
 
             return result;

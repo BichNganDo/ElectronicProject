@@ -30,6 +30,7 @@ import servlets.admin.cate_news.EditCategoryNewsServlet;
 import servlets.admin.cate_news.ManageCategoryNewsServlet;
 import servlets.client.Home;
 import servlets.admin.filter.AuthenFilter;
+import servlets.admin.news.AboutServlet;
 import servlets.admin.news.AddNewsServlet;
 import servlets.admin.news.EditNewsServlet;
 import servlets.admin.news.ManageNewsServlet;
@@ -42,6 +43,7 @@ import servlets.admin.slides.ManageSlidesServlet;
 import servlets.admin.supplier.AddSupplierServlet;
 import servlets.admin.supplier.EditSupplierServlet;
 import servlets.admin.supplier.ManageSupplierServlet;
+import servlets.client.AboutBlog;
 import servlets.client.CateProduct;
 import servlets.client.NewsDetail;
 import servlets.client.NewsServlet;
@@ -92,12 +94,14 @@ public class Main {
 
         // Test UploadFile
         context.addServlet(new ServletHolder(new UploadFileServlet()), "/admin/upload-file");
+        context.addServlet(new ServletHolder(new AboutServlet()), "/admin/about-blog");
 
         context.addServlet(new ServletHolder(new Home()), "/");
         context.addServlet(new ServletHolder(new CateProduct()), "/danh-muc");
         context.addServlet(new ServletHolder(new ProductDetail()), "/chi-tiet-san-pham");
         context.addServlet(new ServletHolder(new NewsServlet()), "/tin-tuc");
         context.addServlet(new ServletHolder(new NewsDetail()), "/chi-tiet-tin-tuc");
+        context.addServlet(new ServletHolder(new AboutBlog()), "/gioi-thieu");
 
         FilterHolder authenFilter = new FilterHolder(new AuthenFilter());
         authenFilter.setName("AuthenFilter");
