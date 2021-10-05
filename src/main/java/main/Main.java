@@ -20,6 +20,7 @@ import servlets.admin.cate_product.EditCategoryServlet;
 import servlets.admin.cate_product.ManageCategoryProductServlet;
 import servlets.admin.PartialServlet;
 import servlets.admin.UploadFileServlet;
+import servlets.admin.api.APISetiingServlet;
 import servlets.admin.mnadmin.AddAdminServlet;
 import servlets.admin.mnadmin.EditAdminServlet;
 import servlets.admin.mnadmin.LoginServlet;
@@ -37,6 +38,9 @@ import servlets.admin.news.ManageNewsServlet;
 import servlets.admin.product.AddProductServlet;
 import servlets.admin.product.EditProductServlet;
 import servlets.admin.product.ManageProductServlet;
+import servlets.admin.settings.AddSettingServlet;
+import servlets.admin.settings.EditSettingServlet;
+import servlets.admin.settings.ManageSettingsServlet;
 import servlets.admin.slides.AddSlidesServlet;
 import servlets.admin.slides.EditSlidesServlet;
 import servlets.admin.slides.ManageSlidesServlet;
@@ -62,6 +66,7 @@ public class Main {
         context.addServlet(new ServletHolder(new ManageNewsServlet()), "/admin/news");
         context.addServlet(new ServletHolder(new ManageSlidesServlet()), "/admin/slides");
         context.addServlet(new ServletHolder(new ManageAdminServlet()), "/admin/mnadmin");
+        context.addServlet(new ServletHolder(new ManageSettingsServlet()), "/admin/setting");
         context.addServlet(new ServletHolder(new LoginServlet()), "/admin/login");
         context.addServlet(new ServletHolder(new LogoutServlet()), "/admin/logout");
 
@@ -72,6 +77,7 @@ public class Main {
         context.addServlet(new ServletHolder(new AddNewsServlet()), "/admin/news/add");
         context.addServlet(new ServletHolder(new AddSlidesServlet()), "/admin/slides/add");
         context.addServlet(new ServletHolder(new AddAdminServlet()), "/admin/mnadmin/add");
+        context.addServlet(new ServletHolder(new AddSettingServlet()), "/admin/setting/add");
 
         context.addServlet(new ServletHolder(new EditCategoryServlet()), "/admin/cate_product/edit");
         context.addServlet(new ServletHolder(new EditSupplierServlet()), "/admin/supplier/edit");
@@ -80,6 +86,7 @@ public class Main {
         context.addServlet(new ServletHolder(new EditNewsServlet()), "/admin/news/edit");
         context.addServlet(new ServletHolder(new EditSlidesServlet()), "/admin/slides/edit");
         context.addServlet(new ServletHolder(new EditAdminServlet()), "/admin/mnadmin/edit");
+        context.addServlet(new ServletHolder(new EditSettingServlet()), "/admin/setting/edit");
 
         context.addServlet(new ServletHolder(new APICategoryServlet()), "/admin/api/cate_product");
         context.addServlet(new ServletHolder(new APISupplierServlet()), "/admin/api/supplier");
@@ -88,6 +95,7 @@ public class Main {
         context.addServlet(new ServletHolder(new APINewsServlet()), "/admin/api/news");
         context.addServlet(new ServletHolder(new APISlidesServlet()), "/admin/api/slides");
         context.addServlet(new ServletHolder(new APIAdminServlet()), "/admin/api/mnadmin");
+        context.addServlet(new ServletHolder(new APISetiingServlet()), "/admin/api/setting");
 
         context.addServlet(new ServletHolder(new PartialServlet()), "/admin/partital/*");
         //</editor-fold>
