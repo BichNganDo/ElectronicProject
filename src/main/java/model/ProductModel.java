@@ -299,7 +299,6 @@ public class ProductModel {
             PreparedStatement getMultiProduct = conn.prepareStatement("SELECT id, name, image_url, price, price_sale FROM `" + NAMETABLE + "` "
                     + "WHERE id IN (" + listString + ") ");
 
-//            getMultiProduct.setString(1, listString);
             ResultSet rs = getMultiProduct.executeQuery();
             while (rs.next()) {
                 Product product = new Product();

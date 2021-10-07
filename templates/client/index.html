@@ -72,8 +72,11 @@
                         </div>
                         <div class="col-lg-5">
                             <div class="header-search-block">
-                                <input type="text" placeholder="Search entire store here">
-                                <button>Search</button>
+                                <form action="${app_domain}/tim-kiem">
+                                    <input id="search-query" type="text" name="query" placeholder="Bạn muốn tìm...">
+                                    <button type="submit">Search</button>
+                                </form>
+
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -1888,6 +1891,7 @@
     </footer>
     <!-- Use Minified Plugins Version For Fast Page Load -->
     ${footer_include}
+
 </body>
 
 </html>

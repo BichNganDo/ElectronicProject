@@ -137,7 +137,7 @@ public class SettingModel {
             if (null == conn) {
                 return result;
             }
-            PreparedStatement getNewsByTypeStmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` WHERE key = ? ");
+            PreparedStatement getNewsByTypeStmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` WHERE `key` = ? ");
             getNewsByTypeStmt.setString(1, key);
 
             ResultSet rs = getNewsByTypeStmt.executeQuery();
@@ -146,6 +146,36 @@ public class SettingModel {
                 result.setId(rs.getInt("id"));
                 result.setKey(rs.getString("key"));
                 result.setValue(rs.getString("value"));
+            }
+
+            return result;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dbClient.releaseDbConnection(conn);
+        }
+        return result;
+    }
+
+    public List<Setting> getListSettingByKey(String keys) {
+        List<Setting> result = new ArrayList<>();
+        Connection conn = null;
+        try {
+            conn = dbClient.getDbConnection();
+            if (null == conn) {
+                return result;
+            }
+            PreparedStatement getListSettingByKeyStmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` WHERE `key` IN (" + keys + ") ");
+
+            ResultSet rs = getListSettingByKeyStmt.executeQuery();
+
+            while (rs.next()) {
+                Setting setting = new Setting();
+                setting.setId(rs.getInt("id"));
+                setting.setKey(rs.getString("key"));
+                setting.setValue(rs.getString("value"));
+
+                result.add(setting);
             }
 
             return result;

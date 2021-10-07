@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import common.APIResult;
 import entity.setting.ListSetting;
 import entity.setting.Setting;
-import entity.slides.ListSlides;
-import entity.slides.Slides;
 import helper.ServletUtil;
 import java.io.IOException;
 import java.util.List;
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.SettingModel;
-import model.SlidesModel;
 import org.apache.commons.lang3.math.NumberUtils;
 
 public class APISetiingServlet extends HttpServlet {
