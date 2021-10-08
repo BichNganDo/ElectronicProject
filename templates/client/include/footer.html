@@ -19,10 +19,26 @@
                     <div class="footer-title">
                         <!-- <h3>Trang chủ</h3> -->
                         <ul class="footer-list normal-list">
-                            <li><a href="${app_domain}">Trang chủ</a></li>
-                            <li><a href="${app_domain}/gioi-thieu">Giới thiệu</a></li>
-                            <li><a href="${app_domain}/tin-tuc">Tin tức</a></li>
-                            <li><a href="${app_domain}/lien-he">Liên hệ</a></li>
+                            <li>
+                                <a href="${app_domain}">
+                                    <h3>Trang chủ</h3>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="${app_domain}/gioi-thieu">
+                                    <h3>Giới thiệu</h3>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="${app_domain}/tin-tuc">
+                                    <h3>Tin tức</h3>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="${app_domain}/lien-he">
+                                    <h3>Liên hệ</h3>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -34,8 +50,8 @@
                 </div>
                 <div class="newsletter-form mb--30">
                     <form action="./php/mail.php">
-                        <input type="email" class="form-control" placeholder="Nhập Email của bạn...">
-                        <button class="btn btn--primary w-100">Đăng ký</button>
+                        <input id="email" type="email" class="form-control" placeholder="Nhập Email của bạn...">
+                        <button onclick="getEmail()" type="button" class="btn btn--primary w-100">Đăng ký</button>
                     </form>
                 </div>
                 <div class="social-block">
@@ -52,16 +68,6 @@
             </div>
         </div>
     </div>
-    <div class="footer-bottom">
-        <div class="container">
-            <p class="copyright-heading">Suspendisse in auctor augue. Cras fermentum est ac fermentum tempor. Etiam vel magna volutpat, posuere eros</p>
-            <a href="#" class="payment-block">
-                <img src="${static_domain}/image/icon/payment.png" alt="">
-            </a>
-            <p class="copyright-text">Copyright © 2019 <a href="#" class="author">Pustok</a>. All Right Reserved.
-                <br> Design By Pustok</p>
-        </div>
-    </div>
 </footer>
 
 
@@ -70,3 +76,29 @@
 <script src="${static_domain}/js/notification.js"></script>
 <script src="${static_domain}/js/toastr.min.js"></script>
 <script src="${static_domain}/js/custom.js"></script>
+<script>
+    function getEmail() {
+        email = document.getElementById("email").value;
+        console.log(email);
+        if (email) {
+            $.ajax({
+                url: "${app_domain}/add/email",
+                type: "POST",
+                dataType: "json",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    email: email
+                }),
+                success(response) {
+                    console.log(response);
+                    if (response.errorCode >= 0) {
+                        showNotification("success", response.message);
+                    } else {
+                        showNotification("error", response.message);
+                    }
+
+                }
+            })
+        }
+    }
+</script>

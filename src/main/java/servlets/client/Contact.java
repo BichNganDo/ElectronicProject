@@ -3,6 +3,7 @@ package servlets.client;
 import com.google.gson.Gson;
 import common.APIResult;
 import common.Config;
+import entity.category_product.CategoryProduct;
 import entity.setting.Setting;
 import helper.HttpHelper;
 import helper.ServletUtil;
@@ -14,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.CategoryModel;
 import model.ContactModel;
 import model.SettingModel;
 import org.json.JSONObject;
@@ -27,8 +29,8 @@ public class Contact extends HttpServlet {
         pageVariables.put("app_domain", Config.APP_DOMAIN);
         pageVariables.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
 
-        List<Setting> listSettingByKeys = SettingModel.INSTANCE.getListSettingByKey("'Địa chỉ', 'Điện thoại', 'Email'");
-        pageVariables.put("list_setting_by_keys", listSettingByKeys);
+        List<Setting> listSettingByKeyss = SettingModel.INSTANCE.getListSettingByKey("'Địa chỉ', 'Điện thoại', 'Email'");
+        pageVariables.put("list_setting_by_keyss", listSettingByKeyss);
 
         Setting settingMap = SettingModel.INSTANCE.getSettingByKey("Map");
         pageVariables.put("setting_map", settingMap);
@@ -40,6 +42,9 @@ public class Contact extends HttpServlet {
         Map<String, Object> pageVariablesFooter = new HashMap<>();
         pageVariablesFooter.put("app_domain", Config.APP_DOMAIN);
         pageVariablesFooter.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+
+        List<Setting> listSettingByKeys = SettingModel.INSTANCE.getListSettingByKey("'Địa chỉ', 'Điện thoại', 'Email'");
+        pageVariablesFooter.put("list_setting_by_keys", listSettingByKeys);
 
         Setting settingFb = SettingModel.INSTANCE.getSettingByKey("Facebook");
         pageVariablesFooter.put("setting_facebook", settingFb);
@@ -54,6 +59,34 @@ public class Contact extends HttpServlet {
         pageVariablesFooter.put("setting_youtube", settingYb);
 
         pageVariables.put("footer_include", PageGenerator.instance().getPage("client/include/footer.html", pageVariablesFooter));
+
+        //HEADER MENU
+        Map<String, Object> pageVariablesHeaderMenu = new HashMap<>();
+        pageVariablesHeaderMenu.put("app_domain", Config.APP_DOMAIN);
+        pageVariablesHeaderMenu.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+
+        List<CategoryProduct> allCategory = CategoryModel.INSTANCE.getAllCategory();
+        pageVariablesHeaderMenu.put("list_category", allCategory);
+
+        List<Setting> listSettingByKey = SettingModel.INSTANCE.getListSettingByKey("'Điện thoại', 'Email'");
+        pageVariablesHeaderMenu.put("list_setting_by_key", listSettingByKey);
+
+        Setting settingFacebook = SettingModel.INSTANCE.getSettingByKey("Facebook");
+        pageVariablesHeaderMenu.put("setting_facebook", settingFacebook);
+
+        Setting settingTwitter = SettingModel.INSTANCE.getSettingByKey("Twitter");
+        pageVariablesHeaderMenu.put("setting_twitter", settingTwitter);
+
+        Setting settingGoogle = SettingModel.INSTANCE.getSettingByKey("Google");
+        pageVariablesHeaderMenu.put("setting_google", settingGoogle);
+
+        Setting settingYoutube = SettingModel.INSTANCE.getSettingByKey("Youtube");
+        pageVariablesHeaderMenu.put("setting_youtube", settingYoutube);
+
+        Setting settingIns = SettingModel.INSTANCE.getSettingByKey("Instagram");
+        pageVariablesHeaderMenu.put("setting_instagram", settingIns);
+
+        pageVariables.put("header_menu", PageGenerator.instance().getPage("client/include/header_menu.html", pageVariablesHeaderMenu));
 
         response.setContentType("text/html;charset=UTF-8");
         response.getWriter().println(PageGenerator.instance().getPage("client/contact.html", pageVariables));

@@ -53,6 +53,7 @@ import servlets.admin.supplier.ManageSupplierServlet;
 import servlets.client.AboutBlog;
 import servlets.client.CateProduct;
 import servlets.client.Contact;
+import servlets.client.EmailRegister;
 import servlets.client.NewsDetail;
 import servlets.client.NewsServlet;
 import servlets.client.ProductDetail;
@@ -111,6 +112,7 @@ public class Main {
         // Test UploadFile
         context.addServlet(new ServletHolder(new UploadFileServlet()), "/admin/upload-file");
         context.addServlet(new ServletHolder(new AboutServlet()), "/admin/about-blog");
+        context.addServlet(new ServletHolder(new EmailRegister()), "/add/email");
 
         context.addServlet(new ServletHolder(new Home()), "/");
         context.addServlet(new ServletHolder(new CateProduct()), "/danh-muc");

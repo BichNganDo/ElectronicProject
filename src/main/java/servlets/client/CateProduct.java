@@ -1,6 +1,7 @@
 package servlets.client;
 
 import common.Config;
+import entity.category_news.CategoryNews;
 import entity.category_product.CategoryProduct;
 import entity.product.FilterProduct;
 import entity.product.Product;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.CategoryModel;
+import model.CategoryNewsModel;
+import model.NewsModel;
 import model.ProductModel;
 import model.SettingModel;
 import org.apache.commons.lang3.StringUtils;
@@ -29,9 +32,6 @@ public class CateProduct extends HttpServlet {
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("app_domain", Config.APP_DOMAIN);
         pageVariables.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
-
-        List<CategoryProduct> allCategory = CategoryModel.INSTANCE.getAllCategory();
-        pageVariables.put("list_category", allCategory);
 
         int itemPerPage = NumberUtils.toInt(request.getParameter("limit"), DEFAULT_ITEM_PER_PAGE);
         if (itemPerPage < 0 && itemPerPage > 50) {
@@ -90,10 +90,12 @@ public class CateProduct extends HttpServlet {
         List<Product> listProductByCate = ProductModel.INSTANCE.getSliceProduct(allProduct);
         pageVariables.put("list_product_by_cate", listProductByCate);
 
+        //HEADER
         Map<String, Object> pageVariablesHeader = new HashMap<>();
         pageVariablesHeader.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
         pageVariables.put("header_include", PageGenerator.instance().getPage("client/include/header.html", pageVariablesHeader));
 
+        //FOOTER
         Map<String, Object> pageVariablesFooter = new HashMap<>();
         pageVariablesFooter.put("app_domain", Config.APP_DOMAIN);
         pageVariablesFooter.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
@@ -114,6 +116,34 @@ public class CateProduct extends HttpServlet {
         pageVariablesFooter.put("setting_youtube", settingYb);
 
         pageVariables.put("footer_include", PageGenerator.instance().getPage("client/include/footer.html", pageVariablesFooter));
+
+        //HEADER MENU
+        Map<String, Object> pageVariablesHeaderMenu = new HashMap<>();
+        pageVariablesHeaderMenu.put("app_domain", Config.APP_DOMAIN);
+        pageVariablesHeaderMenu.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+
+        List<CategoryProduct> allCategory = CategoryModel.INSTANCE.getAllCategory();
+        pageVariablesHeaderMenu.put("list_category", allCategory);
+
+        List<Setting> listSettingByKey = SettingModel.INSTANCE.getListSettingByKey("'Điện thoại', 'Email'");
+        pageVariablesHeaderMenu.put("list_setting_by_key", listSettingByKey);
+
+        Setting settingFacebook = SettingModel.INSTANCE.getSettingByKey("Facebook");
+        pageVariablesHeaderMenu.put("setting_facebook", settingFacebook);
+
+        Setting settingTwitter = SettingModel.INSTANCE.getSettingByKey("Twitter");
+        pageVariablesHeaderMenu.put("setting_twitter", settingTwitter);
+
+        Setting settingGoogle = SettingModel.INSTANCE.getSettingByKey("Google");
+        pageVariablesHeaderMenu.put("setting_google", settingGoogle);
+
+        Setting settingYoutube = SettingModel.INSTANCE.getSettingByKey("Youtube");
+        pageVariablesHeaderMenu.put("setting_youtube", settingYoutube);
+
+        Setting settingIns = SettingModel.INSTANCE.getSettingByKey("Instagram");
+        pageVariablesHeaderMenu.put("setting_instagram", settingIns);
+
+        pageVariables.put("header_menu", PageGenerator.instance().getPage("client/include/header_menu.html", pageVariablesHeaderMenu));
 
         response.setContentType("text/html;charset=UTF-8");
         response.getWriter().println(PageGenerator.instance().getPage("client/shop-grid.html", pageVariables));

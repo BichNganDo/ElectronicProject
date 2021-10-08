@@ -3,7 +3,6 @@ package model;
 import client.MysqlClient;
 import common.ErrorCode;
 import entity.category_news.CategoryNews;
-import entity.category_product.CategoryProduct;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

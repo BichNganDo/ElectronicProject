@@ -88,6 +88,24 @@ public class Home extends HttpServlet {
         List<Product> listProductView = ProductModel.INSTANCE.getSliceProduct(filterProductView);
         pageVariables.put("list_products_view", listProductView);
 
+        List<Setting> listSettingByKey = SettingModel.INSTANCE.getListSettingByKey("'Điện thoại', 'Email'");
+        pageVariables.put("list_setting_by_key", listSettingByKey);
+
+        Setting settingFacebook = SettingModel.INSTANCE.getSettingByKey("Facebook");
+        pageVariables.put("setting_facebook", settingFacebook);
+
+        Setting settingTwitter = SettingModel.INSTANCE.getSettingByKey("Twitter");
+        pageVariables.put("setting_twitter", settingTwitter);
+
+        Setting settingGoogle = SettingModel.INSTANCE.getSettingByKey("Google");
+        pageVariables.put("setting_google", settingGoogle);
+
+        Setting settingYoutube = SettingModel.INSTANCE.getSettingByKey("Youtube");
+        pageVariables.put("setting_youtube", settingYoutube);
+
+        Setting settingIns = SettingModel.INSTANCE.getSettingByKey("Instagram");
+        pageVariables.put("setting_instagram", settingIns);
+
         Map<String, Object> pageVariablesHeader = new HashMap<>();
         pageVariablesHeader.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
         pageVariables.put("header_include", PageGenerator.instance().getPage("client/include/header.html", pageVariablesHeader));

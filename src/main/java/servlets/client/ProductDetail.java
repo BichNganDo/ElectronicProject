@@ -26,9 +26,6 @@ public class ProductDetail extends HttpServlet {
         pageVariables.put("app_domain", Config.APP_DOMAIN);
         pageVariables.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
 
-        List<CategoryProduct> allCategory = CategoryModel.INSTANCE.getAllCategory();
-        pageVariables.put("list_category", allCategory);
-
         int id = NumberUtils.toInt(request.getParameter("id"));
         Product productById = ProductModel.INSTANCE.getProductByID(id);
         pageVariables.put("product_by_id", productById);
@@ -59,6 +56,34 @@ public class ProductDetail extends HttpServlet {
         pageVariablesFooter.put("setting_youtube", settingYb);
 
         pageVariables.put("footer_include", PageGenerator.instance().getPage("client/include/footer.html", pageVariablesFooter));
+
+        //HEADER MENU
+        Map<String, Object> pageVariablesHeaderMenu = new HashMap<>();
+        pageVariablesHeaderMenu.put("app_domain", Config.APP_DOMAIN);
+        pageVariablesHeaderMenu.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+
+        List<CategoryProduct> allCategory = CategoryModel.INSTANCE.getAllCategory();
+        pageVariablesHeaderMenu.put("list_category", allCategory);
+
+        List<Setting> listSettingByKey = SettingModel.INSTANCE.getListSettingByKey("'Điện thoại', 'Email'");
+        pageVariablesHeaderMenu.put("list_setting_by_key", listSettingByKey);
+
+        Setting settingFacebook = SettingModel.INSTANCE.getSettingByKey("Facebook");
+        pageVariablesHeaderMenu.put("setting_facebook", settingFacebook);
+
+        Setting settingTwitter = SettingModel.INSTANCE.getSettingByKey("Twitter");
+        pageVariablesHeaderMenu.put("setting_twitter", settingTwitter);
+
+        Setting settingGoogle = SettingModel.INSTANCE.getSettingByKey("Google");
+        pageVariablesHeaderMenu.put("setting_google", settingGoogle);
+
+        Setting settingYoutube = SettingModel.INSTANCE.getSettingByKey("Youtube");
+        pageVariablesHeaderMenu.put("setting_youtube", settingYoutube);
+
+        Setting settingIns = SettingModel.INSTANCE.getSettingByKey("Instagram");
+        pageVariablesHeaderMenu.put("setting_instagram", settingIns);
+
+        pageVariables.put("header_menu", PageGenerator.instance().getPage("client/include/header_menu.html", pageVariablesHeaderMenu));
 
         response.setContentType("text/html;charset=UTF-8");
         response.getWriter().println(PageGenerator.instance().getPage("client/product-details.html", pageVariables));
