@@ -36,7 +36,24 @@ public class Contact extends HttpServlet {
         Map<String, Object> pageVariablesHeader = new HashMap<>();
         pageVariablesHeader.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
         pageVariables.put("header_include", PageGenerator.instance().getPage("client/include/header.html", pageVariablesHeader));
-        pageVariables.put("footer_include", PageGenerator.instance().getPage("client/include/footer.html", pageVariablesHeader));
+
+        Map<String, Object> pageVariablesFooter = new HashMap<>();
+        pageVariablesFooter.put("app_domain", Config.APP_DOMAIN);
+        pageVariablesFooter.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+
+        Setting settingFb = SettingModel.INSTANCE.getSettingByKey("Facebook");
+        pageVariablesFooter.put("setting_facebook", settingFb);
+
+        Setting settingTw = SettingModel.INSTANCE.getSettingByKey("Twitter");
+        pageVariablesFooter.put("setting_twitter", settingTw);
+
+        Setting settingGg = SettingModel.INSTANCE.getSettingByKey("Google");
+        pageVariablesFooter.put("setting_google", settingGg);
+
+        Setting settingYb = SettingModel.INSTANCE.getSettingByKey("Youtube");
+        pageVariablesFooter.put("setting_youtube", settingYb);
+
+        pageVariables.put("footer_include", PageGenerator.instance().getPage("client/include/footer.html", pageVariablesFooter));
 
         response.setContentType("text/html;charset=UTF-8");
         response.getWriter().println(PageGenerator.instance().getPage("client/contact.html", pageVariables));
