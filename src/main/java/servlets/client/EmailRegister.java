@@ -28,7 +28,7 @@ public class EmailRegister extends HttpServlet {
             result.setMessage("Đăng ký thành công!");
         } else {
             result.setErrorCode(-1);
-            result.setMessage("Đăng ký thất bại!");
+            result.setMessage("Email đăng ký đã tồn tại.");
         }
         ServletUtil.printJson(request, response, gson.toJson(result));
     }

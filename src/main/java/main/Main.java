@@ -21,6 +21,7 @@ import servlets.admin.cate_product.ManageCategoryProductServlet;
 import servlets.admin.PartialServlet;
 import servlets.admin.UploadFileServlet;
 import servlets.admin.api.APIContact;
+import servlets.admin.api.APIEmailRegisterServlet;
 import servlets.admin.api.APISetiingServlet;
 import servlets.admin.mnadmin.AddAdminServlet;
 import servlets.admin.mnadmin.EditAdminServlet;
@@ -32,6 +33,8 @@ import servlets.admin.cate_news.EditCategoryNewsServlet;
 import servlets.admin.cate_news.ManageCategoryNewsServlet;
 import servlets.admin.contact.EditContactServlet;
 import servlets.admin.contact.ManageContactServlet;
+import servlets.admin.email_register.EditEmailServlet;
+import servlets.admin.email_register.ManageEmailServlet;
 import servlets.client.Home;
 import servlets.admin.filter.AuthenFilter;
 import servlets.admin.news.AboutServlet;
@@ -76,6 +79,7 @@ public class Main {
         context.addServlet(new ServletHolder(new LoginServlet()), "/admin/login");
         context.addServlet(new ServletHolder(new LogoutServlet()), "/admin/logout");
         context.addServlet(new ServletHolder(new ManageContactServlet()), "/admin/contact");
+        context.addServlet(new ServletHolder(new ManageEmailServlet()), "/admin/email");
 
         context.addServlet(new ServletHolder(new AddCategoryServlet()), "/admin/cate_product/add");
         context.addServlet(new ServletHolder(new AddSupplierServlet()), "/admin/supplier/add");
@@ -95,6 +99,7 @@ public class Main {
         context.addServlet(new ServletHolder(new EditAdminServlet()), "/admin/mnadmin/edit");
         context.addServlet(new ServletHolder(new EditSettingServlet()), "/admin/setting/edit");
         context.addServlet(new ServletHolder(new EditContactServlet()), "/admin/contact/edit");
+        context.addServlet(new ServletHolder(new EditEmailServlet()), "/admin/email/edit");
 
         context.addServlet(new ServletHolder(new APICategoryServlet()), "/admin/api/cate_product");
         context.addServlet(new ServletHolder(new APISupplierServlet()), "/admin/api/supplier");
@@ -105,6 +110,7 @@ public class Main {
         context.addServlet(new ServletHolder(new APIAdminServlet()), "/admin/api/mnadmin");
         context.addServlet(new ServletHolder(new APISetiingServlet()), "/admin/api/setting");
         context.addServlet(new ServletHolder(new APIContact()), "/admin/api/contact");
+        context.addServlet(new ServletHolder(new APIEmailRegisterServlet()), "/admin/api/email");
 
         context.addServlet(new ServletHolder(new PartialServlet()), "/admin/partital/*");
         //</editor-fold>

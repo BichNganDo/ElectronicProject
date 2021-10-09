@@ -92,6 +92,7 @@
                 success(response) {
                     console.log(response);
                     if (response.errorCode >= 0) {
+                        document.getElementById("email").value = "";
                         showNotification("success", response.message);
                     } else {
                         showNotification("error", response.message);
