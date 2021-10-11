@@ -2,10 +2,12 @@ package servlets.client;
 
 import common.Config;
 import entity.category_product.CategoryProduct;
+import entity.item.CartItem;
 import entity.product.Product;
 import entity.setting.Setting;
 import helper.SessionHelper;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,33 +15,33 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import model.CategoryModel;
 import model.ProductModel;
 import model.SettingModel;
 import org.apache.commons.lang3.math.NumberUtils;
 import templater.PageGenerator;
 
-public class ProductDetail extends HttpServlet {
+public class Payment extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("app_domain", Config.APP_DOMAIN);
         pageVariables.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+        pageVariables.put("shipping_fee", Config.SHIPPING_FEE);
 
-        int id = NumberUtils.toInt(request.getParameter("id"));
-        pageVariables.put("id_product", id);
-        Product productById = ProductModel.INSTANCE.getProductByID(id);
-        pageVariables.put("product_by_id", productById);
-
-        SessionHelper.INSTANCE.addRecentIdProduct(request, id);
-        List<Integer> listRecentIdProduct = SessionHelper.INSTANCE.getRecentIdProduct(request);
-        listRecentIdProduct.remove((Object) id);
-        List<Product> listRecentProduct = ProductModel.INSTANCE.multiGetProduct(listRecentIdProduct);
-        pageVariables.put("list_recent_product", listRecentProduct);
-
-        int id_cate = productById.getId_cate();
+        List<CartItem> listResult = SessionHelper.INSTANCE.getCartItem(request);
+        List<Product> listProductItem = new ArrayList<>();
+        int payTotal = 0;
+        for (CartItem cartItem : listResult) {
+            int product_id = cartItem.getId_product();
+            Product productItem = ProductModel.INSTANCE.getProductByID(product_id);
+            productItem.setQuantity_buy(cartItem.getQuantity());
+            payTotal = payTotal + productItem.getQuantity_buy() * productItem.getPrice_sale();
+            listProductItem.add(productItem);
+        }
+        pageVariables.put("list_product_item", listProductItem);
+        pageVariables.put("pay_total", payTotal);
 
         Map<String, Object> pageVariablesHeader = new HashMap<>();
         pageVariablesHeader.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
@@ -95,7 +97,7 @@ public class ProductDetail extends HttpServlet {
         pageVariables.put("header_menu", PageGenerator.instance().getPage("client/include/header_menu.html", pageVariablesHeaderMenu));
 
         response.setContentType("text/html;charset=UTF-8");
-        response.getWriter().println(PageGenerator.instance().getPage("client/product-details.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("client/payment.html", pageVariables));
 
         response.setStatus(HttpServletResponse.SC_OK);
     }

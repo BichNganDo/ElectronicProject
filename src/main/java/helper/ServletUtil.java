@@ -1,11 +1,8 @@
 package helper;
 
-import entity.product.Product;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;

@@ -5,6 +5,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -54,11 +55,13 @@ import servlets.admin.supplier.AddSupplierServlet;
 import servlets.admin.supplier.EditSupplierServlet;
 import servlets.admin.supplier.ManageSupplierServlet;
 import servlets.client.AboutBlog;
+import servlets.client.Cart;
 import servlets.client.CateProduct;
 import servlets.client.Contact;
 import servlets.client.EmailRegister;
 import servlets.client.NewsDetail;
 import servlets.client.NewsServlet;
+import servlets.client.Payment;
 import servlets.client.ProductDetail;
 import servlets.client.SearchProduct;
 
@@ -128,6 +131,11 @@ public class Main {
         context.addServlet(new ServletHolder(new AboutBlog()), "/gioi-thieu");
         context.addServlet(new ServletHolder(new Contact()), "/lien-he");
         context.addServlet(new ServletHolder(new SearchProduct()), "/tim-kiem");
+        context.addServlet(new ServletHolder(new Cart()), "/gio-hang");
+        context.addServlet(new ServletHolder(new Payment()), "/thanh-toan");
+
+        context.setContextPath("/");
+        context.setSessionHandler(new SessionHandler());
 
         FilterHolder authenFilter = new FilterHolder(new AuthenFilter());
         authenFilter.setName("AuthenFilter");
@@ -155,5 +163,6 @@ public class Main {
         System.out.println("Server started");
 
         server.join();
+
     }
 }

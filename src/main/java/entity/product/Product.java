@@ -24,6 +24,7 @@ public class Product {
     private String created_date;
     private int discount;
     private int view;
+    private int quantity_buy;
 
     public Product() {
     }
@@ -274,6 +275,14 @@ public class Product {
             this.promo = promo;
         }
 
+    }
+
+    public int getQuantity_buy() {
+        return quantity_buy;
+    }
+
+    public void setQuantity_buy(int quantity_buy) {
+        this.quantity_buy = quantity_buy;
     }
 
 }

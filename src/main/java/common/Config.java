@@ -7,5 +7,6 @@ public class Config {
     public static String STATIC_ADMIN_DOMAIN = "http://localhost:8080/static/admin";
     public static String STATIC_CLIENT_DOMAIN = "http://localhost:8080/static/client";
     public static String UPLOAD_DIR = "C:\\Users\\Ngan Do\\Documents\\NetBeansProjects\\ElectronicProject\\";
+    public static int SHIPPING_FEE = 20000;
 
 }
