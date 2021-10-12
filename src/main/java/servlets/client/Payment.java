@@ -40,6 +40,7 @@ public class Payment extends HttpServlet {
             payTotal = payTotal + productItem.getQuantity_buy() * productItem.getPrice_sale();
             listProductItem.add(productItem);
         }
+        int numberItem = listProductItem.size();
         pageVariables.put("list_product_item", listProductItem);
         pageVariables.put("pay_total", payTotal);
 
@@ -72,6 +73,10 @@ public class Payment extends HttpServlet {
         Map<String, Object> pageVariablesHeaderMenu = new HashMap<>();
         pageVariablesHeaderMenu.put("app_domain", Config.APP_DOMAIN);
         pageVariablesHeaderMenu.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+
+        pageVariablesHeaderMenu.put("number_item", numberItem);
+        pageVariablesHeaderMenu.put("list_product_item", listProductItem);
+        pageVariablesHeaderMenu.put("pay_total", payTotal);
 
         List<CategoryProduct> allCategory = CategoryModel.INSTANCE.getAllCategory();
         pageVariablesHeaderMenu.put("list_category", allCategory);

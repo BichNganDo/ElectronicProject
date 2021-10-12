@@ -15,7 +15,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import model.CategoryModel;
 import model.ProductModel;
 import model.SettingModel;
@@ -50,6 +49,7 @@ public class Cart extends HttpServlet {
             payTotal = payTotal + productItem.getQuantity_buy() * productItem.getPrice_sale();
             listProductItem.add(productItem);
         }
+        int numberItem = listProductItem.size();
         pageVariables.put("list_product_item", listProductItem);
         pageVariables.put("pay_total", payTotal);
 
@@ -82,6 +82,10 @@ public class Cart extends HttpServlet {
         Map<String, Object> pageVariablesHeaderMenu = new HashMap<>();
         pageVariablesHeaderMenu.put("app_domain", Config.APP_DOMAIN);
         pageVariablesHeaderMenu.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+
+        pageVariablesHeaderMenu.put("number_item", numberItem);
+        pageVariablesHeaderMenu.put("list_product_item", listProductItem);
+        pageVariablesHeaderMenu.put("pay_total", payTotal);
 
         List<CategoryProduct> allCategory = CategoryModel.INSTANCE.getAllCategory();
         pageVariablesHeaderMenu.put("list_category", allCategory);

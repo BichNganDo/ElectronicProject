@@ -88,34 +88,37 @@
                             <div class="cart-block">
                                 <div class="cart-total">
                                     <span class="text-number">
-                                        1
+                                        ${number_item}
                                     </span>
                                     <span class="text-item">
                                         Giỏ hàng
                                     </span>
                                     <span class="price">
-                                        £0.00
+                                        ${pay_total} đ
                                         <i class="fas fa-chevron-down"></i>
                                     </span>
                                 </div>
                                 <div class="cart-dropdown-block">
                                     <div class=" single-cart-block ">
-                                        <div class="cart-product">
-                                            <a href="product-details.html" class="image">
-                                                <img src="${static_domain}/image/products/cart-product-1.jpg" alt="">
-                                            </a>
-                                            <div class="content">
-                                                <h3 class="title"><a href="product-details.html">Điện thoại Iphone 11 64GB</a></h3>
-                                                <p class="price"><span class="qty">1 ×</span>14.658.000 đ</p>
-                                                <button class="cross-btn"><i class="fas fa-times"></i></button>
+                                        <#list list_product_item as productItem>
+                                            <div class="cart-product">
+                                                <a href="${app_domain}/chi-tiet-san-pham?id=${productItem.id}" class="image">
+                                                    <img src="${productItem.image_url}" alt="">
+                                                </a>
+                                                <div class="content">
+                                                    <h3 class="title"><a href="${app_domain}/chi-tiet-san-pham?id=${productItem.id}">${productItem.name}</a>
+                                                    </h3>
+                                                    <p class="price"><span class="qty">${productItem.quantity_buy} ×</span> ${productItem.price_sale} đ</p>
+                                                    <button class="cross-btn" href="${app_domain}/gio-hang?action=remove-cart-item&product_id=${productItem.id}"><i class="fas fa-times"></i></button>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </#list>
                                     </div>
                                     <div class=" single-cart-block ">
                                         <div class="btn-block">
-                                            <a href="cart.html" class="btn">Xem giỏ hàng <i
+                                            <a href="${app_domain}/gio-hang" class="btn">Xem giỏ hàng <i
                                                     class="fas fa-chevron-right"></i></a>
-                                            <a href="checkout.html" class="btn btn--primary">Thanh toán <i
+                                            <a href="${app_domain}/thanh-toan" class="btn btn--primary">Thanh toán <i
                                                     class="fas fa-chevron-right"></i></a>
                                         </div>
                                     </div>

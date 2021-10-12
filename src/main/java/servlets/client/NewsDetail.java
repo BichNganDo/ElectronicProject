@@ -2,9 +2,13 @@ package servlets.client;
 
 import common.Config;
 import entity.category_product.CategoryProduct;
+import entity.item.CartItem;
 import entity.news.News;
+import entity.product.Product;
 import entity.setting.Setting;
+import helper.SessionHelper;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.CategoryModel;
 import model.NewsModel;
+import model.ProductModel;
 import model.SettingModel;
 import org.apache.commons.lang3.math.NumberUtils;
 import templater.PageGenerator;
@@ -59,6 +64,21 @@ public class NewsDetail extends HttpServlet {
         Map<String, Object> pageVariablesHeaderMenu = new HashMap<>();
         pageVariablesHeaderMenu.put("app_domain", Config.APP_DOMAIN);
         pageVariablesHeaderMenu.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+
+        List<CartItem> listResult = SessionHelper.INSTANCE.getCartItem(request);
+        List<Product> listProductItem = new ArrayList<>();
+        int payTotal = 0;
+        for (CartItem cartItem : listResult) {
+            int product_id = cartItem.getId_product();
+            Product productItem = ProductModel.INSTANCE.getProductByID(product_id);
+            productItem.setQuantity_buy(cartItem.getQuantity());
+            payTotal = payTotal + productItem.getQuantity_buy() * productItem.getPrice_sale();
+            listProductItem.add(productItem);
+        }
+        int numberItem = listProductItem.size();
+        pageVariablesHeaderMenu.put("number_item", numberItem);
+        pageVariablesHeaderMenu.put("list_product_item", listProductItem);
+        pageVariablesHeaderMenu.put("pay_total", payTotal);
 
         List<CategoryProduct> allCategory = CategoryModel.INSTANCE.getAllCategory();
         pageVariablesHeaderMenu.put("list_category", allCategory);

@@ -3,33 +3,37 @@ package model;
 import client.MysqlClient;
 import common.ErrorCode;
 import entity.email_register.Email;
+import entity.info_buyer.InfoBuyer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
-public class EmailRegisterModel {
+public class InfoBuyerModel {
 
     private static final MysqlClient dbClient = MysqlClient.getMysqlCli();
-    private final String NAMETABLE = "email_register";
-    public static EmailRegisterModel INSTANCE = new EmailRegisterModel();
+    private final String NAMETABLE = "info_buyer";
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    public static InfoBuyerModel INSTANCE = new InfoBuyerModel();
 
-    public List<Email> getSliceEmail(int offset, int limit, String searchQuery) {
-        List<Email> resultListEmail = new ArrayList<>();
+    public List<InfoBuyer> getSliceInfoBuyer(int offset, int limit, String searchQuery) {
+        List<InfoBuyer> resultListInfoBuyer = new ArrayList<>();
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
             if (null == conn) {
-                return resultListEmail;
+                return resultListInfoBuyer;
 
             }
             String sql = "SELECT * FROM `" + NAMETABLE
                     + "` WHERE 1 = 1";
 
             if (StringUtils.isNotEmpty(searchQuery)) {
-                sql = sql + " AND email LIKE ? ";
+                sql = sql + " AND (name LIKE ? OR email LIKE ? OR phone LIKE ?) ";
             }
 
             sql = sql + " LIMIT ? OFFSET ? ";
@@ -39,30 +43,41 @@ public class EmailRegisterModel {
 
             if (StringUtils.isNotEmpty(searchQuery)) {
                 ps.setString(param++, "%" + searchQuery + "%");
+                ps.setString(param++, "%" + searchQuery + "%");
+                ps.setString(param++, "%" + searchQuery + "%");
             }
             ps.setInt(param++, limit);
             ps.setInt(param++, offset);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Email email = new Email();
-                email.setId(rs.getInt("id"));
-                email.setEmail(rs.getString("email"));
+                InfoBuyer infoBuyer = new InfoBuyer();
+                infoBuyer.setId(rs.getInt("id"));
+                infoBuyer.setName(rs.getString("name"));
+                infoBuyer.setEmail(rs.getString("email"));
+                infoBuyer.setPhone(rs.getString("phone"));
+                infoBuyer.setAddress(rs.getString("address"));
+                infoBuyer.setNote(rs.getString("note"));
 
-                resultListEmail.add(email);
+                long currentTimeMillis = rs.getLong("created_date");
+                Date date = new Date(currentTimeMillis);
+                String dateString = sdf.format(date);
+                infoBuyer.setCreated_date(dateString);
+
+                resultListInfoBuyer.add(infoBuyer);
             }
 
-            return resultListEmail;
+            return resultListInfoBuyer;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
             dbClient.releaseDbConnection(conn);
         }
 
-        return resultListEmail;
+        return resultListInfoBuyer;
     }
 
-    public int getTotalEmail(String searchQuery) {
+    public int getTotalInfoBuyer(String searchQuery) {
         int total = 0;
         Connection conn = null;
         try {
@@ -72,13 +87,15 @@ public class EmailRegisterModel {
             }
             String sql = "SELECT COUNT(id) AS total FROM `" + NAMETABLE + "` WHERE 1=1";
             if (StringUtils.isNotEmpty(searchQuery)) {
-                sql = sql + " AND email LIKE ? ";
+                sql = sql + " AND (name LIKE ? OR email LIKE ? OR phone LIKE ?) ";
             }
 
             PreparedStatement ps = conn.prepareStatement(sql);
             int param = 1;
 
             if (StringUtils.isNotEmpty(searchQuery)) {
+                ps.setString(param++, "%" + searchQuery + "%");
+                ps.setString(param++, "%" + searchQuery + "%");
                 ps.setString(param++, "%" + searchQuery + "%");
             }
 
@@ -96,22 +113,31 @@ public class EmailRegisterModel {
         return total;
     }
 
-    public Email getEmailByID(int id) {
-        Email result = new Email();
+    public InfoBuyer getInfoBuyerByID(int id) {
+        InfoBuyer result = new InfoBuyer();
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
             if (null == conn) {
                 return result;
             }
-            PreparedStatement getEmailByIdStmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` WHERE id = ? ");
-            getEmailByIdStmt.setInt(1, id);
+            PreparedStatement getInfoBuyerByIdStmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` WHERE id = ? ");
+            getInfoBuyerByIdStmt.setInt(1, id);
 
-            ResultSet rs = getEmailByIdStmt.executeQuery();
+            ResultSet rs = getInfoBuyerByIdStmt.executeQuery();
 
             if (rs.next()) {
                 result.setId(rs.getInt("id"));
+                result.setName(rs.getString("name"));
                 result.setEmail(rs.getString("email"));
+                result.setPhone(rs.getString("phone"));
+                result.setAddress(rs.getString("address"));
+                result.setNote(rs.getString("note"));
+
+                long currentTimeMillis = rs.getLong("created_date");
+                Date date = new Date(currentTimeMillis);
+                String dateString = sdf.format(date);
+                result.setCreated_date(dateString);
             }
 
             return result;
@@ -123,46 +149,22 @@ public class EmailRegisterModel {
         return result;
     }
 
-    public boolean isExistEmail(String email) {
+    public int addInfoBuyer(String name, String email, String phone, String address, String note) {
         Connection conn = null;
-        try {
-            conn = dbClient.getDbConnection();
-            if (null == conn) {
-                return false;
-            }
-
-            PreparedStatement isExistEmailStmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` WHERE `email` = ?");
-            isExistEmailStmt.setString(1, email);
-
-            ResultSet rs = isExistEmailStmt.executeQuery();
-            if (rs.next()) {
-                return true;
-            }
-
-            return false;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        } finally {
-            dbClient.releaseDbConnection(conn);
-        }
-
-        return false;
-    }
-
-    public int addEmail(String email) {
-        Connection conn = null;
-        Boolean isExistEmail = INSTANCE.isExistEmail(email);
-        if (isExistEmail == true) {
-            return ErrorCode.EXIST_ACCOUNT.getValue();
-        }
         try {
             conn = dbClient.getDbConnection();
             if (null == conn) {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
 
-            PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (email) VALUES (?)");
-            addStmt.setString(1, email);
+            PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (name, email, phone, address, note, created_date) "
+                    + "VALUES (?, ?, ?, ?, ?, ?)");
+            addStmt.setString(1, name);
+            addStmt.setString(2, email);
+            addStmt.setString(3, phone);
+            addStmt.setString(4, address);
+            addStmt.setString(5, note);
+            addStmt.setString(6, System.currentTimeMillis() + "");
             int rs = addStmt.executeUpdate();
             return rs;
         } catch (Exception e) {
@@ -174,7 +176,7 @@ public class EmailRegisterModel {
         return ErrorCode.FAIL.getValue();
     }
 
-    public int editEmail(int id, String email) {
+    public int editInfoBuyer(int id, String name, String email, String phone, String address, String note) {
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
@@ -182,9 +184,14 @@ public class EmailRegisterModel {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
 
-            PreparedStatement editStmt = conn.prepareStatement("UPDATE `" + NAMETABLE + "` SET email = ? WHERE id = ? ");
-            editStmt.setString(1, email);
-            editStmt.setInt(2, id);
+            PreparedStatement editStmt = conn.prepareStatement("UPDATE `" + NAMETABLE + "` SET name = ?, email = ?, phone = ?, address = ?, note = ? "
+                    + "WHERE id = ? ");
+            editStmt.setString(1, name);
+            editStmt.setString(2, email);
+            editStmt.setString(3, phone);
+            editStmt.setString(4, address);
+            editStmt.setString(5, note);
+            editStmt.setInt(6, id);
 
             int rs = editStmt.executeUpdate();
 
@@ -197,15 +204,15 @@ public class EmailRegisterModel {
         return ErrorCode.FAIL.getValue();
     }
 
-    public int deleteEmail(int id) {
+    public int deleteInfoBuyer(int id) {
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
             if (null == conn) {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
-            Email emailById = getEmailByID(id);
-            if (emailById.getId() == 0) {
+            InfoBuyer infoBuyerById = getInfoBuyerByID(id);
+            if (infoBuyerById.getId() == 0) {
                 return ErrorCode.NOT_EXIST.getValue();
             }
             PreparedStatement deleteStmt = conn.prepareStatement("DELETE FROM `" + NAMETABLE + "` WHERE id = ?");

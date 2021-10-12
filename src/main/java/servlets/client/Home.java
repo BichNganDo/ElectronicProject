@@ -2,12 +2,15 @@ package servlets.client;
 
 import common.Config;
 import entity.category_product.CategoryProduct;
+import entity.item.CartItem;
 import entity.news.News;
 import entity.product.FilterProduct;
 import entity.product.Product;
 import entity.setting.Setting;
 import entity.slides.Slides;
+import helper.SessionHelper;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +32,21 @@ public class Home extends HttpServlet {
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("app_domain", Config.APP_DOMAIN);
         pageVariables.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+
+        List<CartItem> listResult = SessionHelper.INSTANCE.getCartItem(request);
+        List<Product> listProductItem = new ArrayList<>();
+        int payTotal = 0;
+        for (CartItem cartItem : listResult) {
+            int product_id = cartItem.getId_product();
+            Product productItem = ProductModel.INSTANCE.getProductByID(product_id);
+            productItem.setQuantity_buy(cartItem.getQuantity());
+            payTotal = payTotal + productItem.getQuantity_buy() * productItem.getPrice_sale();
+            listProductItem.add(productItem);
+        }
+        int numberItem = listProductItem.size();
+        pageVariables.put("number_item", numberItem);
+        pageVariables.put("list_product_item", listProductItem);
+        pageVariables.put("pay_total", payTotal);
 
         List<CategoryProduct> allCategory = CategoryModel.INSTANCE.getAllCategory();
         pageVariables.put("list_category", allCategory);

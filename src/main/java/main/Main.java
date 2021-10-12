@@ -23,6 +23,7 @@ import servlets.admin.PartialServlet;
 import servlets.admin.UploadFileServlet;
 import servlets.admin.api.APIContact;
 import servlets.admin.api.APIEmailRegisterServlet;
+import servlets.admin.api.APIInfoBuyerServlet;
 import servlets.admin.api.APISetiingServlet;
 import servlets.admin.mnadmin.AddAdminServlet;
 import servlets.admin.mnadmin.EditAdminServlet;
@@ -38,6 +39,8 @@ import servlets.admin.email_register.EditEmailServlet;
 import servlets.admin.email_register.ManageEmailServlet;
 import servlets.client.Home;
 import servlets.admin.filter.AuthenFilter;
+import servlets.admin.info_buyer.EditInfoBuyerServlet;
+import servlets.admin.info_buyer.ManageInfoBuyerServlet;
 import servlets.admin.news.AboutServlet;
 import servlets.admin.news.AddNewsServlet;
 import servlets.admin.news.EditNewsServlet;
@@ -59,6 +62,7 @@ import servlets.client.Cart;
 import servlets.client.CateProduct;
 import servlets.client.Contact;
 import servlets.client.EmailRegister;
+import servlets.client.InfoBuyer;
 import servlets.client.NewsDetail;
 import servlets.client.NewsServlet;
 import servlets.client.Payment;
@@ -83,6 +87,7 @@ public class Main {
         context.addServlet(new ServletHolder(new LogoutServlet()), "/admin/logout");
         context.addServlet(new ServletHolder(new ManageContactServlet()), "/admin/contact");
         context.addServlet(new ServletHolder(new ManageEmailServlet()), "/admin/email");
+        context.addServlet(new ServletHolder(new ManageInfoBuyerServlet()), "/admin/info_buyer");
 
         context.addServlet(new ServletHolder(new AddCategoryServlet()), "/admin/cate_product/add");
         context.addServlet(new ServletHolder(new AddSupplierServlet()), "/admin/supplier/add");
@@ -103,6 +108,7 @@ public class Main {
         context.addServlet(new ServletHolder(new EditSettingServlet()), "/admin/setting/edit");
         context.addServlet(new ServletHolder(new EditContactServlet()), "/admin/contact/edit");
         context.addServlet(new ServletHolder(new EditEmailServlet()), "/admin/email/edit");
+        context.addServlet(new ServletHolder(new EditInfoBuyerServlet()), "/admin/info_buyer/edit");
 
         context.addServlet(new ServletHolder(new APICategoryServlet()), "/admin/api/cate_product");
         context.addServlet(new ServletHolder(new APISupplierServlet()), "/admin/api/supplier");
@@ -114,6 +120,7 @@ public class Main {
         context.addServlet(new ServletHolder(new APISetiingServlet()), "/admin/api/setting");
         context.addServlet(new ServletHolder(new APIContact()), "/admin/api/contact");
         context.addServlet(new ServletHolder(new APIEmailRegisterServlet()), "/admin/api/email");
+        context.addServlet(new ServletHolder(new APIInfoBuyerServlet()), "/admin/api/info_buyer");
 
         context.addServlet(new ServletHolder(new PartialServlet()), "/admin/partital/*");
         //</editor-fold>
@@ -122,6 +129,7 @@ public class Main {
         context.addServlet(new ServletHolder(new UploadFileServlet()), "/admin/upload-file");
         context.addServlet(new ServletHolder(new AboutServlet()), "/admin/about-blog");
         context.addServlet(new ServletHolder(new EmailRegister()), "/add/email");
+        context.addServlet(new ServletHolder(new InfoBuyer()), "/add/info-buyer");
 
         context.addServlet(new ServletHolder(new Home()), "/");
         context.addServlet(new ServletHolder(new CateProduct()), "/danh-muc");

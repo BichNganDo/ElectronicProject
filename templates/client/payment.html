@@ -36,47 +36,27 @@
                                         <div class="row">
                                             <div class="col-12 mb--20">
                                                 <label>Họ và tên*</label>
-                                                <input type="text" placeholder="Họ và tên ">
+                                                <input id="name" type="text" placeholder="Họ và tên ">
                                             </div>
                                             <div class="col-12 mb--20">
                                                 <label>Email*</label>
-                                                <input type="email" placeholder="Email">
+                                                <input id="email" type="email" placeholder="Email">
                                             </div>
                                             <div class="col-12 mb--20">
                                                 <label>Điện thoại*</label>
-                                                <input type="text" placeholder="Điện thoại">
+                                                <input id="phone" type="text" placeholder="Điện thoại">
                                             </div>
                                             <div class="col-12 mb--20">
                                                 <label>Địa chỉ*</label>
-                                                <input type="text" placeholder="Địa chỉ">
+                                                <input id="address" type="text" placeholder="Địa chỉ">
                                             </div>
                                         </div>
                                     </div>
                                     <!-- Shipping Address -->
-                                    <div id="shipping-form" class="mb--40">
-                                        <h4 class="checkout-title">Địa chỉ nhận hàng</h4>
-                                        <div class="row">
-                                            <div class="col-12 mb--20">
-                                                <label>Họ và tên*</label>
-                                                <input type="text" placeholder="Họ và tên ">
-                                            </div>
-                                            <div class="col-12 mb--20">
-                                                <label>Email*</label>
-                                                <input type="email" placeholder="Email">
-                                            </div>
-                                            <div class="col-12 mb--20">
-                                                <label>Điện thoại*</label>
-                                                <input type="text" placeholder="Điện thoại">
-                                            </div>
-                                            <div class="col-12 mb--20">
-                                                <label>Địa chỉ*</label>
-                                                <input type="text" placeholder="Địa chỉ">
-                                            </div>
-                                        </div>
-                                    </div>
+
                                     <div class="order-note-block mt--5">
                                         <label for="order-note">Ghi chú</label>
-                                        <textarea id="order-note" cols="30" rows="10" class="order-note" placeholder="Ghi chú cho shop"></textarea>
+                                        <textarea id="order-note" cols="30" rows="10" class="order-note" placeholder="Lưu ý khi mua hàng"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-lg-5">
@@ -91,14 +71,12 @@
                                                         <li><span class="left">${productItem.quantity_buy} x ${productItem.name}  </span>
                                                             <span class="right">${productItem.price_sale}</span></li>
                                                     </#list>
-
-
                                                 </ul>
                                                 <p>Tổng tiền hàng <span>${pay_total} đ</span></p>
                                                 <p>Phí vận chuyển <span>${shipping_fee} đ</span></p>
                                                 <h4>Tổng thanh toán <span>${pay_total + shipping_fee} đ</span></h4>
 
-                                                <button class="place-order mt--25 w-100">Thanh toán</button>
+                                                <button type="button" onclick="getInfoBuyer()" class="place-order mt--25 w-100">Thanh toán</button>
                                             </div>
                                         </div>
                                     </div>
@@ -158,6 +136,40 @@
     Footer Area
 ===================================== -->
     ${footer_include}
+    <script>
+        function getInfoBuyer() {
+            name = document.getElementById("name").value;
+            email = document.getElementById("email").value;
+            phone = document.getElementById("phone").value;
+            address = document.getElementById("address").value;
+            note = document.getElementById("order-note").value;
+            console.log(name, email, phone, address, note);
+            if (name && email && phone && address) {
+                $.ajax({
+                    url: "${app_domain}/add/info-buyer",
+                    type: "POST",
+                    dataType: "json",
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        address: address,
+                        note: note
+                    }),
+                    success(response) {
+                        console.log(response);
+                        if (response.errorCode >= 0) {
+                            showNotification("success", response.message);
+                        } else {
+                            showNotification("error", response.message);
+                        }
+
+                    }
+                })
+            }
+        }
+    </script>
 </body>
 
 </html>
