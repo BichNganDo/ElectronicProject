@@ -2,7 +2,6 @@ package model;
 
 import client.MysqlClient;
 import common.ErrorCode;
-import entity.email_register.Email;
 import entity.info_buyer.InfoBuyer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -58,6 +57,8 @@ public class InfoBuyerModel {
                 infoBuyer.setPhone(rs.getString("phone"));
                 infoBuyer.setAddress(rs.getString("address"));
                 infoBuyer.setNote(rs.getString("note"));
+                infoBuyer.setListCart(rs.getString("list_cart_payment"));
+                infoBuyer.setPayTotal(rs.getInt("pay_total"));
 
                 long currentTimeMillis = rs.getLong("created_date");
                 Date date = new Date(currentTimeMillis);
@@ -133,6 +134,8 @@ public class InfoBuyerModel {
                 result.setPhone(rs.getString("phone"));
                 result.setAddress(rs.getString("address"));
                 result.setNote(rs.getString("note"));
+                result.setListCart(rs.getString("list_cart_payment"));
+                result.setPayTotal(rs.getInt("pay_total"));
 
                 long currentTimeMillis = rs.getLong("created_date");
                 Date date = new Date(currentTimeMillis);
@@ -149,7 +152,7 @@ public class InfoBuyerModel {
         return result;
     }
 
-    public int addInfoBuyer(String name, String email, String phone, String address, String note) {
+    public int addInfoBuyer(String name, String email, String phone, String address, String note, String listCart, int payTotal) {
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
@@ -157,14 +160,17 @@ public class InfoBuyerModel {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
 
-            PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (name, email, phone, address, note, created_date) "
-                    + "VALUES (?, ?, ?, ?, ?, ?)");
+            PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (name, email, phone, address, note, "
+                    + "list_cart_payment, pay_total, created_date) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             addStmt.setString(1, name);
             addStmt.setString(2, email);
             addStmt.setString(3, phone);
             addStmt.setString(4, address);
             addStmt.setString(5, note);
-            addStmt.setString(6, System.currentTimeMillis() + "");
+            addStmt.setString(6, listCart);
+            addStmt.setInt(7, payTotal);
+            addStmt.setString(8, System.currentTimeMillis() + "");
             int rs = addStmt.executeUpdate();
             return rs;
         } catch (Exception e) {
@@ -176,7 +182,7 @@ public class InfoBuyerModel {
         return ErrorCode.FAIL.getValue();
     }
 
-    public int editInfoBuyer(int id, String name, String email, String phone, String address, String note) {
+    public int editInfoBuyer(int id, String name, String email, String phone, String address, String note, String listCart) {
         Connection conn = null;
         try {
             conn = dbClient.getDbConnection();
@@ -184,14 +190,16 @@ public class InfoBuyerModel {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
 
-            PreparedStatement editStmt = conn.prepareStatement("UPDATE `" + NAMETABLE + "` SET name = ?, email = ?, phone = ?, address = ?, note = ? "
+            PreparedStatement editStmt = conn.prepareStatement("UPDATE `" + NAMETABLE + "` SET name = ?, email = ?, phone = ?, "
+                    + "address = ?, note = ?, list_cart_payment = ?"
                     + "WHERE id = ? ");
             editStmt.setString(1, name);
             editStmt.setString(2, email);
             editStmt.setString(3, phone);
             editStmt.setString(4, address);
             editStmt.setString(5, note);
-            editStmt.setInt(6, id);
+            editStmt.setString(6, listCart);
+            editStmt.setInt(7, id);
 
             int rs = editStmt.executeUpdate();
 

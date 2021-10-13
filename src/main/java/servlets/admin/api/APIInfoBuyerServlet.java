@@ -84,6 +84,7 @@ public class APIInfoBuyerServlet extends HttpServlet {
                 String phone = request.getParameter("phone");
                 String address = request.getParameter("address");
                 String note = request.getParameter("note");
+                String listCart = request.getParameter("listCart");
                 InfoBuyer infoBuyerById = InfoBuyerModel.INSTANCE.getInfoBuyerByID(id);
                 if (infoBuyerById.getId() == 0) {
                     result.setErrorCode(-1);
@@ -91,7 +92,7 @@ public class APIInfoBuyerServlet extends HttpServlet {
                     return;
                 }
 
-                int editInfoBuyer = InfoBuyerModel.INSTANCE.editInfoBuyer(id, name, email, phone, address, note);
+                int editInfoBuyer = InfoBuyerModel.INSTANCE.editInfoBuyer(id, name, email, phone, address, note, listCart);
                 if (editInfoBuyer >= 0) {
                     result.setErrorCode(0);
                     result.setMessage("Sửa thông tin thành công!");

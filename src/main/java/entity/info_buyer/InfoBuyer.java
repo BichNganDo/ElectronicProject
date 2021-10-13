@@ -8,6 +8,8 @@ public class InfoBuyer {
     private String phone;
     private String address;
     private String note;
+    private String listCart;
+    private int payTotal;
     private String created_date;
 
     public InfoBuyer() {
@@ -69,6 +71,22 @@ public class InfoBuyer {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getListCart() {
+        return listCart;
+    }
+
+    public void setListCart(String listCart) {
+        this.listCart = listCart;
+    }
+
+    public int getPayTotal() {
+        return payTotal;
+    }
+
+    public void setPayTotal(int payTotal) {
+        this.payTotal = payTotal;
     }
 
     public String getCreated_date() {

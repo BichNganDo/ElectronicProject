@@ -282,6 +282,37 @@ public class ProductModel {
         return result;
     }
 
+    public Product getSortProduct(int id) {
+        Product result = new Product();
+        Connection conn = null;
+        try {
+            conn = dbClient.getDbConnection();
+            if (null == conn) {
+                return result;
+            }
+            PreparedStatement getProductByIdStmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` "
+                    + " WHERE id = ? ");
+            getProductByIdStmt.setInt(1, id);
+
+            ResultSet rs = getProductByIdStmt.executeQuery();
+
+            if (rs.next()) {
+                result.setId(rs.getInt("id"));
+                result.setName(rs.getString("name"));
+                result.setPrice_sale(rs.getInt("price_sale"));
+                result.setImageUrlWithBaseDomain(rs.getString("image_url"));
+
+            }
+
+            return result;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dbClient.releaseDbConnection(conn);
+        }
+        return result;
+    }
+
     public List<Product> multiGetProduct(List<Integer> listRelatedId) {
         List<Product> listProduct = new ArrayList<>();
 

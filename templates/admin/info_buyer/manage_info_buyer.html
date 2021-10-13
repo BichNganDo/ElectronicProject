@@ -89,20 +89,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <th style="width: 2%">
                                             Id
                                         </th>
-                                        <th style="width: 15%">
-                                            Name
+                                        <th style="width: 20%">
+                                            Information Buyer
+                                        </th>
+                                        <th style="width: 45%">
+                                            Information Product
                                         </th>
                                         <th style="width: 10%">
-                                            Phone
-                                        </th>
-                                        <th style="width: 15%">
-                                            Email
-                                        </th>
-                                        <th style="width: 17%">
-                                            Address
-                                        </th>
-                                        <th style="width: 18%">
-                                            Note
+                                            Payment
                                         </th>
                                         <th style="width: 10%">
                                             Created Date
@@ -115,11 +109,46 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <tbody dir-paginate="item in listInfoBuyer | itemsPerPage: 10" total-items="totalInfoBuyer" pagination-id="info_buyer">
                                     <tr>
                                         <td>{{item.id}}</td>
-                                        <td>{{item.name}}</td>
-                                        <td>{{item.phone}}</td>
-                                        <td>{{item.email}}</td>
-                                        <td>{{item.address}}</td>
-                                        <td>{{item.note}}</td>
+                                        <td>
+                                            Họ và tên: {{item.name}} <br> Email: {{item.email}} <br> Điện thoại: {{item.phone}} <br> Địa chỉ: {{item.name}} <br> Ghi chú: {{item.note}}
+                                        </td>
+                                        <td>
+                                            <table class="table table-striped projects">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 5%">
+                                                            Id
+                                                        </th>
+                                                        <th style="width: 50%">
+                                                            Name
+                                                        </th>
+                                                        <th style="width: 25%">
+                                                            Price
+                                                        </th>
+                                                        <th style="width: 20%">
+                                                            Image
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="cartItem in item.listCart">
+                                                        <th>{{cartItem.id}}</th>
+                                                        <td>{{cartItem.quantity_buy}} x {{cartItem.name}}</td>
+                                                        <td>{{cartItem.price_sale | number}}</td>
+                                                        <td>
+                                                            <img width="50px" height="50px" src="{{cartItem.image_url}}" alt="">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <!-- <tr ng-repeat="cartItem in item.listCart">
+                                                    <td>
+                                                        Id: {{cartItem.id}} <br> Tên sản phẩm: {{cartItem.name}} <br> Giá: {{cartItem.price_sale}} <br> Số lượng: {{cartItem.quantity_buy}} <br> <img width="100px" height="100px" src="{{cartItem.image_url}}"
+                                                            alt="">
+                                                    </td>
+                                                </tr> -->
+                                            </table>
+                                        </td>
+                                        <td>{{item.payTotal | number}}</td>
                                         <td>{{item.created_date}}</td>
                                         <td class="project-actions text-right">
                                             <a class="btn btn-info btn-sm" href="/admin/info_buyer/edit?id={{item.id}}" style="margin: 5px 5px">
@@ -180,7 +209,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 }).then(function(response) {
                     console.log(response);
                     $scope.listInfoBuyer = response.data.data.listInfoBuyer;
+                    $scope.listInfoBuyer.forEach(element => {
+                        element.listCart = JSON.parse(element.listCart);
+
+                    });
+
                     $scope.totalInfoBuyer = response.data.data.total;
+                    console.log($scope.listInfoBuyer);
                 })
             }
             $scope.pageChanged = function(pageIndex) {

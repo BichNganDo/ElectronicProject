@@ -28,9 +28,13 @@ public class Payment extends HttpServlet {
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("app_domain", Config.APP_DOMAIN);
         pageVariables.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
-        pageVariables.put("shipping_fee", Config.SHIPPING_FEE);
 
         List<CartItem> listResult = SessionHelper.INSTANCE.getCartItem(request);
+        if (listResult.size() > 0) {
+            pageVariables.put("shipping_fee", Config.SHIPPING_FEE);
+        } else {
+            pageVariables.put("shipping_fee", 0);
+        }
         List<Product> listProductItem = new ArrayList<>();
         int payTotal = 0;
         for (CartItem cartItem : listResult) {
