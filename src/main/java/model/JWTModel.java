@@ -1,12 +1,10 @@
 package model;
 
-import client.MysqlClient;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.security.Key;
-import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;

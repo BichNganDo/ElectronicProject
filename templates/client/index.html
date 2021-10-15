@@ -28,7 +28,13 @@
                             <div class="main-navigation flex-lg-right">
                                 <div class="cart-widget">
                                     <div class="login-block">
-                                        <a href="${app_domain}/dang-nhap" class="font-weight-bold">Đăng nhập</a> <br>
+                                        <a href="${app_domain}/dang-nhap" class="font-weight-bold">
+                                            <#if user.name?has_content>
+                                                ${user.name}
+                                                <#else>
+                                                    Đăng nhập
+                                            </#if>
+                                        </a> <br>
                                         <span>hoặc</span><a href="${app_domain}/dang-ky">Đăng ký</a>
                                     </div>
                                     <div class="cart-block">

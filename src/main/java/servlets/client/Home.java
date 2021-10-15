@@ -8,6 +8,7 @@ import entity.product.FilterProduct;
 import entity.product.Product;
 import entity.setting.Setting;
 import entity.slides.Slides;
+import entity.user_register.UserRegister;
 import helper.SessionHelper;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +33,9 @@ public class Home extends HttpServlet {
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("app_domain", Config.APP_DOMAIN);
         pageVariables.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+
+        UserRegister userRegister = SessionHelper.INSTANCE.getUserSession(request);
+        pageVariables.put("user", userRegister);
 
         List<CartItem> listResult = SessionHelper.INSTANCE.getCartItem(request);
         List<Product> listProductItem = new ArrayList<>();

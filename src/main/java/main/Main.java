@@ -66,6 +66,7 @@ import servlets.client.CateProduct;
 import servlets.client.Contact;
 import servlets.client.EmailRegister;
 import servlets.client.InfoBuyer;
+import servlets.client.Login;
 import servlets.client.NewsDetail;
 import servlets.client.NewsServlet;
 import servlets.client.Payment;
@@ -149,6 +150,7 @@ public class Main {
         context.addServlet(new ServletHolder(new Cart()), "/gio-hang");
         context.addServlet(new ServletHolder(new Payment()), "/thanh-toan");
         context.addServlet(new ServletHolder(new Register()), "/dang-ky");
+        context.addServlet(new ServletHolder(new Login()), "/dang-nhap");
 
         context.setContextPath("/");
         context.setSessionHandler(new SessionHandler());

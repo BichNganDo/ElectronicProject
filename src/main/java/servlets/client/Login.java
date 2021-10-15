@@ -3,12 +3,15 @@ package servlets.client;
 import com.google.gson.Gson;
 import common.APIResult;
 import common.Config;
+import entity.admin.Admin;
 import entity.category_product.CategoryProduct;
 import entity.item.CartItem;
 import entity.news.News;
 import entity.product.Product;
 import entity.setting.Setting;
+import entity.user_register.UserRegister;
 import helper.HttpHelper;
+import helper.SecurityHelper;
 import helper.ServletUtil;
 import helper.SessionHelper;
 import java.io.IOException;
@@ -20,8 +23,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.AdminModel;
 import model.CategoryModel;
-import model.EmailRegisterModel;
+import model.JWTModel;
 import model.NewsModel;
 import model.ProductModel;
 import model.RegisterModel;
@@ -29,7 +34,7 @@ import model.SettingModel;
 import org.json.JSONObject;
 import templater.PageGenerator;
 
-public class Register extends HttpServlet {
+public class Login extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -109,7 +114,7 @@ public class Register extends HttpServlet {
         pageVariables.put("header_menu", PageGenerator.instance().getPage("client/include/header_menu.html", pageVariablesHeaderMenu));
 
         response.setContentType("text/html;charset=UTF-8");
-        response.getWriter().println(PageGenerator.instance().getPage("client/register.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("client/login.html", pageVariables));
 
         response.setStatus(HttpServletResponse.SC_OK);
     }
@@ -121,18 +126,20 @@ public class Register extends HttpServlet {
         String body = HttpHelper.getBodyData(request);
         JSONObject jbody = new JSONObject(body);
 
-        String name = jbody.optString("name");
         String email = jbody.optString("email");
-        String password = jbody.optString("password");
-        String rePassword = jbody.optString("rePassword");
-        int addUserRegister = RegisterModel.INSTANCE.addUserRegister(name, email, password, rePassword);
-        if (addUserRegister >= 0) {
+        String password = SecurityHelper.getMD5Hash(jbody.optString("password"));
+        UserRegister checkLogin = RegisterModel.INSTANCE.checkLogin(email, password);
+        if (checkLogin != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("name", checkLogin.getName());
+            session.setAttribute("email", email);
             result.setErrorCode(0);
-            result.setMessage("Đăng ký thành công!");
+            result.setMessage("Đăng nhập thành công!");
         } else {
-            result.setErrorCode(-4);
-            result.setMessage("Email đăng ký đã tồn tại hoặc mật khẩu chưa đúng");
+            result.setErrorCode(-3);
+            result.setMessage("Email hoặc mật khẩu không đúng");
         }
+
         ServletUtil.printJson(request, response, gson.toJson(result));
     }
 }

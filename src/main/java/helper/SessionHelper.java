@@ -1,6 +1,7 @@
 package helper;
 
 import entity.item.CartItem;
+import entity.user_register.UserRegister;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -118,6 +119,16 @@ public class SessionHelper {
                 session.setAttribute("list_cart_item", listCart);
             }
         }
+    }
+
+    public UserRegister getUserSession(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        UserRegister userRegister = new UserRegister();
+        if (session.getAttribute("name") != null && session.getAttribute("email") != null) {
+            userRegister.setName(session.getAttribute("name").toString());
+            userRegister.setEmail(session.getAttribute("email").toString());
+        }
+        return userRegister;
     }
 
 }

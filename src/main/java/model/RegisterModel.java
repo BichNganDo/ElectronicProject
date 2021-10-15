@@ -2,6 +2,7 @@ package model;
 
 import client.MysqlClient;
 import common.ErrorCode;
+import entity.admin.Admin;
 import entity.email_register.Email;
 import entity.user_register.UserRegister;
 import helper.SecurityHelper;
@@ -9,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
@@ -223,5 +225,36 @@ public class RegisterModel {
             dbClient.releaseDbConnection(conn);
         }
         return ErrorCode.FAIL.getValue();
+    }
+
+    public UserRegister checkLogin(String email, String password) {
+        UserRegister userRegister = new UserRegister();
+        Connection conn = null;
+        try {
+            conn = dbClient.getDbConnection();
+            if (null == conn) {
+                return userRegister;
+            }
+            PreparedStatement checkLoginStmt = conn.prepareStatement("SELECT * FROM `" + NAMETABLE + "` WHERE email = ? AND password = ?");
+            checkLoginStmt.setString(1, email);
+            checkLoginStmt.setString(2, password);
+            ResultSet rs = checkLoginStmt.executeQuery();
+            if (rs.next()) {
+                userRegister.setId(rs.getInt("id"));
+                userRegister.setName(rs.getString("name"));
+                userRegister.setEmail(rs.getString("email"));
+                userRegister.setPassword(rs.getString("password"));
+                userRegister.setRe_password(rs.getString("re_password"));
+            }
+
+            return userRegister;
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dbClient.releaseDbConnection(conn);
+        }
+
+        return userRegister;
     }
 }
