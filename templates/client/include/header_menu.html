@@ -82,8 +82,14 @@
                     <div class="main-navigation flex-lg-right">
                         <div class="cart-widget">
                             <div class="login-block">
-                                <a href="${app_domain}/dang-nhap" class="font-weight-bold">Đăng nhập</a> <br>
-                                <span>or</span><a href="${app_domain}/dang-ky">Đăng ký</a>
+                                <#if user.name?has_content>
+                                    <b>${user.name}</b>
+                                    <#else>
+                                        <a href="${app_domain}/dang-nhap" class="font-weight-bold">
+                                                Đăng nhập
+                                            </a> <br>
+                                        <span>hoặc</span><a href="${app_domain}/dang-ky">Đăng ký</a>
+                                </#if>
                             </div>
                             <div class="cart-block">
                                 <div class="cart-total">

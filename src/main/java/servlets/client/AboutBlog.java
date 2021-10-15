@@ -6,6 +6,7 @@ import entity.item.CartItem;
 import entity.news.News;
 import entity.product.Product;
 import entity.setting.Setting;
+import entity.user_register.UserRegister;
 import helper.SessionHelper;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,6 +63,9 @@ public class AboutBlog extends HttpServlet {
         Map<String, Object> pageVariablesHeaderMenu = new HashMap<>();
         pageVariablesHeaderMenu.put("app_domain", Config.APP_DOMAIN);
         pageVariablesHeaderMenu.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+
+        UserRegister userRegister = SessionHelper.INSTANCE.getUserSession(request);
+        pageVariablesHeaderMenu.put("user", userRegister);
 
         List<CartItem> listResult = SessionHelper.INSTANCE.getCartItem(request);
         List<Product> listProductItem = new ArrayList<>();

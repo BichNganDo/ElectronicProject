@@ -5,6 +5,7 @@ import entity.category_product.CategoryProduct;
 import entity.item.CartItem;
 import entity.product.Product;
 import entity.setting.Setting;
+import entity.user_register.UserRegister;
 import helper.SessionHelper;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -77,6 +78,9 @@ public class Payment extends HttpServlet {
         Map<String, Object> pageVariablesHeaderMenu = new HashMap<>();
         pageVariablesHeaderMenu.put("app_domain", Config.APP_DOMAIN);
         pageVariablesHeaderMenu.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+
+        UserRegister userRegister = SessionHelper.INSTANCE.getUserSession(request);
+        pageVariablesHeaderMenu.put("user", userRegister);
 
         pageVariablesHeaderMenu.put("number_item", numberItem);
         pageVariablesHeaderMenu.put("list_product_item", listProductItem);

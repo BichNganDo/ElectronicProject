@@ -75,6 +75,9 @@ public class Login extends HttpServlet {
         pageVariablesHeaderMenu.put("app_domain", Config.APP_DOMAIN);
         pageVariablesHeaderMenu.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
 
+        UserRegister userRegister = SessionHelper.INSTANCE.getUserSession(request);
+        pageVariablesHeaderMenu.put("user", userRegister);
+
         List<CartItem> listResult = SessionHelper.INSTANCE.getCartItem(request);
         List<Product> listProductItem = new ArrayList<>();
         int payTotal = 0;

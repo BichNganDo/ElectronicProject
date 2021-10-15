@@ -5,6 +5,7 @@ import entity.category_product.CategoryProduct;
 import entity.item.CartItem;
 import entity.product.Product;
 import entity.setting.Setting;
+import entity.user_register.UserRegister;
 import helper.SessionHelper;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,6 +41,11 @@ public class Cart extends HttpServlet {
             SessionHelper.INSTANCE.addToCart(request, quantity, id_product);
         }
         List<CartItem> listResult = SessionHelper.INSTANCE.getCartItem(request);
+        if (listResult.size() > 0) {
+            pageVariables.put("shipping_fee", Config.SHIPPING_FEE);
+        } else {
+            pageVariables.put("shipping_fee", 0);
+        }
         List<Product> listProductItem = new ArrayList<>();
         int payTotal = 0;
         for (CartItem cartItem : listResult) {
@@ -82,6 +88,9 @@ public class Cart extends HttpServlet {
         Map<String, Object> pageVariablesHeaderMenu = new HashMap<>();
         pageVariablesHeaderMenu.put("app_domain", Config.APP_DOMAIN);
         pageVariablesHeaderMenu.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+
+        UserRegister userRegister = SessionHelper.INSTANCE.getUserSession(request);
+        pageVariablesHeaderMenu.put("user", userRegister);
 
         pageVariablesHeaderMenu.put("number_item", numberItem);
         pageVariablesHeaderMenu.put("list_product_item", listProductItem);

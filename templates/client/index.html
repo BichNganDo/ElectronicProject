@@ -28,14 +28,14 @@
                             <div class="main-navigation flex-lg-right">
                                 <div class="cart-widget">
                                     <div class="login-block">
-                                        <a href="${app_domain}/dang-nhap" class="font-weight-bold">
-                                            <#if user.name?has_content>
-                                                ${user.name}
-                                                <#else>
-                                                    Đăng nhập
-                                            </#if>
-                                        </a> <br>
-                                        <span>hoặc</span><a href="${app_domain}/dang-ky">Đăng ký</a>
+                                        <#if user.name?has_content>
+                                            <b>${user.name}</b>
+                                            <#else>
+                                                <a href="${app_domain}/dang-nhap" class="font-weight-bold">
+                                                Đăng nhập
+                                            </a> <br>
+                                                <span>hoặc</span><a href="${app_domain}/dang-ky">Đăng ký</a>
+                                        </#if>
                                     </div>
                                     <div class="cart-block">
                                         <div class="cart-total">
@@ -61,7 +61,7 @@
                                                             <h3 class="title"><a href="${app_domain}/chi-tiet-san-pham?id=${productItem.id}">${productItem.name}</a>
                                                             </h3>
                                                             <p class="price"><span class="qty">${productItem.quantity_buy} ×</span> ${productItem.price_sale} đ</p>
-                                                            <button class="cross-btn"><i class="fas fa-times"></i></button>
+                                                            <a class="cross-btn" href="${app_domain}/gio-hang?action=remove-cart-item&product_id=${productItem.id}"><i class="fas fa-times"></i></a>
                                                         </div>
                                                     </div>
                                                 </#list>
@@ -495,7 +495,7 @@
                                                 <a href="" class="author">
                                                     <!-- Ypple -->
                                                 </a>
-                                                <h3><a href="product-details.html">Laptop HP Envy 13 ba1030TU i7 1165G7/8GB/512GB/Office H&S2019/Win10 (2K0B6PA) </a></h3>
+                                                <h3><a href="product-details.html">Laptop HP Envy 13 ba1030TU i7 (2K0B6PA) </a></h3>
                                             </div>
                                             <div class="product-card--body">
                                                 <div class="card-image">
@@ -770,9 +770,9 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="price-block">
-                                                                    <span class="price">${product.price_sale}</span>
+                                                                    <span class="price">${product.price_sale} đ</span>
                                                                     <#if product.price gt product.price_sale>
-                                                                        <del class="price-old">${product.price}</del>
+                                                                        <del class="price-old">${product.price} đ</del>
                                                                     </#if>
                                                                     <#if product.discount gt 0>
                                                                         <span class="price-discount">-${product.discount} %</span>
@@ -831,9 +831,9 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="price-block">
-                                                                    <span class="price">${product.price_sale}</span>
+                                                                    <span class="price">${product.price_sale} đ</span>
                                                                     <#if product.price gt product.price_sale>
-                                                                        <del class="price-old">${product.price}</del>
+                                                                        <del class="price-old">${product.price} đ</del>
                                                                     </#if>
                                                                     <#if product.discount gt 0>
                                                                         <span class="price-discount">-${product.discount} %</span>
@@ -892,9 +892,9 @@
                                                                                     <h3><a href="${app_domain}/chi-tiet-san-pham?id=${product.id}">${product.name}</a></h3>
                                                                                 </div>
                                                                                 <div class="price-block">
-                                                                                    <span class="price">${product.price_sale}</span>
+                                                                                    <span class="price">${product.price_sale} đ</span>
                                                                                     <#if product.price gt product.price_sale>
-                                                                                        <del class="price-old">${product.price}</del>
+                                                                                        <del class="price-old">${product.price} đ</del>
                                                                                     </#if>
 
                                                                                     <#if product.discount gt 0>
