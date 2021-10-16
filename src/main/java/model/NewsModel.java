@@ -65,6 +65,7 @@ public class NewsModel {
                 news.setTitle(rs.getString("title"));
                 news.setInfo(rs.getString("info"));
                 news.setContent(rs.getString("content"));
+                news.setType("article");
                 news.setImageUrlWithBaseDomain(rs.getString("image"));
 
                 long currentTimeMillis = rs.getLong("created_date");
@@ -151,6 +152,7 @@ public class NewsModel {
                 result.setInfo(rs.getString("info"));
                 result.setContent(rs.getString("content"));
                 result.setImageUrlWithBaseDomain(rs.getString("image"));
+                result.setType("article");
 
                 long currentTimeMillis = rs.getLong("created_date");
                 Date date = new Date(currentTimeMillis);
@@ -241,16 +243,17 @@ public class NewsModel {
             if (null == conn) {
                 return ErrorCode.CONNECTION_FAIL.getValue();
             }
-            PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (id_cate_news, title, info, content, image, "
+            PreparedStatement addStmt = conn.prepareStatement("INSERT INTO `" + NAMETABLE + "` (id_cate_news, title, info, content, image, type, "
                     + "created_date, updated_date) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             addStmt.setInt(1, news.getIdCategoryNews());
             addStmt.setString(2, news.getTitle());
             addStmt.setString(3, news.getInfo());
             addStmt.setString(4, news.getContent());
             addStmt.setString(5, news.getImage());
-            addStmt.setString(6, System.currentTimeMillis() + "");
+            addStmt.setString(6, "article");
             addStmt.setString(7, System.currentTimeMillis() + "");
+            addStmt.setString(8, System.currentTimeMillis() + "");
 
             int rs = addStmt.executeUpdate();
 
