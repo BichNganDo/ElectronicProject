@@ -8,6 +8,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     ${header_include}
 
+
 </head>
 
 <body class="hold-transition sidebar-mini" ng-app="myApp" ng-cloak>
@@ -104,19 +105,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Image Url</label>
-                                    <input ng-model="image_url" type="text" class="form-control" placeholder="Image Url">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>Upload File Image</label>
+                                        <br>
+                                        <input type="file" file="filex" name="file2" id="preImg" accept="image/png, image/gif, image/jpeg" required />
+                                        <br />
+                                        <img id="blah" src="#" alt="your image" onerror="this.style.display = 'none'" width="150px" height="150px" />
+                                        <br>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Content</label>
-                                    <textarea ng-model="content" class="form-control" rows="10" placeholder="Content"></textarea>
+                                    <textarea id="summernote" class="form-control" placeholder="Content"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Warranty</label>
                                     <textarea ng-model="warranty" type="text" class="form-control" rows="5" placeholder="Warranty"></textarea>
                                 </div>
-
+                                <div class="form-group">
+                                    <label>Related Products</label>
+                                    <select id="loadDataOpt" class="form-control select2 slc-related-product" style="width: 100%;" name="states[]" multiple="multiple">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
                                 <div class="form-group">
                                     <div class="form-check">
                                         <input ng-model="hot" class="form-check-input" type="checkbox">
@@ -132,7 +144,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </div>
                                 </div>
                                 <div>
-                                    <button type="button" ng-click="addData()" class="btn btn-primary">Save</button>
+                                    <button type="button" ng-click="addData()" class="btn btn-primary">Submit</button>
                                 </div>
                             </div>
                         </form>
@@ -151,11 +163,74 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- REQUIRED SCRIPTS -->
 
+
     ${footer_include}
 
 
     <script>
         var app = angular.module('myApp', []); //ngPagination
+        app.directive('file', function() {
+            return {
+                scope: {
+                    file: '='
+                },
+                link: function(scope, el, attrs) {
+                    el.bind('change', function(event) {
+                        var file = event.target.files[0];
+                        scope.file = file ? file : undefined;
+                        scope.$apply();
+                    });
+                }
+            };
+        });
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                height: 300
+            });
+        });
+
+        $(document).ready(function() {
+            $('.slc-related-product').select2({
+                ajax: {
+                    url: 'http://localhost:8080/admin/api/product?action=getproduct',
+                    type: "GET",
+                    dataType: "json",
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            search_query: params.term,
+                            page_index: params.page || 1
+                        }
+                    },
+                    processResults: function(response) {
+                        let listResult = response.data.listProduct;
+                        // console.log(listResult);
+                        let results = [];
+
+                        for (let product of listResult) {
+                            results.push({
+                                "id": product.id,
+                                "text": product.name
+                            })
+                        }
+
+                        let hasMore = true;
+
+                        let objectSelectOpt = {
+                            "results": results,
+                            "pagination": {
+                                "more": hasMore
+                            }
+                        };
+
+                        console.log(objectSelectOpt);
+
+                        return objectSelectOpt;
+                    }
+                }
+            });
+        });
+
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
             var url = document.URL.split('/');
             var urltmp = url[4].split('?')[0];
@@ -163,62 +238,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             $scope.APP_DOMAIN = "http://localhost:8080/";
 
-            $scope.addData = function() {
-                if ($scope.category && $scope.supplier && $scope.name && $scope.price && $scope.price_sale &&
-                    $scope.quantity && $scope.image_url && $scope.content && $scope.warranty && property) {
-                    let property = 0;
-                    if ($scope.hot) {
-                        property = property + 1;
-                    }
-                    if ($scope.new) {
-                        property = property + 2;
-                    }
-                    if ($scope.promo) {
-                        property = property + 4;
-                    }
-                    console.log(property);
-                    var data = $.param({
-                        category: $scope.category,
-                        supplier: $scope.supplier,
-                        name: $scope.name,
-                        price: $scope.price,
-                        price_sale: $scope.price_sale,
-                        quantity: $scope.quantity,
-                        image_url: $scope.image_url,
-                        content: $scope.content,
-                        warranty: $scope.warranty,
-                        property: property
-
-                    })
-                    console.log(data);
-                    var config = {
-                        headers: {
-                            'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                        }
-                    }
-                    $http.post($scope.APP_DOMAIN + 'admin/api/product?action=add', data, config)
-                        .then(function(response) {
-                            console.log(response);
-                            $scope.category = "0";
-                            $scope.supplier = "0";
-                            $scope.name = "";
-                            $scope.price = "";
-                            $scope.price_sale = "";
-                            $scope.quantity = "";
-                            $scope.image_url = "";
-                            $scope.content = "";
-                            $scope.warranty = "";
-                            $scope.hot = ""
-                            showNotification("success", response.data.message);
-                        }, function(error) {
-                            showNotification("error", error.data.message);
-
-                        })
-                } else {
-                    showNotification("error", "Dữ liệu không hợp lệ!");
+            preImg.onchange = evt => {
+                const [file] = preImg.files
+                if (file) {
+                    blah.src = URL.createObjectURL(file)
+                    blah.style = "block";
                 }
-
             }
+
 
             //load Supplier
             $http({
@@ -244,9 +271,95 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     limit: 100
                 },
             }).then(function(response) {
-                console.log(response);
+                // console.log(response);
                 $scope.listCategory = response.data.data.listCategory;
             })
+
+            $scope.addData = function() {
+                console.log($scope.category);
+                console.log($scope.supplier);
+                console.log($scope.name);
+                console.log($scope.price);
+                console.log($scope.price_sale);
+                console.log($scope.quantity);
+                console.log($scope.content);
+                console.log($scope.warranty);
+                console.log($('.slc-related-product').val());
+                var smContent = $('#summernote').summernote('code');
+                if ($scope.category && $scope.supplier && $scope.name && $scope.price && $scope.price_sale &&
+                    $scope.quantity && smContent && $scope.warranty) {
+                    let property = 0;
+                    if ($scope.hot) {
+                        property = property + 1;
+                    }
+                    if ($scope.new) {
+                        property = property + 2;
+                    }
+                    if ($scope.promo) {
+                        property = property + 4;
+                    }
+
+                    $http({
+                            method: 'POST',
+                            url: $scope.APP_DOMAIN + 'admin/api/product?action=add',
+                            headers: {
+                                'content-type': undefined
+                            },
+                            data: {
+                                category: $scope.category,
+                                supplier: $scope.supplier,
+                                name: $scope.name,
+                                price: $scope.price,
+                                price_sale: $scope.price_sale,
+                                quantity: $scope.quantity,
+                                content: smContent,
+                                warranty: $scope.warranty,
+                                property: property,
+                                upload: $scope.filex,
+                                related: JSON.stringify($('.slc-related-product').val())
+
+                            },
+                            transformRequest: function(data, headersGetter) {
+                                // console.log(data);
+                                var formData = new FormData();
+                                angular.forEach(data, function(value, key) {
+                                    formData.append(key, value);
+                                });
+
+                                return formData;
+
+                            }
+                        })
+                        .then(function(response) {
+                            // console.log(response);
+                            $scope.category = "0";
+                            $scope.supplier = "0";
+                            $scope.name = "";
+                            $scope.price = "";
+                            $scope.price_sale = "";
+                            $scope.quantity = "";
+                            $('#summernote').summernote('code', "");
+                            $scope.warranty = "";
+                            $scope.hot = false;
+                            $scope.new = false;
+                            $scope.promo = false;
+                            $("#blah").css("display", "none");
+                            $('#preImg').val('');
+                            $('.slc-related-product').val(null).trigger('change');
+                            showNotification("success", response.data.message);
+                        }, function(error) {
+                            showNotification("error", error.data.message);
+
+                        })
+                } else {
+                    showNotification("error", "Dữ liệu không hợp lệ!");
+                }
+
+            }
+
+
+
+
         })
     </script>
 </body>

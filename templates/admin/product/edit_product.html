@@ -102,17 +102,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Image Url</label>
-                                    <input ng-model="image_url" type="text" class="form-control" placeholder="Image Url">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Image Url</label>
+                                            <input ng-model="image_url" type="text" class="form-control" placeholder="Image Url">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-5">
+                                        <label>Upload File Image</label>
+                                        <br>
+                                        <input type="file" file="filex" name="file2" id="preImg" accept="image/png, image/gif, image/jpeg" required />
+                                        <br />
+                                        <img id="blah" src="#" alt="your image" onerror="this.style.display = 'none'" width="150px" height="150px" />
+                                        <br>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Content</label>
-                                    <textarea ng-model="content" type="text" class="form-control" rows="10" placeholder="Content"></textarea>
+                                    <textarea id="summernote" class="form-control" placeholder="Content"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Warranty</label>
                                     <textarea ng-model="warranty" type="text" class="form-control" rows="5" placeholder="Warranty"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Related Products</label>
+                                    <select id="loadDataOpt" class="form-control select2 slc-related-product" style="width: 100%;" name="states[]" multiple="multiple">
+                                        <option value=""></option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <div class="form-check">
@@ -151,13 +170,42 @@ scratch. This page gets rid of all links and provides the needed markup only.
     ${footer_include}
 
     <script>
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                height: 300
+            });
+        });
         var app = angular.module('myApp', []); //ngPagination
+        app.directive('file', function() {
+            return {
+                scope: {
+                    file: '='
+                },
+                link: function(scope, el, attrs) {
+                    el.bind('change', function(event) {
+                        var file = event.target.files[0];
+                        scope.file = file ? file : undefined;
+                        scope.$apply();
+                    });
+                }
+            };
+        });
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
             var url = document.URL.split('/');
             var urltmp = url[4].split('?')[0];
             $rootScope.lastUri = urltmp.split('#')[0];
 
             $scope.APP_DOMAIN = "http://localhost:8080/";
+
+
+            preImg.onchange = evt => {
+                const [file] = preImg.files
+                if (file) {
+                    blah.src = URL.createObjectURL(file)
+                    blah.style = "block";
+                }
+            }
+
             //load Supplier
             $http({
                 method: "GET",
@@ -190,6 +238,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             var id_product = getUrlParameter('id');
             console.log(id_product);
 
+
+
             $http({
                 method: "GET",
                 url: $scope.APP_DOMAIN + "admin/api/product",
@@ -199,7 +249,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 },
             }).then(function(response) {
                 $scope.editProduct = response.data.data
-                    // console.log($scope.editProduct);
+                console.log($scope.editProduct);
 
                 $scope.id = $scope.editProduct.id;
                 $scope.category = $scope.editProduct.id_cate + "";
@@ -209,22 +259,83 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 $scope.price_sale = $scope.editProduct.price_sale;
                 $scope.image_url = $scope.editProduct.image_url;
                 $scope.quantity = $scope.editProduct.quantity;
-                $scope.content = $scope.editProduct.content;
+                $('#summernote').summernote('code', $scope.editProduct.content);
                 $scope.warranty = $scope.editProduct.warranty;
                 let property = $scope.editProduct.property;
                 console.log(property);
                 $scope.hot = property.hot;
                 $scope.new = property.productNew;
                 $scope.promo = property.promo;
+                $scope.upload = $scope.editProduct.filex;
 
 
+                initRelatedProductSlc2($scope.editProduct.listRelatedProduct);
 
             })
 
+            function initRelatedProductSlc2(listProduct) {
+                var selected = [];
+                var initials = [];
+                for (let i = 0; i < listProduct.length; i++) {
+                    let item = listProduct[i];
+                    selected.push(item.id);
+                    initials.push({
+                        id: item.id,
+                        text: item.name
+                    })
+
+                }
+                $('.slc-related-product').select2({
+                    data: initials,
+                    ajax: {
+                        url: 'http://localhost:8080/admin/api/product?action=getproduct',
+                        type: "GET",
+                        dataType: "json",
+                        delay: 250,
+                        data: function(params) {
+                            return {
+                                search_query: params.term,
+                                page_index: params.page || 1
+                            }
+                        },
+                        processResults: function(response) {
+                            let listResult = response.data.listProduct;
+                            // console.log(listResult);
+                            let results = [];
+
+                            for (let product of listResult) {
+                                results.push({
+                                    "id": product.id,
+                                    "text": product.name
+                                })
+                            }
+
+                            let hasMore = true;
+
+                            let objectSelectOpt = {
+                                "results": results,
+                                "pagination": {
+                                    "more": hasMore
+                                }
+                            };
+
+                            console.log(objectSelectOpt);
+
+                            return objectSelectOpt;
+                        },
+                        cache: true
+                    }
+                });
+                $('.slc-related-product').val(selected).trigger('change');
+            }
+
+
             //Save Data da sua
             $scope.saveDataEdit = function() {
+                console.log($('.slc-related-product').val());
+                var contentEdit = $('#summernote').summernote('code');
                 if ($scope.category && $scope.supplier && $scope.name && $scope.price && $scope.price_sale &&
-                    $scope.quantity && $scope.image_url && $scope.content && $scope.warranty && property) {
+                    $scope.quantity && $scope.image_url && contentEdit && $scope.warranty) {
                     let property = 0;
                     if ($scope.hot) {
                         property = property + 1;
@@ -235,35 +346,50 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     if ($scope.promo) {
                         property = property + 4;
                     }
-                    var data = $.param({
-                        id: $scope.id,
-                        category: $scope.category,
-                        supplier: $scope.supplier,
-                        name: $scope.name,
-                        price: $scope.price,
-                        price_sale: $scope.price_sale,
-                        image_url: $scope.image_url,
-                        quantity: $scope.quantity,
-                        content: $scope.content,
-                        warranty: $scope.warranty,
-                        property: property
-
-                    })
-                    console.log(data);
-                    var config = {
+                    $http({
+                        method: 'POST',
+                        url: $scope.APP_DOMAIN + 'admin/api/product?action=edit',
                         headers: {
-                            'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                            'content-type': undefined
+                        },
+                        data: {
+                            id: $scope.id,
+                            category: $scope.category,
+                            supplier: $scope.supplier,
+                            name: $scope.name,
+                            price: $scope.price,
+                            price_sale: $scope.price_sale,
+                            image_url: $scope.image_url,
+                            quantity: $scope.quantity,
+                            content: contentEdit,
+                            warranty: $scope.warranty,
+                            property: property,
+                            upload: $scope.filex,
+                            related: JSON.stringify($('.slc-related-product').val())
+                        },
+
+                        transformRequest: function(data, headersGetter) {
+                            console.log(data);
+                            var formData = new FormData();
+                            angular.forEach(data, function(value, key) {
+                                formData.append(key, value);
+                            });
+
+                            return formData;
+
                         }
-                    }
-                    $http.post($scope.APP_DOMAIN + 'admin/api/product?action=edit', data, config)
-                        .then(function(response) {
-                            console.log(response);
+                    }).then(function(response) {
+                        if (response.data.errorCode >= 0) {
+                            // console.log(response);
                             showNotification("success", response.data.message);
                             window.location.replace($scope.APP_DOMAIN + "admin/product");
-                        }, function(error) {
-                            console.log(error.data.message);
-                            showNotification("error", error.data.message);
-                        })
+                        } else {
+                            showNotification("error", response.data.message);
+                        }
+                    }, function(error) {
+                        showNotification("error", "Có lỗi! Vui lòng thử lại sau.");
+
+                    })
                 } else {
                     showNotification("error", "Dữ liệu không hợp lệ!");
                 }

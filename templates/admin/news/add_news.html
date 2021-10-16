@@ -74,13 +74,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <label>Info</label>
                                     <textarea ng-model="info" class="form-control" rows="3" placeholder="Info"></textarea>
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label>Content</label>
                                     <textarea ng-model="content" class="form-control" rows="10" placeholder="Content"></textarea>
-                                </div>
+                                </div> -->
                                 <div class="form-group">
-                                    <label>Image</label>
-                                    <input ng-model="image" type="text" class="form-control" placeholder="Image">
+                                    <label>Content</label>
+                                    <textarea id="summernote" class="form-control" placeholder="Content"></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>Upload File Image</label>
+                                        <br>
+                                        <input type="file" file="filex" name="file2" id="preImg" accept="image/png, image/gif, image/jpeg" required />
+                                        <br />
+                                        <img id="blah" src="#" alt="your image" onerror="this.style.display = 'none'" width="150px" height="150px" />
+                                        <br>
+                                    </div>
                                 </div>
                                 <div>
                                     <button type="submit" ng-click="addData()" class="btn btn-primary">Submit</button>
@@ -106,46 +116,40 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <script>
         var app = angular.module('myApp', []); //ngPagination
+        app.directive('file', function() {
+            return {
+                scope: {
+                    file: '='
+                },
+                link: function(scope, el, attrs) {
+                    el.bind('change', function(event) {
+                        var file = event.target.files[0];
+                        scope.file = file ? file : undefined;
+                        scope.$apply();
+                    });
+                }
+            };
+        });
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                height: 300
+            });
+        });
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
             var url = document.URL.split('/');
             var urltmp = url[4].split('?')[0];
             $rootScope.lastUri = urltmp.split('#')[0];
 
             $scope.APP_DOMAIN = "http://localhost:8080/";
-            $scope.addData = function() {
-                    if ($scope.categoryNews && $scope.title && $scope.info && $scope.content && $scope.image) {
-                        var data = $.param({
-                            categoryNews: $scope.categoryNews,
-                            title: $scope.title,
-                            info: $scope.info,
-                            content: $scope.content,
-                            image: $scope.image,
-                        })
-                        console.log(data);
-                        var config = {
-                            headers: {
-                                'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                            }
-                        }
-                        $http.post($scope.APP_DOMAIN + 'admin/api/news?action=add', data, config)
-                            .then(function(response) {
-                                console.log(response);
-                                $scope.categoryNews = "0";
-                                $scope.title = "";
-                                $scope.info = "";
-                                $scope.content = "";
-                                $scope.image = "";
-                                showNotification("success", response.data.message);
-                            }, function(error) {
-                                showNotification("error", error.data.message);
-
-                            })
-                    } else {
-                        showNotification("error", "Dữ liệu không hợp lệ!");
-                    }
-
+            preImg.onchange = evt => {
+                const [file] = preImg.files
+                if (file) {
+                    blah.src = URL.createObjectURL(file)
+                    blah.style = "block";
                 }
-                //load CateNews
+            }
+
+            //load CateNews
             $http({
                 method: "GET",
                 url: $scope.APP_DOMAIN + "admin/api/cate_news",
@@ -158,6 +162,56 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 console.log(response);
                 $scope.listCategoryNews = response.data.data.listCategoryNews;
             })
+
+            $scope.addData = function() {
+                var smContent = $('#summernote').summernote('code');
+                if ($scope.categoryNews && $scope.title && $scope.info && smContent && $scope.filex) {
+                    $http({
+                            method: 'POST',
+                            url: $scope.APP_DOMAIN + 'admin/api/news?action=add',
+                            headers: {
+                                'content-type': undefined
+                            },
+                            data: {
+                                categoryNews: $scope.categoryNews,
+                                title: $scope.title,
+                                info: $scope.info,
+                                content: smContent,
+                                upload: $scope.filex,
+
+                            },
+
+                            transformRequest: function(data, headersGetter) {
+                                console.log(data);
+                                var formData = new FormData();
+                                angular.forEach(data, function(value, key) {
+                                    formData.append(key, value);
+                                });
+
+                                return formData;
+
+                            }
+                        })
+                        .then(function(response) {
+                            console.log(response);
+                            $scope.categoryNews = "0";
+                            $scope.title = "";
+                            $scope.info = "";
+                            $('#summernote').summernote('code', "");
+                            $("#blah").css("display", "none");
+                            $('#preImg').val('');
+                            showNotification("success", response.data.message);
+                        }, function(error) {
+                            showNotification("error", error.data.message);
+
+                        })
+                } else {
+                    showNotification("error", "Dữ liệu không hợp lệ!");
+                }
+
+
+            }
+
 
 
         })

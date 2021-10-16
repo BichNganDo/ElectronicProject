@@ -61,12 +61,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <div class="input-group">
                                         <input ng-model="search_query" type="text" name="search" class="form-control" placeholder="Search">
                                         <div class="input-group-append">
-                                            <button ng-click="getListProduct()" type="submit" name="submit" class="btn btn-primary"><i class="fas fa-search"> Search</i>
+                                            <button ng-click="getListProduct()" type="submit" name="submit" class="btn btn-primary"><i class="fas fa-search"></i>
                                               </button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <div class="input-group">
                                         <select ng-model="search_cate" ng-change="getListProduct()" ng-init="search_cate='0'" class="form-control">
                                         <option value="0">Filter Category</option>
@@ -74,12 +74,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </select>
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <div class="input-group">
                                         <select ng-model="search_supplier" ng-change="getListProduct()" ng-init="search_supplier='0'" class="form-control">
                                         <option value="0">Filter Supplier</option>
                                         <option ng-repeat="item in listSupplier" value="{{item.id}}">{{item.name}}</option>
                                     </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 text-center">
+                                    <div class="form-group" style="margin-top: 8px;">
+                                        <div class="form-check">
+                                            <div style="display: inline-block; padding-right: 23px;">
+                                                <input ng-model="hot" class="form-check-input" type="checkbox" ng-change="getListProduct()">
+                                                <label class="form-check-label">Hot</label>
+                                            </div>
+                                            <div style="display: inline-block; padding-right: 23px;">
+                                                <input ng-model="new" class="form-check-input" type="checkbox" ng-change="getListProduct()">
+                                                <label class="form-check-label">New</label>
+                                            </div>
+                                            <div style="display: inline-block;">
+                                                <input ng-model="promo" class="form-check-input" type="checkbox" ng-change="getListProduct()">
+                                                <label class="form-check-label">Promo</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -112,13 +130,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                             Id
                                         </th>
                                         <th style="width: 10%">
+                                            Name
+                                        </th>
+                                        <th style="width: 10%">
                                             Id Category
                                         </th>
                                         <th style="width: 10%">
                                             Id Supplier
-                                        </th>
-                                        <th style="width: 10%">
-                                            Name
                                         </th>
                                         <th style="width: 7%">
                                             Price
@@ -143,9 +161,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <tbody dir-paginate="item in listProduct | itemsPerPage: 10" total-items="totalProduct" pagination-id="product">
                                     <tr>
                                         <td>{{item.id}}</td>
+                                        <td>{{item.name}}
+                                            <span ng-if="item.property.hot" class="badge badge-danger">Hot</span>
+                                            <span ng-if="item.property.productNew" class="badge badge-info">New</span>
+                                            <span ng-if="item.property.promo" class="badge badge-primary">Promo</span>
+                                        </td>
                                         <td>{{item.category}}</td>
                                         <td>{{item.supplier}}</td>
-                                        <td>{{item.name}}</td>
                                         <td>{{item.price}}</td>
                                         <td>{{item.price_sale}}</td>
                                         <td><img width="100%" height="100%" src="{{item.image_url}}" alt=""></td>
@@ -198,7 +220,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             $scope.APP_DOMAIN = "http://localhost:8080/";
             $scope.selectedPageIndex = 1;
+
             $scope.getListProduct = function() {
+                let property = 0;
+                if ($scope.hot) {
+                    property = property + 1;
+                }
+                if ($scope.new) {
+                    property = property + 2;
+                }
+                if ($scope.promo) {
+                    property = property + 4;
+                }
+                console.log($scope.hot);
+                console.log($scope.new);
+                console.log($scope.promo);
                 $http({
                     method: "GET",
                     url: $scope.APP_DOMAIN + "admin/api/product",
@@ -208,7 +244,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         limit: 10,
                         search_query: $scope.search_query,
                         search_cate: $scope.search_cate,
-                        search_supplier: $scope.search_supplier
+                        search_supplier: $scope.search_supplier,
+                        search_property: property
                     },
                 }).then(function(response) {
                     console.log(response);

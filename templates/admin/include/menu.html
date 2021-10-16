@@ -91,23 +91,78 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/news" class="nav-link" ng-class="lastUri == 'news' ? 'active' : ''">
-                        <i class="nav-icon fas fa-newspaper"></i>
+                    <a href="/admin/setting" class="nav-link" ng-class="lastUri == 'setting' ? 'active' : ''">
+                        <i class="nav-icon fas fa-list"></i>
                         <p>
-                            Manage News
+                            Manage Settings
                             <!-- <i class="right fas fa-angle-left"></i> -->
                         </p>
                     </a>
+                </li>
+                <li class="nav-item menu-is-opening menu-open">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-newspaper"></i>
+                        <p>
+                            Manage News
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: block;">
+                        <li class="nav-item">
+                            <a href="/admin/news" class="nav-link" ng-class="lastUri == 'news' ? 'active' : ''">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>News</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/about-blog" class="nav-link" ng-class="lastUri == 'about-blog' ? 'active' : ''">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>About</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a href="/admin/slides" class="nav-link" ng-class="lastUri == 'slides' ? 'active' : ''">
                         <i class="nav-icon fas fa-star-of-david"></i>
                         <p>
                             Manage Slides
-                            <!-- <i class="right fas fa-angle-left"></i> -->
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="/admin/contact" class="nav-link" ng-class="lastUri == 'contact' ? 'active' : ''">
+                        <i class="nav-icon fas fa-address-book"></i>
+                        <p>
+                            Manage Contact
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/email" class="nav-link" ng-class="lastUri == 'email' ? 'active' : ''">
+                        <i class="nav-icon fas fa-envelope"></i>
+                        <p>
+                            Manage Email Register
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/info_buyer" class="nav-link" ng-class="lastUri == 'info_buyer' ? 'active' : ''">
+                        <i class="nav-icon fas fa-address-book"></i>
+                        <p>
+                            Manage Info Buyer
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/register" class="nav-link" ng-class="lastUri == 'register' ? 'active' : ''">
+                        <i class="nav-icon fas fa-address-book"></i>
+                        <p>
+                            Manage User Register
+                        </p>
+                    </a>
+                </li>
+
                 <!-- <li class="nav-item">
                     <a href="" class="nav-link">
                         <i class="nav-icon fas fa-sign-out-alt"></i>

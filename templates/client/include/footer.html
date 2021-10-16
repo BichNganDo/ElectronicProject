@@ -1,0 +1,105 @@
+<footer class="site-footer">
+    <div class="container">
+        <div class="row justify-content-between  section-padding">
+            <div class=" col-xl-3 col-lg-4 col-sm-6">
+                <div class="single-footer pb--40">
+                    <div class="brand-footer footer-title">
+                        <img src="${static_domain}/image/logo--footer.png" alt="">
+                    </div>
+                    <div class="footer-contact">
+                        <#list list_setting_by_keys as setting>
+                            <p><span class="label">${setting.key}:</span><span class="text"> ${setting.value}</span></p>
+                        </#list>
+
+                    </div>
+                </div>
+            </div>
+            <div class=" col-xl-3 col-lg-4 col-sm-6">
+                <div class="single-footer pb--40">
+                    <div class="footer-title">
+                        <!-- <h3>Trang chủ</h3> -->
+                        <ul class="footer-list normal-list">
+                            <li>
+                                <a href="${app_domain}">
+                                    <h3>Trang chủ</h3>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="${app_domain}/gioi-thieu">
+                                    <h3>Giới thiệu</h3>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="${app_domain}/tin-tuc">
+                                    <h3>Tin tức</h3>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="${app_domain}/lien-he">
+                                    <h3>Liên hệ</h3>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class=" col-xl-3 col-lg-4 col-sm-6">
+                <div class="footer-title">
+                    <h3>Đăng ký để nhận ưu đãi</h3>
+                </div>
+                <div class="newsletter-form mb--30">
+                    <form action="./php/mail.php">
+                        <input id="email" type="email" class="form-control" placeholder="Nhập Email của bạn...">
+                        <button onclick="getEmail()" type="button" class="btn btn--primary w-100">Đăng ký</button>
+                    </form>
+                </div>
+                <div class="social-block">
+                    <h3 class="title">Phương thức liên hệ</h3>
+                    <ul class="social-list list-inline">
+                        <li class="single-social facebook"><a href="${setting_facebook.value}"><i class="ion ion-social-facebook"></i></a>
+                        </li>
+                        <li class="single-social twitter"><a href="${setting_twitter.value}"><i class="ion ion-social-twitter"></i></a></li>
+                        <li class="single-social google"><a href="${setting_google.value}"><i
+                                    class="ion ion-social-googleplus-outline"></i></a></li>
+                        <li class="single-social youtube"><a href="${setting_youtube.value}"><i class="ion ion-social-youtube"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script src="${static_domain}/js/plugins.js"></script>
+<script src="${static_domain}/js/ajax-mail.js"></script>
+<script src="${static_domain}/js/notification.js"></script>
+<script src="${static_domain}/js/toastr.min.js"></script>
+<script src="${static_domain}/js/custom.js"></script>
+<script>
+    function getEmail() {
+        email = document.getElementById("email").value;
+        console.log(email);
+        if (email) {
+            $.ajax({
+                url: "${app_domain}/add/email",
+                type: "POST",
+                dataType: "json",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    email: email
+                }),
+                success(response) {
+                    console.log(response);
+                    if (response.errorCode >= 0) {
+                        document.getElementById("email").value = "";
+                        showNotification("success", response.message);
+                    } else {
+                        showNotification("error", response.message);
+                    }
+
+                }
+            })
+        }
+    }
+</script>

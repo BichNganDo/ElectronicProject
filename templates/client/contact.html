@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    ${header_include}
+</head>
+
+<body>
+    <div class="site-wrapper" id="top">
+        ${header_menu}
+        <section class="breadcrumb-section">
+            <h2 class="sr-only">Site Breadcrumb</h2>
+            <div class="container">
+                <div class="breadcrumb-contents">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="${app_domain}">Trang chủ</a></li>
+                            <li class="breadcrumb-item active">Liên hệ</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </section>
+        <!-- Cart Page Start -->
+        <main class="contact_area inner-page-sec-padding-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="">
+                            ${setting_map.value}
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt--60 ">
+                    <div class="col-lg-5 col-md-5 col-12">
+                        <div class="contact_adress">
+                            <!-- <div class="ct_address">
+                                <h3 class="ct_title">Location & Details</h3>
+                                <p>It is a long established fact that readewill be distracted by the readable content of a page when looking at ilayout.</p>
+                            </div> -->
+                            <div class="address_wrapper">
+                                <#list list_setting_by_keyss as setting>
+                                    <div class="address">
+                                        <!-- <div class="icon"> -->
+                                        <!-- <i class="fas fa-map-marker-alt"></i> -->
+                                        <!-- </div> -->
+                                        <div class="contact-info-text">
+                                            <p><span>${setting.key}:</span> ${setting.value}</p>
+                                        </div>
+                                    </div>
+                                </#list>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-12 mt--30 mt-md--0">
+                        <div class="contact_form">
+                            <h3 class="ct_title">Lời nhắn đến Pustok.</h3>
+                            <form id="contact-form" action="php/mail.php" method="post" class="contact-form">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label>Họ và tên <span class="required">*</span></label>
+                                            <input type="text" id="name" name="name" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label>Email <span class="required">*</span></label>
+                                            <input type="email" id="email" name="email" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label>Điện thoại <span class="required">*</span></label>
+                                            <input type="text" id="phone" name="phone" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label>Nội dung</label>
+                                            <textarea id="message" name="message" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-btn">
+                                            <button onclick="getValue()" type="submit" value="submit" id="submit" class="btn btn-primary" name="submit">Gửi</button>
+                                        </div>
+                                        <div class="form__output"></div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="form-output">
+                                <p class="form-messege"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Cart Page End -->
+    </div>
+    <!--=================================
+  Brands Slider
+===================================== -->
+    <section class="section-margin">
+        <h2 class="sr-only">Brand Slider</h2>
+        <div class="container">
+            <div class="brand-slider sb-slick-slider border-top border-bottom" data-slick-setting='{
+                                            "autoplay": true,
+                                            "autoplaySpeed": 8000,
+                                            "slidesToShow": 6
+                                            }' data-slick-responsive='[
+                {"breakpoint":992, "settings": {"slidesToShow": 4} },
+                {"breakpoint":768, "settings": {"slidesToShow": 3} },
+                {"breakpoint":575, "settings": {"slidesToShow": 3} },
+                {"breakpoint":480, "settings": {"slidesToShow": 2} },
+                {"breakpoint":320, "settings": {"slidesToShow": 1} }
+            ]'>
+                <div class="single-slide">
+                    <img src="${static_domain}/image/others/brand-1.jpg" alt="">
+                </div>
+                <div class="single-slide">
+                    <img src="${static_domain}/image/others/brand-2.jpg" alt="">
+                </div>
+                <div class="single-slide">
+                    <img src="${static_domain}/image/others/brand-3.jpg" alt="">
+                </div>
+                <div class="single-slide">
+                    <img src="${static_domain}/image/others/brand-4.jpg" alt="">
+                </div>
+                <div class="single-slide">
+                    <img src="${static_domain}/image/others/brand-5.jpg" alt="">
+                </div>
+                <div class="single-slide">
+                    <img src="${static_domain}/image/others/brand-6.jpg" alt="">
+                </div>
+                <div class="single-slide">
+                    <img src="${static_domain}/image/others/brand-1.jpg" alt="">
+                </div>
+                <div class="single-slide">
+                    <img src="${static_domain}/image/others/brand-2.jpg" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=================================
+    Footer Area
+===================================== -->
+
+    ${footer_include}
+    <script>
+        function getValue() {
+            name = document.getElementById("name").value;
+            email = document.getElementById("email").value;
+            phone = document.getElementById("phone").value;
+            message = document.getElementById("message").value;
+            // console.log(name, email, phone, message);
+            if (name && email && phone && message) {
+                $.ajax({
+                    url: "${app_domain}/lien-he",
+                    type: "POST",
+                    dataType: "json",
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        message: message
+                    }),
+                    success(response) {
+                        // console.log(response);
+                        if (response.errorCode >= 0) {
+                            showNotification("success", response.message);
+                        } else {
+                            showNotification("error", response.message);
+                        }
+
+                    }
+                })
+            }
+
+
+        }
+    </script>
+</body>
+
+
+</html>

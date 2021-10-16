@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en">
+
+<head>
+    ${header_include}
+
+</head>
+
+<body class="hold-transition sidebar-mini" ng-app="myApp" ng-cloak>
+    <div class="wrapper" ng-controller="mainCtrl">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="${app_domain}/admin/logout" role="button">
+                       Logout <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+
+        <!-- Main Sidebar Container -->
+        <div ng-include="'partital/menu.html'"></div>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Manage Infomation Buyer</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Dashbroad</a></li>
+                                <li class="breadcrumb-item active">Manage Info Buyer </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main content -->
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <input ng-model="search_query" type="text" name="search" class="form-control" placeholder="Name, Phone, Email...">
+                                        <div class="input-group-append">
+                                            <button ng-click="getListInfoBuyer()" type="button" class="btn btn-primary"><i class="fas fa-search"> Search</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">List Info Buyer</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-striped projects">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 2%">
+                                            Id
+                                        </th>
+                                        <th style="width: 20%">
+                                            Information Buyer
+                                        </th>
+                                        <th style="width: 45%">
+                                            Information Product
+                                        </th>
+                                        <th style="width: 10%">
+                                            Payment
+                                        </th>
+                                        <th style="width: 10%">
+                                            Created Date
+                                        </th>
+                                        <th>
+
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody dir-paginate="item in listInfoBuyer | itemsPerPage: 10" total-items="totalInfoBuyer" pagination-id="info_buyer">
+                                    <tr>
+                                        <td>{{item.id}}</td>
+                                        <td>
+                                            Họ và tên: {{item.name}} <br> Email: {{item.email}} <br> Điện thoại: {{item.phone}} <br> Địa chỉ: {{item.name}} <br> Ghi chú: {{item.note}}
+                                        </td>
+                                        <td>
+                                            <table class="table table-striped projects">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 5%">
+                                                            Id
+                                                        </th>
+                                                        <th style="width: 50%">
+                                                            Name
+                                                        </th>
+                                                        <th style="width: 25%">
+                                                            Price
+                                                        </th>
+                                                        <th style="width: 20%">
+                                                            Image
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="cartItem in item.listCart">
+                                                        <th>{{cartItem.id}}</th>
+                                                        <td>{{cartItem.quantity_buy}} x {{cartItem.name}}</td>
+                                                        <td>{{cartItem.price_sale | number}}</td>
+                                                        <td>
+                                                            <img width="50px" height="50px" src="{{cartItem.image_url}}" alt="">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <!-- <tr ng-repeat="cartItem in item.listCart">
+                                                    <td>
+                                                        Id: {{cartItem.id}} <br> Tên sản phẩm: {{cartItem.name}} <br> Giá: {{cartItem.price_sale}} <br> Số lượng: {{cartItem.quantity_buy}} <br> <img width="100px" height="100px" src="{{cartItem.image_url}}"
+                                                            alt="">
+                                                    </td>
+                                                </tr> -->
+                                            </table>
+                                        </td>
+                                        <td>{{item.payTotal | number}}</td>
+                                        <td>{{item.created_date}}</td>
+                                        <td class="project-actions text-right">
+                                            <a class="btn btn-info btn-sm" href="/admin/info_buyer/edit?id={{item.id}}" style="margin: 5px 5px">
+                                                <i class="fas fa-pencil-alt">
+                                                </i> Edit
+                                            </a>
+                                            <a ng-click="delete(item.id, item.name)" class="btn btn-danger btn-sm" href="#" style="margin: 5px 5px">
+                                                <i class="fas fa-trash">
+                                                </i> Delete
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="clearfix mt-3" style="margin-left: auto; padding-right: 20px;">
+                                <dir-pagination-controls pagination-id="email_register" on-page-change="pageChanged(newPageNumber)" boundary-links="true" style="font-size: 13px"></dir-pagination-controls>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+                <!-- /.content -->
+            </div>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- REQUIRED SCRIPTS -->
+
+    ${footer_include}
+
+    <script>
+        var app = angular.module('myApp', ['ngPagination']); //ngPagination
+        app.controller('mainCtrl', function($scope, $http, $rootScope) {
+            var url = document.URL.split('/');
+            var urltmp = url[4].split('?')[0];
+            $rootScope.lastUri = urltmp.split('#')[0];
+
+            $scope.APP_DOMAIN = "http://localhost:8080/";
+            $scope.selectedPageIndex = 1;
+            $scope.getListInfoBuyer = function() {
+                $http({
+                    method: "GET",
+                    url: $scope.APP_DOMAIN + "admin/api/info_buyer",
+                    params: {
+                        action: 'getinfobuyer',
+                        page_index: $scope.selectedPageIndex,
+                        limit: 10,
+                        search_query: $scope.search_query
+                    },
+                }).then(function(response) {
+                    console.log(response);
+                    $scope.listInfoBuyer = response.data.data.listInfoBuyer;
+                    $scope.listInfoBuyer.forEach(element => {
+                        element.listCart = JSON.parse(element.listCart);
+
+                    });
+
+                    $scope.totalInfoBuyer = response.data.data.total;
+                    console.log($scope.listInfoBuyer);
+                })
+            }
+            $scope.pageChanged = function(pageIndex) {
+                $scope.selectedPageIndex = pageIndex;
+                $scope.getListInfoBuyer();
+            };
+
+            $scope.getListInfoBuyer();
+
+            //DELETE
+            $scope.delete = function(idDel, nameDel) {
+                var r = confirm("Bạn chắc chắn muốn xóa " + nameDel + " ?");
+                if (r == true) {
+                    var data = $.param({
+                        id: idDel
+                    });
+                    var config = {
+                        headers: {
+                            'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                        }
+                    }
+                    $http.post('http://localhost:8080/admin/api/info_buyer?action=delete', data, config)
+                        .then(function(response) {
+                            console.log(response);
+                            showNotification("success", response.data.message);
+                            $scope.getListInfoBuyer();
+                        }, function(error) {
+                            console.log(error.data.message);
+                            showNotification("error", error.data.message);
+                        })
+
+                }
+
+            }
+
+
+
+
+
+        })
+    </script>
+</body>
+
+</html>
