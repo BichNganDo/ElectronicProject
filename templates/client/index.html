@@ -301,21 +301,17 @@
                                                                     "dots":true
                                                                     }'>
                             <#list list_slides as slides>
-                                <div class="single-slide bg-image bg-overlay--white" width="870px" height="494px" data-bg="${slides.image}">
-                                    <div class="home-content text-left pl--30">
-                                        <div class="row">
-                                            <div class="col-lg-5">
-                                                <!-- <span class="title-small">Magazine Cover</span> -->
-                                                <!-- <h1>Mockup.</h1>
-                                            <p>Cover up front of book and
-                                                <br>leave summary</p>
-                                            <a href="shop-grid.html" class="btn btn-outlined--pink">
-                                                Shop Now
-                                            </a> -->
+                                <a target="_blank" href="${slides.link}">
+                                    <div class="single-slide bg-image bg-overlay--white" width="870px" height="494px" data-bg="${slides.image}">
+                                        <div class="home-content text-left pl--30">
+                                            <div class="row">
+                                                <div class="col-lg-5">
+
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             </#list>
 
                             <!-- <div class="single-slide bg-image bg-overlay--dark" data-bg="https://static.vecteezy.com/system/resources/thumbnails/001/338/306/small/black-friday-sale-banner-free-vector.jpg">

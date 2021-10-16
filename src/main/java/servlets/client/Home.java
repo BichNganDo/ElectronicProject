@@ -24,6 +24,7 @@ import model.NewsModel;
 import model.ProductModel;
 import model.SettingModel;
 import model.SlidesModel;
+import servlets.client.include.IncludeData;
 import templater.PageGenerator;
 
 public class Home extends HttpServlet {
@@ -132,26 +133,7 @@ public class Home extends HttpServlet {
         pageVariablesHeader.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
         pageVariables.put("header_include", PageGenerator.instance().getPage("client/include/header.html", pageVariablesHeader));
 
-        Map<String, Object> pageVariablesFooter = new HashMap<>();
-        pageVariablesFooter.put("app_domain", Config.APP_DOMAIN);
-        pageVariablesFooter.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
-
-        List<Setting> listSettingByKeys = SettingModel.INSTANCE.getListSettingByKey("'Địa chỉ', 'Điện thoại', 'Email'");
-        pageVariablesFooter.put("list_setting_by_keys", listSettingByKeys);
-
-        Setting settingFb = SettingModel.INSTANCE.getSettingByKey("Facebook");
-        pageVariablesFooter.put("setting_facebook", settingFb);
-
-        Setting settingTw = SettingModel.INSTANCE.getSettingByKey("Twitter");
-        pageVariablesFooter.put("setting_twitter", settingTw);
-
-        Setting settingGg = SettingModel.INSTANCE.getSettingByKey("Google");
-        pageVariablesFooter.put("setting_google", settingGg);
-
-        Setting settingYb = SettingModel.INSTANCE.getSettingByKey("Youtube");
-        pageVariablesFooter.put("setting_youtube", settingYb);
-
-        pageVariables.put("footer_include", PageGenerator.instance().getPage("client/include/footer.html", pageVariablesFooter));
+        pageVariables.put("footer_include", PageGenerator.instance().getPage("client/include/footer.html", IncludeData.INSTANCE.buildFooterData()));
         response.setContentType("text/html;charset=UTF-8");
         response.getWriter().println(PageGenerator.instance().getPage("client/index.html", pageVariables));
 
