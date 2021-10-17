@@ -1,6 +1,6 @@
 package servlets.client;
 
-import common.Config;
+import common.Configuration;
 import entity.product.FilterProduct;
 import entity.product.Product;
 import java.io.IOException;
@@ -24,8 +24,8 @@ public class CateProduct extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("app_domain", Config.APP_DOMAIN);
-        pageVariables.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+        pageVariables.put("app_domain", Configuration.APP_DOMAIN);
+        pageVariables.put("static_domain", Configuration.STATIC_CLIENT_DOMAIN);
 
         int itemPerPage = NumberUtils.toInt(request.getParameter("limit"), DEFAULT_ITEM_PER_PAGE);
         if (itemPerPage < 0 && itemPerPage > 50) {
@@ -86,7 +86,7 @@ public class CateProduct extends HttpServlet {
 
         //HEADER
         Map<String, Object> pageVariablesHeader = new HashMap<>();
-        pageVariablesHeader.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+        pageVariablesHeader.put("static_domain", Configuration.STATIC_CLIENT_DOMAIN);
         pageVariables.put("header_include", PageGenerator.instance().getPage("client/include/header.html", pageVariablesHeader));
 
         //FOOTER

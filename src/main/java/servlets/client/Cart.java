@@ -1,6 +1,6 @@
 package servlets.client;
 
-import common.Config;
+import common.Configuration;
 import entity.item.CartItem;
 import entity.product.Product;
 import helper.SessionHelper;
@@ -23,9 +23,9 @@ public class Cart extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("app_domain", Config.APP_DOMAIN);
-        pageVariables.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
-        pageVariables.put("shipping_fee", Config.SHIPPING_FEE);
+        pageVariables.put("app_domain", Configuration.APP_DOMAIN);
+        pageVariables.put("static_domain", Configuration.STATIC_CLIENT_DOMAIN);
+        pageVariables.put("shipping_fee", Configuration.SHIPPING_FEE);
 
         String action = request.getParameter("action");
         if ("remove-cart-item".equals(action)) {
@@ -38,7 +38,7 @@ public class Cart extends HttpServlet {
         }
         List<CartItem> listResult = SessionHelper.INSTANCE.getCartItem(request);
         if (listResult.size() > 0) {
-            pageVariables.put("shipping_fee", Config.SHIPPING_FEE);
+            pageVariables.put("shipping_fee", Configuration.SHIPPING_FEE);
         } else {
             pageVariables.put("shipping_fee", 0);
         }
@@ -57,7 +57,7 @@ public class Cart extends HttpServlet {
 
         //HEADER
         Map<String, Object> pageVariablesHeader = new HashMap<>();
-        pageVariablesHeader.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+        pageVariablesHeader.put("static_domain", Configuration.STATIC_CLIENT_DOMAIN);
         pageVariables.put("header_include", PageGenerator.instance().getPage("client/include/header.html", pageVariablesHeader));
 
         //FOOTER

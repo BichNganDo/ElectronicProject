@@ -1,6 +1,6 @@
 package entity.product;
 
-import common.Config;
+import common.Configuration;
 import java.util.List;
 
 public class Product {
@@ -132,7 +132,7 @@ public class Product {
         if (image_url.startsWith("http")) {
             this.image_url = image_url;
         } else {
-            this.image_url = Config.APP_DOMAIN + "/" + image_url;
+            this.image_url = Configuration.APP_DOMAIN + "/" + image_url;
         }
     }
 

@@ -1,13 +1,11 @@
 package servlets.admin;
 
-import common.Config;
+import common.Configuration;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +14,7 @@ import org.eclipse.jetty.server.Request;
 import templater.PageGenerator;
 
 //@WebServlet("admin/upload-file")
-//@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+//@MultipartConfiguration(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
 //        maxFileSize = 1024 * 1024 * 10, // 10MB
 //        maxRequestSize = 1024 * 1024 * 50) // 50MB
 public class UploadFileServlet extends HttpServlet {
@@ -26,11 +24,11 @@ public class UploadFileServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("app_domain", Config.APP_DOMAIN);
-        pageVariables.put("static_domain", Config.STATIC_ADMIN_DOMAIN);
+        pageVariables.put("app_domain", Configuration.APP_DOMAIN);
+        pageVariables.put("static_domain", Configuration.STATIC_ADMIN_DOMAIN);
 
         Map<String, Object> pageVariablesHeader = new HashMap<>();
-        pageVariablesHeader.put("static_domain", Config.STATIC_ADMIN_DOMAIN);
+        pageVariablesHeader.put("static_domain", Configuration.STATIC_ADMIN_DOMAIN);
 
         response.setContentType("text/html;charset=UTF-8");
         response.getWriter().println(PageGenerator.instance().getPage("admin/TestUploadFile.html", pageVariables));

@@ -2,7 +2,7 @@ package servlets.admin.mnadmin;
 
 import com.google.gson.Gson;
 import common.APIResult;
-import common.Config;
+import common.Configuration;
 import entity.admin.Admin;
 import helper.HttpHelper;
 import helper.SecurityHelper;
@@ -23,8 +23,8 @@ public class LoginServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("app_domain", Config.APP_DOMAIN);
-        pageVariables.put("static_domain", Config.STATIC_ADMIN_DOMAIN);
+        pageVariables.put("app_domain", Configuration.APP_DOMAIN);
+        pageVariables.put("static_domain", Configuration.STATIC_ADMIN_DOMAIN);
         pageVariables.put("message", "hello word");
 
         response.setContentType("text/html;charset=UTF-8");

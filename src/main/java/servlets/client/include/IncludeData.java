@@ -1,6 +1,6 @@
 package servlets.client.include;
 
-import common.Config;
+import common.Configuration;
 import entity.category_product.CategoryProduct;
 import entity.item.CartItem;
 import entity.product.Product;
@@ -22,8 +22,8 @@ public class IncludeData {
 
     public Map<String, Object> buildFooterData() {
         Map<String, Object> pageVariablesFooter = new HashMap<>();
-        pageVariablesFooter.put("app_domain", Config.APP_DOMAIN);
-        pageVariablesFooter.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+        pageVariablesFooter.put("app_domain", Configuration.APP_DOMAIN);
+        pageVariablesFooter.put("static_domain", Configuration.STATIC_CLIENT_DOMAIN);
 
         List<Setting> listSettingByKeys = SettingModel.INSTANCE.getListSettingByKey("'Địa chỉ', 'Điện thoại', 'Email'");
         pageVariablesFooter.put("list_setting_by_keys", listSettingByKeys);
@@ -45,8 +45,8 @@ public class IncludeData {
 
     public Map<String, Object> buildHeaderMenuData(HttpServletRequest request) {
         Map<String, Object> pageVariablesHeaderMenu = new HashMap<>();
-        pageVariablesHeaderMenu.put("app_domain", Config.APP_DOMAIN);
-        pageVariablesHeaderMenu.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+        pageVariablesHeaderMenu.put("app_domain", Configuration.APP_DOMAIN);
+        pageVariablesHeaderMenu.put("static_domain", Configuration.STATIC_CLIENT_DOMAIN);
 
         UserRegister userRegister = SessionHelper.INSTANCE.getUserSession(request);
         pageVariablesHeaderMenu.put("user", userRegister);

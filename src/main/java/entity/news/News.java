@@ -1,6 +1,6 @@
 package entity.news;
 
-import common.Config;
+import common.Configuration;
 
 public class News {
 
@@ -82,7 +82,7 @@ public class News {
         if (image.startsWith("http")) {
             this.image = image;
         } else {
-            this.image = Config.APP_DOMAIN + "/" + image;
+            this.image = Configuration.APP_DOMAIN + "/" + image;
         }
     }
 

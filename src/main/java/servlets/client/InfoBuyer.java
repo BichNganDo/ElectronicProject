@@ -2,7 +2,7 @@ package servlets.client;
 
 import com.google.gson.Gson;
 import common.APIResult;
-import common.Config;
+import common.Configuration;
 import entity.item.CartItem;
 import entity.product.Product;
 import helper.HttpHelper;
@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.InfoBuyerModel;
 import model.ProductModel;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.json.JSONObject;
 
 public class InfoBuyer extends HttpServlet {
@@ -53,7 +52,7 @@ public class InfoBuyer extends HttpServlet {
         }
 
         String listCart = gson.toJson(listProductItem);
-        int totalPayment = payTotal + Config.SHIPPING_FEE;
+        int totalPayment = payTotal + Configuration.SHIPPING_FEE;
         int addInfoBuyer = InfoBuyerModel.INSTANCE.addInfoBuyer(name, email, phone, address, note, listCart, totalPayment);
         if (addInfoBuyer >= 0) {
             result.setErrorCode(0);

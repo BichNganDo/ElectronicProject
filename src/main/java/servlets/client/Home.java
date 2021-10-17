@@ -1,6 +1,6 @@
 package servlets.client;
 
-import common.Config;
+import common.Configuration;
 import entity.category_product.CategoryProduct;
 import entity.item.CartItem;
 import entity.news.News;
@@ -32,8 +32,8 @@ public class Home extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("app_domain", Config.APP_DOMAIN);
-        pageVariables.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+        pageVariables.put("app_domain", Configuration.APP_DOMAIN);
+        pageVariables.put("static_domain", Configuration.STATIC_CLIENT_DOMAIN);
 
         UserRegister userRegister = SessionHelper.INSTANCE.getUserSession(request);
         pageVariables.put("user", userRegister);
@@ -130,7 +130,7 @@ public class Home extends HttpServlet {
         pageVariables.put("setting_instagram", settingIns);
 
         Map<String, Object> pageVariablesHeader = new HashMap<>();
-        pageVariablesHeader.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+        pageVariablesHeader.put("static_domain", Configuration.STATIC_CLIENT_DOMAIN);
         pageVariables.put("header_include", PageGenerator.instance().getPage("client/include/header.html", pageVariablesHeader));
 
         pageVariables.put("footer_include", PageGenerator.instance().getPage("client/include/footer.html", IncludeData.INSTANCE.buildFooterData()));

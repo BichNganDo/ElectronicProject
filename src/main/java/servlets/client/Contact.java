@@ -2,7 +2,7 @@ package servlets.client;
 
 import com.google.gson.Gson;
 import common.APIResult;
-import common.Config;
+import common.Configuration;
 import entity.setting.Setting;
 import helper.HttpHelper;
 import helper.ServletUtil;
@@ -25,8 +25,8 @@ public class Contact extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("app_domain", Config.APP_DOMAIN);
-        pageVariables.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+        pageVariables.put("app_domain", Configuration.APP_DOMAIN);
+        pageVariables.put("static_domain", Configuration.STATIC_CLIENT_DOMAIN);
 
         List<Setting> listSettingByKeyss = SettingModel.INSTANCE.getListSettingByKey("'Địa chỉ', 'Điện thoại', 'Email'");
         pageVariables.put("list_setting_by_keyss", listSettingByKeyss);
@@ -36,7 +36,7 @@ public class Contact extends HttpServlet {
 
         //HEADER
         Map<String, Object> pageVariablesHeader = new HashMap<>();
-        pageVariablesHeader.put("static_domain", Config.STATIC_CLIENT_DOMAIN);
+        pageVariablesHeader.put("static_domain", Configuration.STATIC_CLIENT_DOMAIN);
         pageVariables.put("header_include", PageGenerator.instance().getPage("client/include/header.html", pageVariablesHeader));
 
         //FOOTER
