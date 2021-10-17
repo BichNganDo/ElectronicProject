@@ -192,7 +192,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $(document).ready(function() {
             $('.slc-related-product').select2({
                 ajax: {
-                    url: 'http://localhost:8080/admin/api/product?action=getproduct',
+                    url: '${app_domain}/admin/api/product?action=getproduct',
                     type: "GET",
                     dataType: "json",
                     delay: 250,
@@ -236,7 +236,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             var urltmp = url[4].split('?')[0];
             $rootScope.lastUri = urltmp.split('#')[0];
 
-            $scope.APP_DOMAIN = "http://localhost:8080/";
+            $scope.APP_DOMAIN = "${app_domain}/";
 
             preImg.onchange = evt => {
                 const [file] = preImg.files

@@ -101,7 +101,7 @@
     <script>
         var app = angular.module('myApp', []);
         app.controller('mainCtrl', function($scope, $http, $rootScope) {
-            $scope.APP_DOMAIN = "http://localhost:8080/";
+            $scope.APP_DOMAIN = "${app_domain}/";
             $scope.login = function(admin) {
                 var data = $.param({
                     phone: admin.phone,

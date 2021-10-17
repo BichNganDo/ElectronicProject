@@ -192,7 +192,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             console.log(urltmp);
             $rootScope.lastUri = urltmp.split('#')[0];
 
-            $scope.APP_DOMAIN = "http://localhost:8080/";
+            $scope.APP_DOMAIN = "${app_domain}/";
             $scope.selectedPageIndex = 1;
             $scope.search_status = '0';
             $scope.getListAdmin = function() {
@@ -236,7 +236,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
                         }
                     }
-                    $http.post('http://localhost:8080/admin/api/mnadmin?action=delete', data, config)
+                    $http.post('${app_domain}/admin/api/mnadmin?action=delete', data, config)
                         .then(function(response) {
                             // console.log(response);
                             showNotification("success", response.data.message);

@@ -153,7 +153,7 @@
                             document.getElementById("password").value = "";
                             document.getElementById("repeat-password").value = "";
                             showNotification("success", response.message);
-                            window.location.replace("http://localhost:8080/dang-nhap");
+                            window.location.replace("${app_domain}/dang-nhap");
                         } else {
                             showNotification("error", response.message);
                         }

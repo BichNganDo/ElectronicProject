@@ -7,7 +7,7 @@
 
 <body>
     <h2>Upload Files</h2>
-    <form method="post" action="http://localhost:8080/admin/upload-file" enctype="multipart/form-data">
+    <form method="post" action="${app_domain}/admin/upload-file" enctype="multipart/form-data">
         Select file to upload:
         <br />
         <input type="file" name="file2" id="preImg" accept="image/png, image/gif, image/jpeg" />
@@ -32,7 +32,7 @@
         async function uploadFile() {
             let formData = new FormData();
             formData.append("file", preImg.files[0]);
-            await fetch('http://localhost:8080/admin/upload-file', {
+            await fetch('${app_domain}/admin/upload-file', {
                 method: "POST",
                 body: formData
             });

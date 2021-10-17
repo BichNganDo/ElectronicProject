@@ -111,7 +111,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             var urltmp = url[4].split('?')[0];
             $rootScope.lastUri = urltmp.split('#')[0];
 
-            $scope.APP_DOMAIN = "http://localhost:8080/";
+            $scope.APP_DOMAIN = "${app_domain}/";
 
             //getIdCate
             var id_info_buyer = getUrlParameter('id');

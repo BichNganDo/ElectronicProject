@@ -122,7 +122,7 @@
                             document.getElementById("email1").value = "";
                             document.getElementById("login-password").value = "";
                             showNotification("success", response.message);
-                            window.location.replace("http://localhost:8080");
+                            window.location.replace("${app_domain}");
                         } else {
                             showNotification("error", response.message);
                         }

@@ -1,5 +1,6 @@
 package servlets.admin.filter;
 
+import common.Configuration;
 import helper.HttpHelper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -40,10 +41,10 @@ public class AuthenFilter implements Filter {
                             return;
                         }
                     }
-                    resp.sendRedirect("http://localhost:8080/admin/login");
+                    resp.sendRedirect(Configuration.APP_DOMAIN + "/admin/login");
                     return;
                 } else {
-                    resp.sendRedirect("http://localhost:8080/admin/login");
+                    resp.sendRedirect(Configuration.APP_DOMAIN + "/admin/login");
                     return;
                 }
             }

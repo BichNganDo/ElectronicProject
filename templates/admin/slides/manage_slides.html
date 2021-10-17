@@ -186,7 +186,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             var urltmp = url[4].split('?')[0];
             $rootScope.lastUri = urltmp.split('#')[0];
 
-            $scope.APP_DOMAIN = "http://localhost:8080/";
+            $scope.APP_DOMAIN = "${app_domain}/";
             $scope.selectedPageIndex = 1;
             $scope.search_status = '0';
             $scope.getListSlides = function() {
@@ -230,7 +230,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             'content-type': 'application/x-www-form-urlencoded;charset=UTF-8'
                         }
                     }
-                    $http.post('http://localhost:8080/admin/api/slides?action=delete', data, config)
+                    $http.post('${app_domain}/admin/api/slides?action=delete', data, config)
                         .then(function(response) {
                             // console.log(response);
                             showNotification("success", response.data.message);

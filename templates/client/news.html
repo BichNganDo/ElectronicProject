@@ -50,9 +50,9 @@
                     <div class="col-md-12">
                         <div class="pagination-block">
                             <ul class="pagination-btns flex-center">
-                                <li><a href="http://localhost:8080/tin-tuc?page=1" class="single-btn prev-btn ">|<i class="zmdi zmdi-chevron-left"></i> </a>
+                                <li><a href="${app_domain}/tin-tuc?page=1" class="single-btn prev-btn ">|<i class="zmdi zmdi-chevron-left"></i> </a>
                                 </li>
-                                <li><a href="http://localhost:8080/tin-tuc?page=${current_page-1}" class="single-btn prev-btn "><i class="zmdi zmdi-chevron-left"></i> </a>
+                                <li><a href="${app_domain}/tin-tuc?page=${current_page-1}" class="single-btn prev-btn "><i class="zmdi zmdi-chevron-left"></i> </a>
                                 </li>
 
                                 <#list 1..total_page as i>
@@ -60,9 +60,9 @@
                                         <li class="<#if current_page==i>active</#if>"><a href="${app_domain}/tin-tuc?page=${i}" class="single-btn">${i}</a></li>
                                     </#if>
                                 </#list>
-                                <li><a href="http://localhost:8080/tin-tuc?page=${current_page+1}" class="single-btn next-btn"><i class="zmdi zmdi-chevron-right"></i></a>
+                                <li><a href="${app_domain}/tin-tuc?page=${current_page+1}" class="single-btn next-btn"><i class="zmdi zmdi-chevron-right"></i></a>
                                 </li>
-                                <li><a href="http://localhost:8080/tin-tuc?page=${total_page}" class="single-btn next-btn"><i class="zmdi zmdi-chevron-right"></i>|</a>
+                                <li><a href="${app_domain}/tin-tuc?page=${total_page}" class="single-btn next-btn"><i class="zmdi zmdi-chevron-right"></i>|</a>
                                 </li>
                             </ul>
                         </div>
