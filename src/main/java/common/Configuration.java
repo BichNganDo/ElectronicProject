@@ -16,8 +16,8 @@ import java.util.Properties;
  */
 public class Configuration {
 
-    private static final String FILE_CONFIG = "/conf/development.config.properties";
-//    private static final String FILE_CONFIG = "/conf/production.config.properties";
+//    private static final String FILE_CONFIG = "/conf/development.config.properties";
+    private static final String FILE_CONFIG = "/conf/production.config.properties";
 
     private final static Properties PROPERTY = new Properties();
 
