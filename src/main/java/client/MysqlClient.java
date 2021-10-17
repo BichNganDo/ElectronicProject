@@ -5,6 +5,7 @@ package client;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import common.Configuration;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Map;
@@ -20,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class MysqlClient {
 
     private final String _host;
-    private final int _port;
+    private final String _port;
     private final String _dbname;
     private final String _user;
     private final String _password;
@@ -30,11 +31,11 @@ public class MysqlClient {
     private static final Map<String, MysqlClient> _cli = new ConcurrentHashMap<String, MysqlClient>();
 
     private MysqlClient() {
-        _host = "localhost";
-        _port = 3306;
-        _dbname = "electronic_project";
-        _user = "root";
-        _password = "";
+        _host = Configuration.getProperty("mysql_host");
+        _port = Configuration.getProperty("mysql_port");
+        _dbname = Configuration.getProperty("mysql_dbname");
+        _user = Configuration.getProperty("mysql_user");
+        _password = Configuration.getProperty("mysql_password");
         _poolsize = 10;
         this.init();
     }
