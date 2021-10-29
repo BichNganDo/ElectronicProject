@@ -1,0 +1,42 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestJWT",
+            "request": "launch",
+            "mainClass": "TestJWT",
+            "projectName": "ElectronicProject"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestToanTuVa",
+            "request": "launch",
+            "mainClass": "TestToanTuVa",
+            "projectName": "ElectronicProject"
+        },
+        {
+            "type": "java",
+            "name": "Launch MainApp",
+            "request": "launch",
+            "mainClass": "main.MainApp",
+            "projectName": "ElectronicProject"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestGetAllCategory",
+            "request": "launch",
+            "mainClass": "templater.TestGetAllCategory",
+            "projectName": "ElectronicProject"
+        }
+    ]
+}

@@ -168,8 +168,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         </td>
                                         <td>{{item.category}}</td>
                                         <td>{{item.supplier}}</td>
-                                        <td>{{item.price}}</td>
-                                        <td>{{item.price_sale}}</td>
+                                        <td>{{item.price | number}}</td>
+                                        <td>{{item.price_sale | number}}</td>
                                         <td><img width="100%" height="100%" src="{{item.image_url}}" alt=""></td>
                                         <td>{{item.quantity}}</td>
                                         <td>{{item.created_date}}</td>
